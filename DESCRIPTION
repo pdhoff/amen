@@ -1,0 +1,21 @@
+Package: amen
+Title: Additive and Multiplicative Effects Models for Networks and Relational Data
+Version: 1.1
+Author: Peter Hoff, Bailey Fosdick, Alex Volfovsky, Yanjun He
+Description: Analysis of network and relational data using additive and
+ multiplicative effects (AME) models. The basic model includes
+ regression terms, the covariance structure of the social relations model
+ (Warner, Kenny and Stoto (1979), Wong (1982)), and multiplicative factor
+ models (Hoff(2009)). Four different link functions accommodate different
+ relational data structures, including binary/network data (bin), normal
+ relational data (nrm), ordinal relational data (ord) and data from
+ fixed-rank nomination schemes (frn).  Several of these link functions are
+ discussed in Hoff, Fosdick, Volfovsky and Stovel (2013). Development of this
+ software was supported in part by NICHD grant R01HD067509.
+Date: 2015-05-31
+Maintainer: Peter Hoff <pdhoff@uw.edu>
+Depends: R (>= 3.1.2)
+License: GPL-3
+LazyData: true 
+VignetteBuilder: knitr
+Suggests: coda, knitr
