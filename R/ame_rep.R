@@ -216,7 +216,7 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   beta<-rep(0,dim(X)[3]) 
   s2<-1 
   rho<-0
-  Sab<-cov(cbind(a,b))
+  Sab<-cov(cbind(a,b))*tcrossprod(c(rvar,cvar))
   U<-V<-matrix(0, nrow(Y[,,1]), R) 
   
     

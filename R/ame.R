@@ -192,8 +192,8 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   beta<-rep(0,dim(X)[3]) 
   s2<-1 
   rho<-0
-  Sab<-cov(cbind(a,b))
-  U<-V<-matrix(0, nrow(Y), R)  ##
+  Sab<-cov(cbind(a,b))*tcrossprod(c(rvar,cvar))
+  U<-V<-matrix(0, nrow(Y), R)  
 
   # output items
   BETA <- matrix(nrow = 0, ncol = dim(X)[3] - pr*symmetric)
