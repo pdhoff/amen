@@ -1396,7 +1396,7 @@ this egocentric sample.
 
 <<mdsimstudy,cache=TRUE,echo=FALSE,results='hide'>>=
 BETA_SS<-NULL
-for(sim in 1:100)
+for(sim in 1:2)
 { 
   set.seed(sim) 
   Ys<-matrix(NA,n,n)      # sociomatrix for sampled data
@@ -1458,8 +1458,87 @@ obtained from the full (population) dataset. }
 
 
 \section{Repeated measures data}
+Some relational datasets include repeated measures, that 
+is multiple observations of dyadic and nodal variables 
+over time. The {\tt amen} package provides a rudimentary 
+method of analyzing such data, which assumes 
+the data were generated from 
+\[
+ z_{i,j,t} =  \beta^T\bl x_{d,i,j,t} +
+ \beta_r^T\bl x_{r,i,j,t} +\beta_c^T\bl x_{c,i,j,t} + 
+a_i +b_j + \bl u_i^T \bl v_j + \epsilon_{i,j,t} . 
+\]
+
+
+
+The {\tt amen} package provides a model fitting routine 
+that can accomodate 
+
 
 \subsection{Example: Analysis of longitudinal data}
+
+
+<<echo=FALSE,fig.height=3,fig.width=7>>=
+data(dutchcollege) 
+
+Y<-1*( dutchcollege$Y >= 2 )
+xnode<-xnet(Y[,,dim(Y)[3]])
+xnode[18,]<-.5*( xnode[18,] + apply(xnode[-18,],2,mean))
+par(mar=c(1,1,1.25,1),mgp=c(1.75,75,0),mfrow=c(2,4))
+for(k in 1:dim(Y)[3])
+{
+  netplot(Y[,,k],xnode)  
+  mtext(side=3,paste("Time",k-1)) 
+}
+@
+
+
+<<>>=
+# outcome
+Y<-1*( dutchcollege$Y >= 2 )[,,2:7]
+n<-dim(Y)[1] ; t<-dim(Y)[3]
+
+# nodal covariates
+Xnode<-dutchcollege$X[,1:2]  # sex and smoking status
+Xnode<-array(Xnode,dim=c(n,ncol(Xnode),t))
+dimnames(Xnode)[[2]]<-c("male","smoker")
+
+# dyadic covariates
+Xdyad<-array(dim=c(n,n,5,t))        
+Xdyad[,,1,]<-1*( dutchcollege$Y >= 2 )[,,1:6]        
+Xdyad[,,2,]<-array(apply(Xdyad[,,1,],3,t),dim=c(n,n,t))
+Xdyad[,,3,]<-tcrossprod(Xnode[,1,1]) # both male
+Xdyad[,,4,]<-tcrossprod(Xnode[,2,1]) # both smokers 
+Xdyad[,,5,]<-outer( dutchcollege$X[,3],dutchcollege$X[,3],"==")  
+dimnames(Xdyad)[[3]]<-c("Ylag","tYlag","bothmale","bothsmoke","sameprog")
+@
+
+<<cache=TRUE,fig.keep='none',results='hide'>>= 
+fit_iid<-ame_rep(Y,Xdyad[,,-(1:3),],Xnode,Xnode,model="bin",plot=FALSE)
+
+fit_ar1<-ame_rep(Y,Xdyad,Xnode,Xnode,model="bin",plot=FALSE)    
+@
+
+<<echo=FALSE>>=
+#par(mfrow=c(1,2),mar=c(3,3,1,1),mgp=c(1.75,.75,0))
+#boxplot( c(fit_iid$YPM)~c(Y),xlab="Y",ylab=expression(hat(Y)),col="lightgreen")
+#mtext(side=3,"IID model") 
+#boxplot( c(fit_ar1$YPM)~c(Y),xlab="Y",ylab=expression(hat(Y)),col="lightgreen")
+#mtext(side=3,"AR1 model")
+@
+
+
+<<>>=
+#mean( (fit_iid$YPM-Y)^2, na.rm=TRUE )
+#mean( (fit_ar1$YPM-Y)^2, na.rm=TRUE )
+@
+
+
+<<>>=
+#summary(fit_ar1) 
+@
+
+
 
 \section{Symmetric data}
 
@@ -1469,7 +1548,7 @@ obtained from the full (population) dataset. }
 \section{Discussion} 
 
 \bibliographystyle{chicago}
-\bibliography{~/Cloud/Common/refs}
+\bibliography{/Users/pdhoff/Cloud/Common/refs}
 
 
 
