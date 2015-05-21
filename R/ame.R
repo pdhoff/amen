@@ -219,9 +219,9 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     colnames(VC) <- c("va", "ve")  
     rb<-intercept+seq(1,pr,length=pr) ; cb<-intercept+pr+seq(1,pr,length=pr)
     bnames<-dimnames(X)[[3]]
-    bni<-bnames[intercept] 
+    bni<-bnames[1*intercept] 
     bnn<-gsub("row",bnames[rb],replacement="node")       
-    bnd<-bnames[-c(intercept,rb,cb)]
+    bnd<-bnames[-c(1*intercept,rb,cb)]
     colnames(BETA)<-c(bni,bnn,bnd) 
   }    
 
@@ -340,7 +340,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
       if(symmetric)
       {
         br<-beta[rb] ; bc<-beta[cb] ; bn<-(br+bc)/2 
-        sbeta<-c(beta[intercept],bn,beta[-c(intercept,rb,cb)] )
+        sbeta<-c(beta[1*intercept],bn,beta[-c(1*intercept,rb,cb)] )
         BETA<-rbind(BETA,sbeta)
 
         VC<-rbind(VC,c(Sab[1,1],s2) )
