@@ -1458,26 +1458,62 @@ obtained from the full (population) dataset. }
 
 
 \section{Repeated measures data}
-Some relational datasets include repeated measures, that 
-is multiple observations of dyadic and nodal variables 
-over time. The {\tt amen} package provides a rudimentary 
-method of analyzing such data, which assumes 
-the data were generated from 
-\[
- z_{i,j,t} =  \beta^T\bl x_{d,i,j,t} +
+Some types of dynamic relational datasets include 
+repeated measurements of dyadic 
+and nodal variables at discrete points in time. 
+The {\tt amen} package provides a rudimentary 
+method of analyzing such data, 
+based on the following simple extension of the 
+AME model to accommodate 
+replicated relational measurements:
+For (latent) sociomatrices $\bl Z_1,\ldots, \bl Z_T$, 
+the model expresses $z_{i,j,t}$, the $(i,j)$th element of the
+$t$th sociomatrix, as 
+\begin{equation} 
+z_{i,j,t} =  \beta^T\bl x_{d,i,j,t} +
  \beta_r^T\bl x_{r,i,j,t} +\beta_c^T\bl x_{c,i,j,t} + 
-a_i +b_j + \bl u_i^T \bl v_j + \epsilon_{i,j,t} . 
-\]
+a_i +b_j + \bl u_i^T \bl v_j + \epsilon_{i,j,t}. 
+\label{eqn:llame}
+\end{equation}
+Across nodes, dyads and time points,  this model extension  further
+assumes the same covariance model for the random effects  $\{(a_i,b_i)\}$ 
+as before, 
+allows for 
+dyadic correlation between $\epsilon_{i,j,t}$ and  
+$\epsilon_{j,i,t}$ as before, but 
+assumes 
+$\epsilon_{i,j,t}$'s that involve 
+different dyads \emph{or} different time points as independent. 
+In other words, the data under this 
+model are treated as 
+independent observations from a common AME distribution. 
+
+At first glance it may seem that such a model is inappropriate for 
+dynamic relational data, as it doesn't seem to allow for the 
+possibility of dependence over time. 
+However, 
+certain types of dependence can be incorporated into this model 
+via the 
+time-dependent 
+regression terms. Specifically, autoregressive
+dependence can be modeled by including lagged values of the 
+sociomatrix as regressors. Additionally, 
+time-varying regression parameters can be included in the 
+model by construction of interactions. 
 
 
-
-The {\tt amen} package provides a model fitting routine 
-that can accomodate 
-
-
-\subsection{Example: Analysis of longitudinal data}
-
-
+We illustrate these possibilities with an analysis 
+of data from the longitudinal study of friendship relations 
+among a small group of Dutch college students, available 
+in {\tt amen} via the {\tt dutchcollege} dataset. 
+Our response $y_{i,j,t}$ is the indicator that  
+person $i$ reports being friendly (or having friendship) 
+with person $j$ at time point 
+$t$. 
+The graphs of this relation for each of  the seven different time points 
+in the dataset are given in 
+Figure \ref{fig:dcln}. 
+\begin{figure}
 <<echo=FALSE,fig.height=3,fig.width=7>>=
 data(dutchcollege) 
 
@@ -1491,58 +1527,210 @@ for(k in 1:dim(Y)[3])
   mtext(side=3,paste("Time",k-1)) 
 }
 @
+\caption{Friendliness network of the Dutch college students, 
+across seven time points.} 
+\label{fig:dcln}
+\end{figure}
+The figure reflects the fact that 
+the students were mostly unknown to each other before the 
+study period, and so not surpisingly, the density of the graphs
+increase over time. 
 
+The data also include (static) information on 
+the sex and smoking status of the students, as 
+well as which one of three programs each student was a member. 
+We will examine the effects of these nodal 
+attributes on frienship in using a probit 
+SRRM, where $y_{i,j,t}$ is modeled 
+as the indicator that the latent affinity 
+$z_{i,j,t}$ exceeds zero, where 
+$z_{i,j,t}$ follows model 
+(\ref{eqn:llame}). 
+Our analysis will include the 
+binary indicators of male sex and 
+smoking status as row and column regressors, 
+products of these variables as dyadic regressors, 
+and a dyadic binary indicator of whether or 
+not members of a dyad belong to the same program.  
+Finally, we will also include lagged values 
+$y_{i,j,t-1}$ and $y_{j,i,t-1}$ as dyadic predictors
+of $z_{i,j,t}$ to
+reflect the possibility of temporal dependence among 
+relations within a dyad.  To summarize, our model 
+for the $z_{i,j,t}$'s is as follows:
+\begin{align*}
+ z_{i,j,t}  = &   \beta_0 +  \\ 
+ & \beta_{r,1} \text{male}_i + \beta_{r,2} \text{smoke}_i +  \\
+ & \beta_{c,1} \text{male}_j + \beta_{c,2} \text{smoke}_j +  \\
+ & \beta_{d_1} y_{i,j,t-1} + \beta_{d_2} y_{j,i,t-1} +  \\
+ & \beta_{d_3} \text{male}_i \text{male}_j +
+  \beta_{d_4} \text{smoke}_i \text{smoke}_j + 
+  \beta_{d_5} \text{sameprogram}_{i,j} +  \\
+ &  a_i +b_j + \epsilon_{i,j,t} 
+\end{align*}
 
+The {\tt ame\_rep} function in the {\tt amen} package 
+provides parameter estimation and inference  for this model
+using a similar syntax as the {\tt ame} function, 
+except now the 
+nodal attributes {\tt Xrow} and {\tt Xcol} are
+three-dimensional arrays, with dimensions corresponding 
+to nodes, variables and time points, respectively, 
+and the dyadic regressor array {\tt Xdyad} is now four-dimensional, 
+ with dimensions corresponding 
+to nodes, nodes,  variables and time points. 
+These arrays for this data analysis can be set up as follows:
 <<>>=
 # outcome
-Y<-1*( dutchcollege$Y >= 2 )[,,2:7]
+Y<-1*( dutchcollege$Y >= 2 )[,,2:7]                    
 n<-dim(Y)[1] ; t<-dim(Y)[3]
 
 # nodal covariates
-Xnode<-dutchcollege$X[,1:2]  # sex and smoking status
+Xnode<-dutchcollege$X[,1:2]                                       # sex and smoking status
 Xnode<-array(Xnode,dim=c(n,ncol(Xnode),t))
 dimnames(Xnode)[[2]]<-c("male","smoker")
 
 # dyadic covariates
 Xdyad<-array(dim=c(n,n,5,t))        
-Xdyad[,,1,]<-1*( dutchcollege$Y >= 2 )[,,1:6]        
-Xdyad[,,2,]<-array(apply(Xdyad[,,1,],3,t),dim=c(n,n,t))
-Xdyad[,,3,]<-tcrossprod(Xnode[,1,1]) # both male
-Xdyad[,,4,]<-tcrossprod(Xnode[,2,1]) # both smokers 
-Xdyad[,,5,]<-outer( dutchcollege$X[,3],dutchcollege$X[,3],"==")  
+Xdyad[,,1,]<-1*( dutchcollege$Y >= 2 )[,,1:6]                     # lagged relation
+Xdyad[,,2,]<-array(apply(Xdyad[,,1,],3,t),dim=c(n,n,t))           # lagged reciprocal relation
+Xdyad[,,3,]<-tcrossprod(Xnode[,1,1])                              # both male
+Xdyad[,,4,]<-tcrossprod(Xnode[,2,1])                              # both smokers 
+Xdyad[,,5,]<-outer( dutchcollege$X[,3],dutchcollege$X[,3],"==")   # same program
 dimnames(Xdyad)[[3]]<-c("Ylag","tYlag","bothmale","bothsmoke","sameprog")
 @
 
-<<cache=TRUE,fig.keep='none',results='hide'>>= 
-fit_iid<-ame_rep(Y,Xdyad[,,-(1:3),],Xnode,Xnode,model="bin",plot=FALSE)
-
-fit_ar1<-ame_rep(Y,Xdyad,Xnode,Xnode,model="bin",plot=FALSE)    
+The model can be fit using the same syntax as the 
+{\tt ame} command discussed previsouly, and results can 
+summarized before with the {\tt summary} function:
+<<dc_ar1, cache=TRUE,fig.keep='none',results='hide'>>=
+fit_ar1<-ame_rep(Y,Xdyad,Xnode,Xnode,model="bin",plot=FALSE)
 @
-
-<<echo=FALSE>>=
-#par(mfrow=c(1,2),mar=c(3,3,1,1),mgp=c(1.75,.75,0))
-#boxplot( c(fit_iid$YPM)~c(Y),xlab="Y",ylab=expression(hat(Y)),col="lightgreen")
-#mtext(side=3,"IID model") 
-#boxplot( c(fit_ar1$YPM)~c(Y),xlab="Y",ylab=expression(hat(Y)),col="lightgreen")
-#mtext(side=3,"AR1 model")
-@
-
 
 <<>>=
-#mean( (fit_iid$YPM-Y)^2, na.rm=TRUE )
-#mean( (fit_ar1$YPM-Y)^2, na.rm=TRUE )
+summary(fit_ar1) 
+@
+The 
+parameter estimates and standard deviations for 
+$\beta_{d,1}$ and $\beta_{d,2}$ ({\tt Ylag.dyad} and 
+{\tt tYlag.dyad} in the output) 
+indicate strong evidence 
+of large 
+temporal correlation. 
+There also appear to be strong homophily effects in 
+terms of sex, smoking status and program. 
+The nodal effect parameters indicate some evidence 
+that smokers are a bit less social than non-smokers. 
+
+Finally, we note that the time interval between 
+the first four measurements was three weeks, whereas the 
+interval between the last three measurements was six weeks. 
+As such, we may want to consider whether or not the 
+effects of the regressors might vary depending on the 
+measurement. Such a possibility can be evaluated simply 
+by adding interaction terms to the regressors. 
+For example, to evaluate whether or not the effect of 
+$y_{i,j,t-1}$ on $z_{i,j,t}$ varies with measurment interval, 
+we can create a new dyadic covariate 
+$y_{i,j,t-1} w_{t}$ where 
+$w_t$ is a binary indicator that $t$ is in the 
+among the last three measurements. 
+Adding such terms for all of our regressors can be done as follows:
+<<>>=
+Wnode<-Xnode 
+Wnode[,,1:3]<-0 
+
+XWnode<-array( dim=dim(Xnode)+c(0,2,0))
+XWnode[,1:2,]<-Xnode ; XWnode[,3:4,]<-Wnode
+dimnames(XWnode)[[2]]<-c(dimnames(Xnode)[[2]],paste0(dimnames(Xnode)[[2]],".w"))
+
+
+Wdyad<-Xdyad 
+Wdyad[,,,1:3]<-0 
+XWdyad<-array( dim=dim(Xdyad)+c(0,0,5,0) ) 
+XWdyad[,,1:5,]<-Xdyad ; XWdyad[,,6:10,]<-Wdyad 
+dimnames(XWdyad)[[3]]<-c(dimnames(Xdyad)[[3]],paste0(dimnames(Xdyad)[[3]],".w"))
 @
 
+<<dc_ar1_vb, cache=TRUE,fig.keep='none',results='hide'>>=
+fit_ar1_vb<-ame_rep(Y,XWdyad,XWnode,XWnode,model="bin") 
+@
 
 <<>>=
-#summary(fit_ar1) 
+summary(fit_ar1_vb) 
 @
+These results do not indicate much evidence that the 
+regression coefficients should vary by time period, 
+except possibly the effect on the lagged 
+dyadic variable $y_{i,j,t}$. The negative 
+estimate of this coefficient 
+(corresponding to {\tt Ylag.w.dyad} in the output) 
+makes sense, 
+as it 
+indicates  that the effect of the lagged variable is 
+decreased when the interval between times points is longer. 
 
 
 
 \section{Symmetric data}
+It is sometimes the case that relational 
+observations are \emph{symmetric} or 
+\emph{undirected} by design, in that there is 
+only one relational value $y_{i,j}$ for the 
+dyad $(i,j)$. Such observations can 
+be represented by a 
+symmetric sociomatrix $\bl Y$, so that 
+$y_{i,j}= y_{j,i}$ for all dyads $(i,j)$. 
+In this case, 
+a natural simplification of the AME  model 
+(\ref{eqn:ame})  is given by 
+\begin{align}
+ y_{i,j}  & = \beta_d^T \bl x_{i,j} + \beta_n^T ( \bl x_{i} + \bl x_{j} ) +  a_i + a_j +  \bl u_i^T \bl \Lambda  \bl u_j +  \epsilon_{i,j} ,    \\
+ a_1,\ldots, a_n & \sim  \text{i.i.d.} \  N(0,\sigma^2_a) \\
+ \{ \epsilon_{i,j} \}  & \sim  \text{i.i.d.}  \ N(0,\sigma^2_e), 
+\label{eqn:same}
+\end{align}
+for $i<j$, with $y_{j,i} = y_{i,j}$ by design. 
+Most of the simplifications leading to this symmetric case are 
+easy to understand, with the possible exception of the 
+change from $\bl u_i^T\bl v_j$ in the asymmetric case 
+to $\bl u_i^T \bs \Lambda \bl u_j$. here. 
+In the former case, this representation can justified 
+by the singular value decomposition theorem, 
+%a theorem 
+%from linear algebra that states that 
+which states that
+any $n\times n$ rank-$R$ matrix $\bl M$ can be expressed 
+as $\bl U \bl V^T$, where 
+$\bl U$ and $\bl V$ are  ${n\times R}$ matrices. 
+This means that $m_{i,j}$, the $i,j$th entry of $\bl M$ 
+can be expressed as $m_{i,j} = \bl u_i^T \bl v_j$, where 
+$\bl u_i$ and $\bl v_j$ are the $i$th and $j$th rows of 
+$\bl U$ and $\bl V$, respectively. 
+In other words, the $\bl u_i^T\bl v_j$ 
+in the asymmetric AME model can represent any residual 
+low-rank patterns $\bl M$ in the sociomatrix  $\bl Y$ that aren't explained 
+by the known regressors. 
+Similarly, in the symmetric case 
+the term $\bl u_i^T \bs \Lambda \bl u_j$ in 
+(\ref{eqn:same}) can represent any residual low-rank patterns 
+$\bl M$  in the symmetric sociomatrix $\bl Y$. 
+This follows from the eigenvalue decomposition theorem, 
+which states that 
+any symmetric rank-$\bl R$
+matrix $\bl M$ can be expressed as $\bl U \bs \Lambda \bl U^T$, or 
+equivalently, 
+the elements $m_{i,j}$ of $\bl M$ 
+can be expressed as 
+$m_{i,j} = \bl  u_i^T \bs \Lambda \bl u_j$. 
 
-\subsection{Example: }
+Symmetric versions of the  normal, probit and other AME models discussed  
+in the previous sections can be fit using the {\tt ame} command 
+by simply specifiying the option  {\tt symmetric=TRUE}. 
+We illustrate the use of this option with an analysis 
+of Cold War cooperation and conflict data, available 
+via the {\tt coldwar} dataset. 
+These data include 
 
 
 \section{Discussion} 

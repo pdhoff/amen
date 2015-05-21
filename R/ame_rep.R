@@ -118,10 +118,19 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   X<-array(dim=c(n,n,pr+pc+pd+intercept,N)) 
   for (t in 1:N)
   { 
-    Xt<-design_array(Xrow[,,t],Xcol[,,t],Xdyad[,,,t],intercept,n)
+    Xt<-design_array(Xrow[,,t],Xcol[,,t],Xdyad[,,,t],intercept,n) 
+
+    # re-add intercept if it was removed
+    if(dim(Xt)[3]<dim(X)[3])
+    {
+      tmp<-array(dim=dim(Xt)+c(0,0,1)) 
+      tmp[,,1]<-1 ; tmp[,,-1]<-Xt   
+      Xt<-tmp
+    }
+
     X[,,,t]<-Xt
-  }
-  dimnames(X)[[3]]<-dimnames(Xt)[[3]] ; dimnames(X)[[4]]<-dimnames(Y)[[4]]
+  } 
+  dimnames(X)[[3]]<-dimnames(Xt)[[3]] ; dimnames(X)[[4]]<-dimnames(Y)[[3]]
 
   # design matrix warning for rrl
   if( model=="rrl" & any(apply(apply(X,c(1,3),var),2,sum)==0)

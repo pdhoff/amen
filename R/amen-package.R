@@ -371,6 +371,9 @@ NULL
 #' Longitudinal relational measurements and nodal characteristics 
 #' of Dutch college students, described in 
 #' van de Bunt, van Duijn, and Snijders (1999). 
+#' The time interval between the first four measurements was 
+#' three weeks, whereas the interval between the last three 
+#' was six weeks. 
 #' 
 #' @format A list consisting of a socioarray \code{Y} and a matrix 
 #' \code{X}  of static nodal attributes. The relational 
