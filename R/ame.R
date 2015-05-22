@@ -318,17 +318,31 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     # update U,V
     if (R > 0) 
     { 
-      E<-Z - (Xbeta(X, beta) + outer(a, b, "+"))  
+      E<-Z-(Xbeta(X,beta)+outer(a,b,"+"))  ; if(symmetric){ E<-.5*(E+t(E)) }
 
-      if(!symmetric){ UV<-rUV_fc(E, U, V, rho, s2) } 
-      if(symmetric)
+      if(s < .5*burn)
       { 
-        if(s< .5*burn) { UV<-rUV_fc( E, U, V, rho, s2) }
-        if(s>= .5*burn){ UV<-rUV_sym_fc( .5*(E+t(E)), U, V, s2) } 
+        sE<-svd(E)  
+        if(symmetric)
+        {  
+          U<-sE$u[,1:R,drop=FALSE]*n/(n+1) 
+          V<-sE$v[,1:R,drop=FALSE]%*%diag(sE$d[1:R],nrow=R)*n/(n+1) 
+        }
+        if(!symmetric)
+        {  
+          U<-sE$u[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)*n/(n+1)
+          V<-sE$v[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)*n/(n+1) 
+        }
+      }           
+  
+      if(s>= .5*burn)
+      {        
+        if(!symmetric){ UV<-rUV_fc(E, U, V, rho, s2) ; U<-UV$U ; V<-UV$V } 
+        if(symmetric){ UV<-rUV_sym_fc(E, U, V, s2) ; U<-UV$U ; V<-UV$V }
       }
-      U<- UV$U
-      V<- UV$V
-    } 
+  
+    }
+ 
 
     # burn-in countdown
     if(s%%odens==0&s<=burn){cat(round(100*s/burn,2)," pct burnin complete \n")}

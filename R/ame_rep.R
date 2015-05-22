@@ -333,29 +333,43 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
      
     # shrink rho - symmetric case 
     if(symmetric){ rho<-min(.9999,1-1/sqrt(s)) }
- 
-    # update U & V
-    if (R > 0) 
+
+
+
+    # update U,V
+    if (R > 0)
     {
       E<-array(dim=dim(Z))
-      for(t in 1:N){E[,,t]<-Z[,,t]-(Xbeta(X[,,,t],beta)+outer(a, b, "+"))} 
-      
-      if(!symmetric){ UV <- rUV_rep_fc(E, U, V, rho, s2) } 
-      if(symmetric)
+      for(t in 1:N){E[,,t]<-Z[,,t]-(Xbeta(X[,,,t],beta)+outer(a, b, "+"))}  
+
+      if(s < .5*burn)
       {
-        if(s< .5*burn) { UV<-rUV_rep_fc( E, U, V, rho, s2) }
-        if(s>=.5*burn)
-        { 
-          EA<-apply(E,c(1,2),mean)  
-          UV<-rUV_sym_fc( .5*(EA+t(EA)), U, V, s2/dim(E)[3]) 
+        EA<-apply(E,c(1,2),mean) ; if(symmetric){ EA<-.5*(EA+t(EA)) }
+        sE<-svd(EA)
+        if(symmetric)
+        {
+          U<-sE$u[,1:R,drop=FALSE]*n/(n+1) 
+          V<-sE$v[,1:R,drop=FALSE]%*%diag(sE$d[1:R],nrow=R)*n/(n+1) 
+        }
+        if(!symmetric)
+        {
+          U<-sE$u[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)*n/(n+1)
+          V<-sE$v[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)*n/(n+1) 
         }
       }
+ 
+      if(s>= .5*burn)
+      {
+        if(!symmetric){ UV<-rUV_rep_fc(E, U, V, rho, s2) ; U<-UV$U ; V<-UV$V }
+        if(symmetric)
+        { 
+          EA<-apply(E,c(1,2),mean) ; EA<-.5*(EA+t(EA))
+          UV<-rUV_sym_fc(EA, U, V, s2/dim(E)[3]) ; U<-UV$U ; V<-UV$V 
+        }
+      }
+ 
+    }
 
-      U <- UV$U
-      V <- UV$V 
-
-    } 
-      
     # burn-in countdown
     if(s%%odens==0&s<=burn){cat(round(100*s/burn,2)," pct burnin complete \n")}
   
