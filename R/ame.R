@@ -180,13 +180,14 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     } 
   }
 
+
   # starting values for missing entries 
   mu<-mean(Z,na.rm=TRUE) 
   a<-rowMeans(Z,na.rm=TRUE) ; b<-colMeans(Z,na.rm=TRUE)  
   a[is.na(a)]<-0 ; b[is.na(b)]<-0 
   ZA<-mu + outer(a,b,"+") 
   Z[is.na(Z)]<-ZA[is.na(Z)] 
-
+   
 
   # other starting values
   beta<-rep(0,dim(X)[3]) 
@@ -194,6 +195,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   rho<-0
   Sab<-cov(cbind(a,b))*tcrossprod(c(rvar,cvar))
   U<-V<-matrix(0, nrow(Y), R)  
+
 
   # output items
   BETA <- matrix(nrow = 0, ncol = dim(X)[3] - pr*symmetric)
@@ -315,18 +317,17 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
 
     # update U,V
     if (R > 0) 
-    {
-      UV <- rUV_fc(Z - (Xbeta(X, beta) + outer(a, b, "+")), U, V, rho, s2)
-      U <- UV$U
-      V <- UV$V
- 
+    { 
+      E<-Z - (Xbeta(X, beta) + outer(a, b, "+"))  
+
+      if(!symmetric){ UV<-rUV_fc(E, U, V, rho, s2) } 
       if(symmetric)
-      {
-        M<- .5*( U%*%t(V) + V%*%t(U) )
-        sM<-svd(M)   
-        U<-sM$u[,1:R,drop=FALSE]%*%diag(sqrt(sM$d[1:R]),nrow=R) 
-        V<-sM$v[,1:R,drop=FALSE]%*%diag(sqrt(sM$d[1:R]),nrow=R)
+      { 
+        if(s< .5*burn) { UV<-rUV_fc( E, U, V, rho, s2) }
+        if(s>= .5*burn){ UV<-rUV_sym_fc( .5*(E+t(E)), U, V, s2) } 
       }
+      U<- UV$U
+      V<- UV$V
     } 
 
     # burn-in countdown

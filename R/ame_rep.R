@@ -337,19 +337,23 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     # update U & V
     if (R > 0) 
     {
-      E.T2<-array(dim=dim(Z))
-      for(t in 1:N){E.T2[,,t]<-Z[,,t]-(Xbeta(X[,,,t],beta)+outer(a, b, "+"))}
-      UV <- rUV_rep_fc(E.T2, U, V, rho, s2)
+      E<-array(dim=dim(Z))
+      for(t in 1:N){E[,,t]<-Z[,,t]-(Xbeta(X[,,,t],beta)+outer(a, b, "+"))} 
+      
+      if(!symmetric){ UV <- rUV_rep_fc(E, U, V, rho, s2) } 
+      if(symmetric)
+      {
+        if(s< .5*burn) { UV<-rUV_rep_fc( E, U, V, rho, s2) }
+        if(s>=.5*burn)
+        { 
+          EA<-apply(E,c(1,2),mean)  
+          UV<-rUV_sym_fc( .5*(EA+t(EA)), U, V, s2/dim(E)[3]) 
+        }
+      }
+
       U <- UV$U
       V <- UV$V 
 
-      if(symmetric)
-      {
-        M<- .5*( U%*%t(V) + V%*%t(U) ) 
-        sM<-svd(M) 
-        U<-sM$u[,1:R,drop=FALSE]%*%diag(sqrt(sM$d[1:R]),nrow=R) 
-        V<-sM$v[,1:R,drop=FALSE]%*%diag(sqrt(sM$d[1:R]),nrow=R)
-      }
     } 
       
     # burn-in countdown
