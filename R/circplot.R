@@ -17,6 +17,7 @@
 #' @param lty (integer) line type.
 #' @param jitter (scalar) a number to control jittering of nodes. 
 #' @param bty (character) bounding box type.  
+#' @param add (logical) add to existing plot 
 #' 
 #' @details 
 #' This function creates a circle plot of a relational matrix or social network.
@@ -41,7 +42,7 @@
 circplot<-function(Y,U=NULL,V=NULL,row.names=rownames(Y),col.names=colnames(Y),
                    plotnames=TRUE,vscale=.8,pscale=1.75,
                    lcol="gray",rcol="brown",ccol="blue",pch=16,lty=3,
-                   jitter=.1*(nrow(Y)/(1+nrow(Y))) ,bty="n" )
+                   jitter=.1*(nrow(Y)/(1+nrow(Y))) ,bty="n",add=FALSE )
 {
 
   if(is.null(U))
@@ -88,8 +89,11 @@ circplot<-function(Y,U=NULL,V=NULL,row.names=rownames(Y),col.names=colnames(Y),
   rsum<-apply(abs(Y),1,sum,na.rm=TRUE)
   csum<-apply(abs(Y),2,sum,na.rm=TRUE)
 
-  par(mfrow=c(1,1),mar=c(1,1,1,1) )
-  plot(u*1.2,type="n",xaxt="n",yaxt="n",xlab="",ylab="",bty=bty)
+  if(!add)
+  {
+    par(mfrow=c(1,1),mar=c(1,1,1,1) )
+    plot(u*1.2,type="n",xaxt="n",yaxt="n",xlab="",ylab="",bty=bty) 
+  }
   links<-which(Y!=0, arr.ind = TRUE)
   segments( u[links[,1],1],u[links[,1],2],
             v[links[,2],1],v[links[,2],2], col=lcol,lty=lty)

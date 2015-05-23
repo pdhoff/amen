@@ -340,34 +340,17 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     if (R > 0)
     {
       E<-array(dim=dim(Z))
-      for(t in 1:N){E[,,t]<-Z[,,t]-(Xbeta(X[,,,t],beta)+outer(a, b, "+"))}  
+      for(t in 1:N){E[,,t]<-Z[,,t]-(Xbeta(X[,,,t],beta)+outer(a, b, "+"))}
+      shrink<- (s>.5*burn)
 
-      if(s < .5*burn)
-      {
-        EA<-apply(E,c(1,2),mean) ; if(symmetric){ EA<-.5*(EA+t(EA)) }
-        sE<-svd(EA)
-        if(symmetric)
-        {
-          U<-sE$u[,1:R,drop=FALSE]*n/(n+1) 
-          V<-sE$v[,1:R,drop=FALSE]%*%diag(sE$d[1:R],nrow=R)*n/(n+1) 
-        }
-        if(!symmetric)
-        {
-          U<-sE$u[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)*n/(n+1)
-          V<-sE$v[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)*n/(n+1) 
-        }
+      if(symmetric)
+      { 
+        EA<-apply(E,c(1,2),mean) ; EA<-.5*(EA+t(EA))
+        UV<-rUV_sym_fc(EA, U, V, s2/dim(E)[3],shrink) 
       }
- 
-      if(s>= .5*burn)
-      {
-        if(!symmetric){ UV<-rUV_rep_fc(E, U, V, rho, s2) ; U<-UV$U ; V<-UV$V }
-        if(symmetric)
-        { 
-          EA<-apply(E,c(1,2),mean) ; EA<-.5*(EA+t(EA))
-          UV<-rUV_sym_fc(EA, U, V, s2/dim(E)[3]) ; U<-UV$U ; V<-UV$V 
-        }
-      }
- 
+      if(!symmetric){UV<-rUV_fc(E, U, V,rho, s2,shrink) }
+
+      U<-UV$U ; V<-UV$V
     }
 
     # burn-in countdown

@@ -62,11 +62,15 @@
 #' 
 #' @export rUV_fc
 rUV_fc <-
-function(E,U,V,rho,s2=1)
+function(E,U,V,rho,s2=1,shrink=TRUE)
 {
-  R<-ncol(U)
+  R<-ncol(U) ; n<-nrow(U)
   UV<-cbind(U,V)
-  Suv<-solve(rwish(solve(diag(nrow=ncol(UV))+t(UV)%*%UV),2+nrow(UV)+ncol(UV)))
+  if(shrink)
+  {
+   Suv<-solve(rwish(solve(diag(nrow=2*R)+t(UV)%*%UV),n+R+2))
+  }
+  if(!shrink){ Suv<-diag(n,nrow=2*R)  }
 
   Se<-matrix(c(1,rho,rho,1),2,2)*s2
   iSe2<-mhalf(solve(Se))

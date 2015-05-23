@@ -20,7 +20,7 @@
 #' rUV_sym_fc 
 #' 
 #' @export rUV__sym_fc
-rUV_sym_fc<-function(E,U,V,s2=1)
+rUV_sym_fc<-function(E,U,V,s2=1,shrink=TRUE)
 {
 
   R<-ncol(U) ; n<-nrow(U) 
@@ -28,13 +28,14 @@ rUV_sym_fc<-function(E,U,V,s2=1)
   L[is.na(L)]<-1  # to handle zero start vals
 
   ## update inverse variance of U
-  iVU<-diag( rgamma(R, (1+n)/2 , (1+apply(U^2,2,sum))/2)  )
+  if(shrink){ivU<-diag( rgamma(R, (2+n)/2 ,(1+apply(U^2,2,sum))/2) ,nrow=R )}
+  if(!shrink){ivU<-diag(1/n,nrow=R) }
 
   ## update each U[i,]
   for(i in rep(sample(1:n),5))
   {
     l<-L%*%( apply(U*E[i,],2,sum) -  U[i,]*E[i,i] )/s2
-    iQ<- solve( ( iVU +    L%*%( crossprod(U) - U[i,]%*%t(U[i,]) )%*%L/s2 ) )
+    iQ<- solve( ( ivU +    L%*%( crossprod(U) - U[i,]%*%t(U[i,]) )%*%L/s2 ) )
     U[i,]<- iQ%*%l + t(chol(iQ))%*%rnorm(R) 
   }
 
