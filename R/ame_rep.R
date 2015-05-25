@@ -489,7 +489,7 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     ULUPM<-UVPM 
     eULU<-eigen(ULUPM) 
     eR<- which( rank(-abs(eULU$val),ties.method="first") <= R )
-    U<-eULU$vec[,seq(1,R,length=R)]
+    U<-eULU$vec[,seq(1,R,length=R),drop=FALSE]
     L<-eULU$val[eR]   
     rownames(U)<-rownames(ULUPM)<-colnames(ULUPM)<-dimnames(Y)[[1]]
     for(t in 1:N)

@@ -32,12 +32,14 @@ rUV_sym_fc<-function(E,U,V,s2=1,shrink=TRUE)
   if(!shrink){ivU<-diag(1/n,nrow=R) }
 
   ## update each U[i,]
-  for(i in rep(sample(1:n),5))
+  for(i in rep(sample(1:n),4))
   {
     l<-L%*%( apply(U*E[i,],2,sum) -  U[i,]*E[i,i] )/s2
     iQ<- solve( ( ivU +    L%*%( crossprod(U) - U[i,]%*%t(U[i,]) )%*%L/s2 ) )
     U[i,]<- iQ%*%l + t(chol(iQ))%*%rnorm(R) 
   }
+
+  ## consider MH update - add in later verision
 
   ## update "eigenvalues"
   for(r in 1:R)

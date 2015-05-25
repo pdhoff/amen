@@ -1760,13 +1760,22 @@ The response $y_{i,j}$ takes values in $\{-1,0,1\}$.
 As such, we view this as an ordinal outcome, to  which 
 we fit an  ordinal version of a rank-2 symmetric  AME  model 
  using the{\tt ame} command:
-<<cwfit,cache=TRUE,fig.keep='none',results='hide'>>=
-fit_cw<-ame(Y,Xd,Xn,R=2,model="ord",symmetric=TRUE,burn=10000,nscan=100000,odens=100)
+<<cwfitR1,cache=TRUE,fig.keep='none',results='hide'>>=
+fit_cw_R1<-ame(Y,Xd,Xn,R=1,model="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=100)
 @ 
 
-<<echo=FALSE>>=
-plot(fit_cw)
+<<cwfitR2,cache=TRUE,fig.keep='none',results='hide'>>=
+fit_cw_R2<-ame(Y,Xd,Xn,R=2,model="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=100)
 @
+
+
+
+<<echo=FALSE>>=
+plot(fit_cw_R1)
+#plot(fit_cw_R2)
+@
+
+
 
 Note that for this symmetric model, 
 the row regressors must be the same as the 
@@ -1780,21 +1789,39 @@ we lengthened the burn-in period for the Markov chain, and increased
 the number of iterations to 20,000 from the default value of 10,000. 
 
 <<>>=
-summary(fit_cw) 
+summary(fit_cw_R1) 
 
-fit_cw$L       # eigenvalues
+fit_cw_R1$L       # eigenvalues
 @
 The results indicate no strong association between 
+country-specifc levels  of $z_{i,j}$ 
+with the nodal attributes. 
+At the dyadic level however, 
+there appears to be homophily in terms of 
+polity. 
+Furthermore, 
+the parameter for {\tt ldist.dyad} suggests that 
+large geographic distance is positively associated 
+with cooperation. However,  a better interpretation might be 
+that large distance is negatively associated 
+with conflict, as most conflicts are regional.
+More refined hypotheses abut conflict and 
+cooperation could be evaluated by 
+fitting separate models for the 
+for the conflict network $(y_{i,j}<0)$  and the 
+cooperation network $(y_{i,j}>0)$. 
+
 
 
 We now describe the estimate of
-the low-rank latent factor term $\bl U \bs\Lambda \bl U$. 
+the low-rank latent factor term $\bl U \bs\Lambda \bl U^T$. 
 This term describes heterogeneity in the dataset that is not 
 explained by the nodal or dyadic regressors, or the terms in the 
 social relations covariance model.  
 As shown above, 
-the estimated ``eigenvalues'' {\tt fit\_cw\$L} are both positive. 
-Since $y_{i,j}$ is increasing in $\bl u_i^T \bs \Lambda \bl u_j$, 
+the estimated ``eigenvalue'' {\tt fit\_cw\$L} is positive.
+Since $y_{i,j}$ is increasing in $\bl u_i^T \bs \Lambda \bl u_j$
+ (which is  $\lambda u_i u_j$  in this rank-1 model) 
 %the fact that the entries of $\bl \Lambda$ are both positive
 this means that countries that cooperate should 
 on average have 
@@ -1803,26 +1830,45 @@ direction, and countries in conflict
 should have estimates pointing in opposite directions. 
 A plot of the latent factors in 
 Figure \ref{fig:cwfplot} confirms this, showing that 
-cooperative pairs (linked by green lines) are ``nearby'' 
-on the plot, as their latent vectors are 
-in similar directions. 
-Conversely, 
-country pairs in conflict (linked by red lines)
-generally have vectors pointing in  opposite directions. 
+cooperative pairs (linked by green lines) 
+ essentailly all have $u$-values that are on the same side of the origin
+(the one exception involves  Egypt, which was cooperative with both the 
+USA and USSR). 
+Conflictual pairs (linked by red lines)
+are generally on opposite sides of the origin. 
+
+
+%\begin{figure}
+%<<echo=FALSE,fig.height=5,fig.width=5,fig.align='center'>>=
+%set.seed(1) 
+%circplot(Y>0, fit_cw$U,lcol="green",jitter=.2) 
+%set.seed(1) 
+%circplot(Y<0, fit_cw$U,lcol="red",add=TRUE,jitter=.2)
+%@
+%\caption{Latent factor plot for the {\tt coldwar} analysis. 
+%Green  and red lines indicate cooperation and conflict, 
+%respectively.} 
+%\label{fig:cwfplot}
+%\end{figure}
+
 
 \begin{figure}
-<<echo=FALSE,fig.height=5,fig.width=5,fig.align='center'>>=
-set.seed(1) 
-circplot(Y>0, fit_cw$U,lcol="green",jitter=.2) 
-set.seed(1) 
-circplot(Y<0, fit_cw$U,lcol="red",add=TRUE,jitter=.2)
+<<fig.height=5,fig.width=7,echo=FALSE>>=
+u<-fit_cw_R1$U
+cnames<-rownames(u)
+urank<-rank(u) 
+
+plot(urank,u,type="n",xlab="rank order of u")
+abline(h=0,col="gray") 
+addlines(Y>0 , cbind(urank,u),col="green")
+addlines(Y<0 , cbind(urank,u),col="pink")
+text(urank,u,cnames,srt=-45,cex=1.0) 
 @
-\caption{Latent factor plot for the {\tt coldwar} analysis. 
+\caption{One-dimensional latent factor plot for the {\tt coldwar} analysis. 
 Green  and red lines indicate cooperation and conflict, 
 respectively.} 
 \label{fig:cwfplot}
 \end{figure}
-
 
 \section{Discussion} 
 

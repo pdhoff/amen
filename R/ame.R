@@ -452,7 +452,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     ULUPM<-UVPM
     eULU<-eigen(ULUPM)
     eR<- which( rank(-abs(eULU$val),ties.method="first") <= R )
-    U<-eULU$vec[,seq(1,R,length=R)]
+    U<-eULU$vec[,seq(1,R,length=R),drop=FALSE]
     L<-eULU$val[eR]
     rownames(U)<-rownames(ULUPM)<-colnames(ULUPM)<-rownames(Y)
     EZ<-.5*(EZ+t(EZ)) ; YPM<-.5*(YPM+t(YPM)) 
