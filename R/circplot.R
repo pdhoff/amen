@@ -101,7 +101,7 @@ circplot<-function(Y,U=NULL,V=NULL,row.names=rownames(Y),col.names=colnames(Y),
   if(plotnames)
   {
     if(is.null(row.names)){ row.names<-as.character(1:nrow(Y)) }
-    if(is.null(col.names)){ col.names<-as.character(1:rcol(Y)) }
+    if(is.null(col.names)){ col.names<-as.character(1:ncol(Y)) }
     text(u[rsum>0,] , row.names[rsum>0],cex=pscale*(mu[rsum>0])^.3,col=rcol)
     text(v[csum>0,] , col.names[csum>0],cex=pscale*(mv[csum>0])^.3,col=ccol)
   }

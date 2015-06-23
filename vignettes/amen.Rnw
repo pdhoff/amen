@@ -1,7 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{natbib,amssymb,amsmath,fullpage,hyperref}
 
-%\VignetteIndexEntry{Relational data analysis with amen}
+%\VignetteIndexEntry{Dyadic data analysis with amen}
 %\VignetteEngine{knitr::knitr} 
 
 \renewcommand{\baselinestretch}{1.5}
@@ -26,14 +26,16 @@ library(devtools) ; load_all("../")
 \begin{document}
 
 
-\title{Relational and network data analysis with  {\tt amen}}
+\title{Dyadic data analysis with  {\tt amen}}
 \author{Peter D. Hoff
 \thanks{Departments of Statistics and Biostatistics, University of Washington, Seattle. Development of this software was supported  by
 NICHD grant R01HD067509. } }
 \maketitle
 
-\begin{abstract}
-Relational data often exhibit
+\begin{abstract} 
+Measurements on pairs of objects 
+%Dyadic data 
+often exhibit
 strong statistical dependencies. Certain types of 
 second-order dependencies, such as 
 degree heterogeneity and reciprocity, can be well represented with 
@@ -41,34 +43,48 @@ additive random effects models.
 Higher-order dependencies, 
 such as transitivity and stochastic equivalence, can often be represented with  multiplicative effects. 
 The {\tt amen} package provides estimation and inference 
-for a class of additive and multiplicative random effects models 
-for network and relational data of a variety of types, 
-including binary, ordinal and continuous 
-relations. The package also provides methods 
+for a class of additive and multiplicative random effects models of 
+dyadic data of a variety of types, 
+including 
+ordinal, continuous and binary 
+outcomes. The package also provides methods 
 for missing, censored and fixed-rank nomination data, as well 
-as longitudinal relational data.  This vignette illustrates the 
+as longitudinal dyadic data.  This vignette illustrates the 
 use of the {\tt amen} package 
-via analyses of several of these different types of relational data. 
+via analyses of several of these different types of dyadic data. 
+
+\smallskip
+
+\noindent {\it Keywords:}
+Bayesian estimation, dyadic data, latent factor model, MCMC, random effects, 
+regression, relational data, social network. 
+
 \end{abstract}
+
+
 
 \tableofcontents
 
 \section{The Gaussian AME model}
 
-A variable that is measured or observed on pairs of objects, 
-individuals or nodes is called a \emph{relational variable}. 
-Data on a relational variable for
-a population of  $n$ nodes 
+A variable that is measured or observed on pairs of objects
+is called a \emph{dyadic variable}.
+Data on such a variable may be referred to as 
+dyadic data, relational data, or 
+network data (particularly if the variable is 
+binary). 
+Dyadic data for 
+a population of  $n$  objects, individuals or nodes 
 may be represented as 
 a \emph{sociomatrix}, an $n\times n$  square matrix $\bl Y$ 
 with an undefined diagonal. 
 The $i,j$th entry of $\bl Y$, 
 denoted  $y_{i,j}$, 
 gives the 
-value of the relation between nodes $i$ and $j$ 
+value of the variable for nodes $i$ and $j$ 
 from the perspective of node $i$, or in the direction 
 from $i$ to $j$. 
-For example, in a relational dataset describing friendships, 
+For example, in a dataset describing friendship relations, 
 $y_{i,j}$ might represent a quantification of 
 how much person $i$ likes person $j$.  
 A running example in this 
@@ -79,7 +95,7 @@ $y_{i,j}$ is the (log) dollar-value of exports from country $i$ to
 country $j$. These 
 data can be obtained 
 from the 
-{\tt IR90s} dataset included with the {\tt amen} package.  
+{\tt IR90s} dataset included in the {\tt amen} package.  
 Specifically, we will analyze 
 trade data between the
 30 countries having the highest
@@ -98,7 +114,7 @@ Y[1:5,1:5]
 
 
 \subsection{The social relations model}
-Relational 
+Dyadic
 data often exhibit 
 certain types of statistical dependencies.    
 For example, it is often  the case that
@@ -108,7 +124,7 @@ This should not
 be too surprising, as these  observations all share a
 common ``sender,'' or row index. 
 If a sender $i_1$ is more ``sociable'' than sender $i_2$, we would 
-expect the relational values in row $i_1$ to be larger than 
+expect the values in row $i_1$ to be larger than 
 those in row $i_2$, on average. 
 %Positive correlation 
 %of observations 
@@ -186,14 +202,14 @@ the same as, the least-squares/maximum likelihood estimates
 (this is because of the undefined diagonal in the sociomatrix). 
 
 While straightforward to implement, this classical ANOVA analysis ignores 
-a fundamental characteristic of relational data: Each node
+a fundamental characteristic of dyadic data: Each node
 appears in the dataset as both a sender and a receiver of 
 relations, or equivalently, the 
 row and column labels of the data matrix refer to the same set of 
 objects. 
 In the context of the ANOVA model, 
 this means that 
-each node $i$ has two additive effects - a row effect 
+each node $i$ has two additive effects: a row effect 
 $a_i$  and a column effect $b_i$.  
 Often it is of interest to evaluate the extent to which 
 these effects are correlated, for example, to 
@@ -375,9 +391,8 @@ dependencies (variances and covariances).
 
 \subsection{Social relations regression modeling}
 Often we wish to quantify the association between  
-a relational variable and  
-some observed 
-nodal or dyadic characteristics. 
+a particular dyadic variable and  
+some other dyadic or nodal variables. 
 Useful for such situations is a type of linear mixed effects 
 model we refer to as the \emph{social relations regression model} (SRRM), 
 which combines a linear regression model with the covariance 
@@ -500,13 +515,13 @@ effects}
 It is often observed that the similarity of two nodes $i$ and $j$ in terms 
 of their individual characteristics $\bl x_i$ and $\bl x_j$ 
 is associated with the 
-value of the relation $y_{i,j}$ between them. 
+value of the relationship $y_{i,j}$ between them. 
 For example, suppose  for each node $i$  that $x_i$ 
 is the indicator that person $i$ 
 is a member of a particular  group or organization. 
 Then $x_{i}x_{j}$ is the indicator that $i$ and $j$ are 
 co-members of this organization, and this fact may have 
-some effect on their relation $y_{i,j}$. 
+some effect on their relationship $y_{i,j}$. 
 A positive effect of $x_ix_j$ on $y_{i,j}$ is 
 referred to as homophily, and a negative effect 
 as anti-homophily. 
@@ -516,7 +531,7 @@ by creating a dyadic covariate  $x_{d,i,j}$
 from a nodal covariate $x_i$ through multiplication 
 ($x_{d,i,j} = x_i x_j$) or some other operation. 
 Homophily on nodal characteristics can lead to certain types of 
-patterns  often seen in network and relational data, 
+patterns  often seen in network and dyadic data, 
 sometimes referred to as transitivity, balance and clustering. 
 For example, in a binary network where people prefer to form 
 ties to others who are similar to them,  
@@ -623,12 +638,12 @@ be described by the multiplicative effects term $\bl u_i^T \bl v_j$.
 
 We call a model of the form (\ref{eqn:ame}) an 
 \emph{additive and multiplicative effects} model, or 
-AME model, for network and relational data. 
+AME model, for network and dyadic data. 
 An AME model essentially combines an 
 \emph{additive main effects, multiplicative interaction} model,  
 or AMMI model \citep{gollob_1968, bradu_gabriel_1974}, a class of 
 models developed in the psychometric and agronomy literature, 
-with the SRM covariance structure that recognizes the relational 
+with the SRM covariance structure that recognizes the dyadic 
 aspect of the data. 
 An AME model, like other latent factor models, requires the specification of the 
 dimension of the latent factors. In the {\tt amen} package, this can be 
@@ -702,9 +717,9 @@ on the Pacific rim.
 
 
 \section{AME models for ordinal data} 
-Relational datasets often include relational variables that 
+Dyadic datasets often include variables that 
 are not well-represented by normal models. 
-In some cases, such as with trade data, the relation of interest can be transformed 
+In some cases, such as with trade data, the variable of interest can be transformed 
 so that the 
 Gaussian 
 AME model is reasonable.  In other cases, 
@@ -717,7 +732,7 @@ two people spend on the phone with each other  (which might be zero
 for most pairs in a population). 
 
 In this section we describe extensions of the Gaussian AME model 
-to accommodate ordinal relational data, where in what follows, 
+to accommodate ordinal dyadic data, where in what follows, 
 ordinal means any outcome for which the possible values 
 can be put in some order. This includes discrete outcomes 
 (such as binary indicators or counts), ordered qualitative 
@@ -727,17 +742,18 @@ The extensions are based on latent variable
 representations of probit and ordinal probit regression. 
 
 \subsection{Example: Analysis of a binary outcome}
-The simplest type of ordinal relation is a binary indicator of some 
-feature of the relationship between $i$ and $j$, 
+The simplest type of ordinal dyadic variable is a binary indicator of some 
+type of relationship between $i$ and $j$, 
 so that $y_{i,j} = $ 0 or 1 depending on whether or not the 
-feature is absent or present, respectively. 
+relationship  is absent or present, respectively. 
 Data on such relations, particularly those indicating 
 a  social interaction or friendship, are often called 
 \emph{social networks}. For example, 
-the dataset {\tt lazegalaw} included with the {\tt amen} package
+the {\tt amen} dataset {\tt lazegalaw} 
+%included in the {\tt amen} package
 includes a social network of friendship ties between 71 members 
 of a law firm, 
-along with two other dyadic relations and several nodal 
+along with two other dyadic variables and several nodal 
 characteristics. The friendship data are displayed as a graph in Figure 
 \ref{fig:llaw_graph}, where the nodes are colored according to which 
 of three offices each lawyer works. 
@@ -771,13 +787,13 @@ where the distributions of the random effects $a_i$, $b_j$,
 and $\epsilon_{i,j}$ follow the Gaussian SRM covariance 
 model as described above. 
 In words, this model expresses
-the observed binary relation $y_{i,j}$ as the indicator that some 
-continuous latent relation $z_{i,j}$ exceeds zero. 
-Assuming the SRM for the latent relation 
+the observed binary variable $y_{i,j}$ as the indicator that some 
+continuous latent variable $z_{i,j}$ exceeds zero. 
+Assuming the SRM for the latent variable
 yields a model for the observed binary data that allows for 
 within row, within column and within dyad dependence. 
 This model can be fit with the {\tt ame} command by specifying 
-that the relation type is binary:
+that the variable type is binary:
 <<cache=TRUE,fig.keep='none',results='hide'>>=
 fit_SRM<-ame(Y,model="bin")
 @
@@ -865,8 +881,8 @@ Lazega law friendship network.}
 
 We next consider a probit SRRM that includes the SRM terms,
 linear terms for the binary or  ordinal nodal covariates, 
-and the other dyadic 
-relations as dyadic covariates. This model is formulated as 
+and the other dyadic covariates. 
+This model is formulated as 
 in the SRM probit model, except that $z_{i,j}$ follows an 
 SRRM rather than an SRM. 
 
@@ -1002,7 +1018,7 @@ specification and parameter estimation.
 In particular, the semiparametric approach 
 allows for 
 modeling of 
-more general types of ordinal relations $y_{i,j}$, such as
+more general types of ordinal variables  $y_{i,j}$, such as
 those that are
 continuous, have no ties or have a number of 
 levels that is not pre-specified. 
@@ -1013,9 +1029,9 @@ levels of $y_{i,j}$.
 
 We illustrate this model fitting procedure with an analysis of 
 dominance relations between 28 female bighorn sheep, 
-available via the {\tt sheep} dataset included with 
+available via the {\tt sheep} dataset included with
 {\tt amen}. 
-The relational variable $y_{i,j}$ records the number of times 
+The dyadic variable $y_{i,j}$ records the number of times 
 sheep $i$ was observed dominating sheep $j$. 
 
 <<>>=
@@ -1028,7 +1044,7 @@ gofstats(Y)
 
 Note that the dyadic dependence and triadic dependence 
 statistics are negative. This makes sense in light of 
-the nature of the relation: 
+the nature of the variable: 
 Heterogeneity among the sheep in terms of strength 
 or assertiveness would lead to 
 powerful sheep dominating others and not being dominated themselves, 
@@ -1118,8 +1134,8 @@ by $i$ of $j$ indicates that $i$ does not consider $j$ a friend.
 A likelihood-based approach to modeling 
 FRN data was developed in 
 \citet{hoff_fosdick_volfovsky_stovel_2013}. 
-Similar to the approach for ordinal relational data described above, 
-this methodology treats the observed ranked relational outcomes $\bl Y$ 
+Similar to the approach for ordinal dyadic data described above, 
+this methodology treats the observed ranked outcomes $\bl Y$ 
 as a function of an underlying continuous sociomatrix $\bl Z$ that 
 is generated from an 
 AME model. 
@@ -1127,7 +1143,7 @@ Letting $m$ be the maximum number of nominations allowed, and
 coding $y_{i,j} \in \{ m,m-1,\ldots, 1,0\} 
 $ so that $y_{i,j}=m$ indicates that $j$ is $i$'s most liked friend, 
 the FRN likelihood is derived from the following constraints that the 
-observed ranks $\bl Y$ tell us about the underlying relations  $\bl Z$:
+observed ranks $\bl Y$ tell us about the underlying dyadic variables $\bl Z$:
 \begin{eqnarray}
 y_{i,j}> 0 &\Rightarrow & z_{i,j}>0  \label{eqn:porc}\\
 y_{i,j}  > y_{i,k} & \Rightarrow &  z_{i,j} > z_{i,k} 
@@ -1159,7 +1175,7 @@ $k$ that is ranked by $i$.
 The {\tt amen} package implements a Bayesian model fitting 
 algorithm based on the FRN likelihood. 
 We illustrate its use with an analysis of  data from the classic 
-study on relations between monks 
+study on relationships  between monks 
 described in \citet{sampson_1969}, in which each monk was asked to rank 
 up to three other monks in terms of a variety of relations. 
 <<>>=
@@ -1200,8 +1216,8 @@ plot(fit)
 \end{figure}
 
 \subsection{Other approaches to censored or ranked data}
-Some relational survey designs ask participants to nominate 
-up to a certain number of friends, but not rank them. Such relational data
+Some dyadic survey designs ask participants to nominate 
+up to a certain number of friends, but not rank them. Such dyadic data
 are binary, but censored in the same way as are data from an FRN survey: 
 Observing that $y_{i,j}=0$ indicates that $i$ is not friends with $j$ 
 only if person $i$ has made less than the maximum number  of nominations. 
@@ -1212,16 +1228,16 @@ is also implemented in the {\tt amen} package
 using the {\tt model="cbin"} option in the 
 {\tt ame} command. 
 
-In other situations the relational outcomes in each 
+In other situations the dyadic outcomes in each 
 row are ordinal, but on completely different scales. 
 In such cases, we may wish to treat the heterogeneity of 
 ties across rows in a semiparametric way, and only 
 estimate the parameters in the AME model based on the 
 ranks of the outcomes within each row.  
 This can be done by using a likelihood 
-for which the ordinal relational data $\bl Y$ only imposes 
+for which the ordinal dyadic data $\bl Y$ only imposes 
 constraint (\ref{eqn:rnkc}) on the unobserved underlying 
-relations $\bl Z$.  
+variables  $\bl Z$.  
 This ``relative rank likelihood'' is described more fully in 
 \citet{hoff_fosdick_volfovsky_stovel_2013}, 
 and can be implemented in {\tt amen} using the {\tt model="rrl"} option in the
@@ -1229,9 +1245,9 @@ and can be implemented in {\tt amen} using the {\tt model="rrl"} option in the
 
 
 
-\section{Sampled or missing relational data}
-Some relational datasets are only partially observed, in that 
-the value of the relation $y_{i,j}$ is not observed for all pairs 
+\section{Sampled or missing dyadic data}
+Some dyadic datasets are only partially observed, in that 
+the value of $y_{i,j}$ is not observed for all pairs 
 $i,j$.  This can happen unintentionally or by design. 
 For example, to avoid the cost of measuring $y_{i,j}$ for 
 all $n(n-1)$ pairs of nodes, some researchers will use 
@@ -1241,7 +1257,7 @@ design based on their links to nodes included in previous
 stages. 
 
 
-Given a nodeset, partially observed relational data 
+Given a nodeset, partially observed dyadic data 
 can be represented by a sociomatrix in which the 
 pairs for which data are not observed  are distinguished 
 from pairs for which data are observed. 
@@ -1249,7 +1265,7 @@ In {\sf R}, this is done by
 filling each entry of the sociomatrix 
 corresponding to a missing value with an ``{\tt NA}''. 
 Doing so distinguishes
-pairs $i,j$ for which we do not know the relational value 
+pairs $i,j$ for which we do not know the  value of 
 $(y_{i,j} = {\tt NA})$ from those, for example,  
 for which we know there is no link $(y_{i,j}=0)$. 
 
@@ -1258,17 +1274,17 @@ the MCMC approximation algorithm used by {\tt amen}
 proceeds by iteratively simulating
 model parameters 
 along with 
-values for the missing relations in a way that 
+values for the missing values in a way that 
 approximates their joint posterior distribution.
 Roughly speaking, at each iteration  of the MCMC algorithm, 
-values for the missing relations are simulated from 
+values for the missing values are simulated from 
 their probability distribution conditional on the observed 
-relations and the current values of the model parameters. 
+data and the current values of the model parameters. 
 Such a procedure is appropriate if the missing values 
 are \emph{missing at random}, or more specifically, if the 
 study design is \emph{ignorable}. 
 A study design is ignorable if 
-the probability that a relational value is 
+the probability that the variable value for a dyad is 
 missing is independent of the model parameters and missing 
 values, conditional on the observed data values. 
 Many types of link tracing designs, such as egocentric and snowball sampling, 
@@ -1276,7 +1292,7 @@ are ignorable \citep{thompson_frank_2000}.
 
 \subsection{Example: Egocentric sampling}
 One popular and relatively inexpensive design for gathering 
-relational data is with an egocentric sample, in which nodes 
+dyadic data is with an egocentric sample, in which nodes 
 (or ``egos'') are randomly sampled from a population and then 
 asked about their ties and the ties between their friends. For example, 
 one type of egocentric study design might ask participants
@@ -1301,8 +1317,8 @@ estimates to those based on data obtained
 from the egocentric design described above.
 In our design, we 
 first randomly sample several nodes (egos), 
-record their relational values to the other nodes, and then 
-record the relations between alters having a common ego. 
+record their relationships to the other nodes, and then 
+record the relationships between alters having a common ego. 
 {\sf R}-code that generates such a design is as follows:
 <<echo=FALSE>>= 
 set.seed(3) 
@@ -1368,7 +1384,7 @@ The {\tt ame} fitting procedure generates a posterior
 predictive mean for all entries of the sociomatrix $\bl Y$, 
 including those entries for which the data are missing. 
 This sociomatrix of fitted values can be used for prediction 
-or imputation of relational data from 
+or imputation of dyadic data from 
 incomplete datasets. In our example on modeling friendship 
 relations from the {\tt dutchcollege} dataset, we can 
 use this sociomatrix of fitted values to evaluate 
@@ -1458,14 +1474,14 @@ obtained from the full (population) dataset. }
 
 
 \section{Repeated measures data}
-Some types of dynamic relational datasets include 
+Some types of dynamic dyadic datasets include 
 repeated measurements of dyadic 
 and nodal variables at discrete points in time. 
 The {\tt amen} package provides a rudimentary 
 method of analyzing such data, 
 based on the following simple extension of the 
 AME model to accommodate 
-replicated relational measurements:
+replicated dyadic measurements:
 For (latent) sociomatrices $\bl Z_1,\ldots, \bl Z_T$, 
 the model expresses $z_{i,j,t}$, the $(i,j)$th element of the
 $t$th sociomatrix, as 
@@ -1489,7 +1505,7 @@ model are treated as
 independent observations from a common AME distribution. 
 
 At first glance it may seem that such a model is inappropriate for 
-dynamic relational data, as it doesn't seem to allow for the 
+dynamic dyadic data, as it doesn't seem to allow for the 
 possibility of dependence over time. 
 However, 
 certain types of dependence can be incorporated into this model 
@@ -1510,7 +1526,7 @@ Our response $y_{i,j,t}$ is the indicator that
 person $i$ reports being friendly (or having friendship) 
 with person $j$ at time point 
 $t$. 
-The graphs of this relation for each of  the seven different time points 
+The graphs of this variable for each of  the seven different time points 
 in the dataset are given in 
 Figure \ref{fig:dcln}. 
 \begin{figure}
@@ -1556,7 +1572,7 @@ Finally, we will also include lagged values
 $y_{i,j,t-1}$ and $y_{j,i,t-1}$ as dyadic predictors
 of $z_{i,j,t}$ to
 reflect the possibility of temporal dependence among 
-relations within a dyad.  To summarize, our model 
+values  within a dyad.  To summarize, our model 
 for the $z_{i,j,t}$'s is as follows:
 \begin{align*}
  z_{i,j,t}  = &   \beta_0 +  \\ 
@@ -1592,8 +1608,8 @@ dimnames(Xnode)[[2]]<-c("male","smoker")
 
 # dyadic covariates
 Xdyad<-array(dim=c(n,n,5,t))        
-Xdyad[,,1,]<-1*( dutchcollege$Y >= 2 )[,,1:6]                     # lagged relation
-Xdyad[,,2,]<-array(apply(Xdyad[,,1,],3,t),dim=c(n,n,t))           # lagged reciprocal relation
+Xdyad[,,1,]<-1*( dutchcollege$Y >= 2 )[,,1:6]                     # lagged value
+Xdyad[,,2,]<-array(apply(Xdyad[,,1,],3,t),dim=c(n,n,t))           # lagged reciprocal value 
 Xdyad[,,3,]<-tcrossprod(Xnode[,1,1])                              # both male
 Xdyad[,,4,]<-tcrossprod(Xnode[,2,1])                              # both smokers 
 Xdyad[,,5,]<-outer( dutchcollege$X[,3],dutchcollege$X[,3],"==")   # same program
@@ -1673,10 +1689,10 @@ decreased when the interval between times points is longer.
 
 
 \section{Symmetric data}
-It is sometimes the case that relational 
+It is sometimes the case that dyadic
 observations are \emph{symmetric} or 
 \emph{undirected} by design, in that there is 
-only one relational value $y_{i,j}$ for the 
+only one  value $y_{i,j}$ for the 
 dyad $(i,j)$. Such observations can 
 be represented by a 
 symmetric sociomatrix $\bl Y$, so that 
@@ -1870,7 +1886,6 @@ respectively.}
 \label{fig:cwfplot}
 \end{figure}
 
-\section{Discussion} 
 
 \bibliographystyle{chicago}
 \bibliography{/Users/pdhoff/Cloud/Common/refs}
