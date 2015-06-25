@@ -9,20 +9,6 @@
 #' @param s2 dyadic variance
 #' @return a square matrix
 #' @author Peter Hoff
-#' @examples
-#' 
-#' ##---- Should be DIRECTLY executable !! ----
-#' ##-- ==>  Define data, use random,
-#' ##--	or do  help(data=index)  for the standard data sets.
-#' 
-#' ## The function is currently defined as
-#' function (EY, rho, s2) 
-#' {
-#'     YS <- simZ(EY, rho, s2)
-#'     diag(YS) <- NA
-#'     YS
-#'   }
-#' 
 #' @export simY_nrm
 simY_nrm <-
 function(EY,rho,s2) 

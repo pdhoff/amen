@@ -8,21 +8,6 @@
 #' @param rho dyadic correlation
 #' @return a square binary matrix
 #' @author Peter Hoff
-#' @examples
-#' 
-#' ##---- Should be DIRECTLY executable !! ----
-#' ##-- ==>  Define data, use random,
-#' ##--	or do  help(data=index)  for the standard data sets.
-#' 
-#' ## The function is currently defined as
-#' function (EZ, rho) 
-#' {
-#'     ZS <- simZ(EZ, rho)
-#'     YS <- 1 * (ZS > 0)
-#'     diag(YS) <- NA
-#'     YS
-#'   }
-#' 
 #' @export simY_bin
 simY_bin <-
 function(EZ,rho)

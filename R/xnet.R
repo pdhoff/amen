@@ -29,12 +29,12 @@ xnet<-function(Y,fm=suppressWarnings(require("network")),seed=1)
   if(!is.null(seed)) { set.seed(seed) }
   if(fm)
   {
-    x<-as.network(Y)
-    n <- network.size(x)
-    d <- as.matrix.network(x, matrix.type = "adjacency")
+    x<-network::as.network(Y)
+    n <- network::network.size(x)
+    d <- network::as.matrix.network(x, matrix.type = "adjacency")
     d[is.na(d)] <- 0
-    d <- as.network(matrix(as.numeric(d > 0), n, n))
-    U<-network.layout.fruchtermanreingold(d,layout.par=NULL)
+    d <- network::as.network(matrix(as.numeric(d > 0), n, n))
+    U<-network::network.layout.fruchtermanreingold(d,layout.par=NULL)
   }
   if(!fm)
   {

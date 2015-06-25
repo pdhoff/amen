@@ -2,7 +2,11 @@
 \usepackage{natbib,amssymb,amsmath,fullpage,hyperref}
 
 %\VignetteIndexEntry{Dyadic data analysis with amen}
+%\VignetteDepends{network}
+%\VignetteKeyword{regression} 
+%\VignetteKeyword{multivariate} 
 %\VignetteEngine{knitr::knitr} 
+
 
 \renewcommand{\baselinestretch}{1.5}
 \newcommand{\bl}[1]{{\mathbf #1}}
@@ -14,11 +18,13 @@
 
 
 <<echo=FALSE,purl=FALSE,message=FALSE>>=
+#library(knitr)
+#library(amen) 
+library(devtools) ; load_all("../")
+
 pdf.options(pointsize=10)
 opts_chunk$set(size="footnotesize",message=FALSE,warning=FALSE,tidy=FALSE,
                comment=NA,dev.args=list(pdf=list(family="Times")))
-#library(amen) 
-library(devtools) ; load_all("../") 
 @
 
 
@@ -28,12 +34,16 @@ library(devtools) ; load_all("../")
 
 \title{Dyadic data analysis with  {\tt amen}}
 \author{Peter D. Hoff
-\thanks{Departments of Statistics and Biostatistics, University of Washington, Seattle. Development of this software and tutorial was supported  by
+\thanks{Departments of Statistics and Biostatistics, University of Washington, Seattle. 
+\url{http://www.stat.washington.edu/\~pdhoff/}. 
+Development of this software and tutorial was supported  by
 NIH grant R01HD067509. } }
 \maketitle
 
 \begin{abstract} 
-Measurements on pairs of objects 
+Dyadic data on pairs of objects, such as relational  or social network data, 
+%
+%Measurements on pairs of objects 
 %Dyadic data 
 often exhibit
 strong statistical dependencies. Certain types of 

@@ -15,67 +15,6 @@
 #' @param s2 dyadic variance
 #' @return \item{U}{a new value of U} \item{V}{a new value of V}
 #' @author Peter Hoff, Yanjun He
-#' @examples
-#' 
-#' ## The function is currently defined as
-#' function(E.T,U,V,rho,s2=1)
-#' {
-#'   Time<-dim(E.T)[3]
-#'   R<-ncol(U)
-#'   UV<-cbind(U,V)
-#'   Suv<-solve(rwish(solve(diag(nrow=ncol(UV))+t(UV)%*%UV),2+nrow(UV)+ncol(UV)))
-#'   
-#'   Se<-matrix(c(1,rho,rho,1),2,2)*s2
-#'   iSe2<-mhalf(solve(Se))
-#'   g<-iSe2[1,1] ; d<-iSe2[1,2]
-#'   
-#'   get.Er<-function(E,UVmr){
-#'     return(E-UVmr)
-#'   }
-#'   get.Es<-function(Er,g,d){
-#'     n<-sqrt(length(Er))
-#'     return((g^2+d^2)*matrix(Er,n)+2*g*d*matrix(Er,n,byrow=T))
-#'   }
-#'   
-#'   for(r in sample(1:R))
-#'   {
-#'     UVmr<-tcrossprod(U[,-r],V[,-r])
-#'     Er.t<-apply(E.T,3,get.Er,UVmr)
-#'     Es.t<-apply(Er.t,2,get.Es,g,d)
-#'     
-#'     vr<-V[,r]
-#'     b0<- c(Suv[r,-r]%*%solve(Suv[-r,-r]))
-#'     v0<- c(Suv[r,r] - b0%*%Suv[-r,r])
-#'     m0<- cbind(U[,-r],V)%*%b0
-#'     ssv<-max(sum(vr^2),1e-6)
-#'     a<- Time*(g^2+d^2)*ssv+1/v0 ; c<- -2*Time*g*d/(a^2+a*2*Time*g*d* ssv)
-#'     Esv.vec<-rowSums(Es.t)
-#'     nEsv<-sqrt(length(Esv.vec))
-#'     Esv<-matrix(Esv.vec,nEsv)%*%vr 
-#'     m1<- Esv/a + c*vr*sum((Esv+m0/v0)*vr)  + m0/(a*v0)  
-#'     ah<-sqrt(1/a) ; bh<-(sqrt(1/a+ ssv*c)- sqrt(1/a) )/ssv ; e<-rnorm(nrow(E.T[,,1])) 
-#'     U[,r]<- m1 + ah*e + bh*vr*sum(vr*e)
-#'     
-#'     
-#'     
-#'     ## update Vr 
-#'     ur<-U[,r] 
-#'     rv<-R+r
-#'     b0<- c(Suv[rv,-rv]%*%solve(Suv[-rv,-rv]))
-#'     v0<- c(Suv[rv,rv] - b0%*%Suv[-rv,rv])
-#'     m0<- cbind(U,V[,-r])%*%b0
-#'     ssu<-max(sum(ur^2),1e-6)
-#'     a<- Time*(g^2+d^2)*ssu+1/v0 ; c<- -2*Time*g*d/(a^2+a*2*Time*g*d* ssu)
-#'     tEsu<-matrix(Esv.vec,nEsv,byrow=T)%*%ur
-#'     m1<-tEsu/a + c*ur*sum((tEsu+m0/v0)*ur)  + m0/(a*v0)  
-#'     ah<-sqrt(1/a) ; bh<-(sqrt(1/a+ ssu*c)- sqrt(1/a) )/ssu ; e<-rnorm(nrow(E.T[,,1])) 
-#'     V[,r]<- m1 + ah*e + bh*ur*sum(ur*e)
-#'     ###
-#'   }
-#'   
-#'   list(U=U,V=V)
-#' }
-#' 
 #' @export rUV_rep_fc
 rUV_rep_fc <-
   function(E.T,U,V,rho,s2=1)

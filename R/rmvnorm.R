@@ -11,15 +11,6 @@
 #' @param Sigma.chol Cholesky factorization of \code{Sigma}
 #' @return a matrix with \code{n} rows
 #' @author Peter Hoff
-#' @examples
-#' 
-#' ## The function is currently defined as
-#' function (n, mu, Sigma, Sigma.chol = chol(Sigma)) 
-#' {
-#'     E <- matrix(rnorm(n * length(mu)), n, length(mu))
-#'     t(t(E %*% Sigma.chol) + c(mu))
-#'   }
-#' 
 #' @export rmvnorm
 rmvnorm <-
 function(n,mu,Sigma,Sigma.chol=chol(Sigma))

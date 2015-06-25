@@ -11,11 +11,6 @@
 #' @param n number of rows/columns
 #' @return an n x n x (pr+pc+pd+intercept) 3-way array
 #' @author Peter Hoff
-#' @examples
-#' 
-#' ## The function is currently defined as 
-#' design_array(intercept=TRUE,n=10) 
-#' 
 #' @export design_array
 design_array<-function(Xrow=NULL,Xcol=NULL,Xdyad=NULL,intercept=TRUE,n)
 { 

@@ -7,15 +7,6 @@
 #' @param y a numeric vector
 #' @return a numeric vector
 #' @author Peter Hoff
-#' @examples
-#' 
-#' ## The function is currently defined as 
-#' zscores<-function(y)
-#' {
-#'  qnorm( rank(y,na.last="keep",ties.method="average")/(1+sum(!is.na(y))) )
-#' }
-#' 
-#' 
 #' @export zscores
 zscores<-function(y)
 {
