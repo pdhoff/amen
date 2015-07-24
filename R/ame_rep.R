@@ -130,7 +130,8 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
 
     X[,,,t]<-Xt
   } 
-  dimnames(X)[[3]]<-dimnames(Xt)[[3]] ; dimnames(X)[[4]]<-dimnames(Y)[[3]]
+  dimnames(X)[[3]]<-as.list(dimnames(Xt)[[3]]) 
+  dimnames(X)[[4]]<-dimnames(Y)[[3]]
 
   # design matrix warning for rrl
   if( model=="rrl" & any(apply(apply(X,c(1,3),var),2,sum)==0)
@@ -270,7 +271,7 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     E.nrm<-array(dim=dim(Z))
     for (t in 1:N)
     {
-      EZ<-Xbeta(X[,,,t], beta) + outer(a, b, "+") + U %*% t(V)
+      EZ<-Xbeta(array(X[,,,t],dim(X)[1:3]), beta)+ outer(a, b,"+")+ U%*%t(V)
       if(model=="nrm")
       { 
         Z[,,t]<-rZ_nrm_fc(Z[,,t],EZ,rho,s2,Y[,,t]) ; E.nrm[,,t]<-Z[,,t]-EZ
@@ -326,7 +327,8 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
       E.T<-array(dim=dim(Z))
       for (t in 1:N)
       {
-        E.T[,,t]<-Z[,,t]-(Xbeta(X[,,,t], beta) + outer(a, b, "+") + U %*% t(V))
+        E.T[,,t]<-Z[,,t]-(Xbeta(array(X[,,,t],dim(X)[1:3]),beta) + 
+                          outer(a, b, "+") + U %*% t(V))
       }
       rho<-rrho_mh_rep(E.T, rho,s2)
     }
@@ -340,7 +342,8 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     if (R > 0)
     {
       E<-array(dim=dim(Z))
-      for(t in 1:N){E[,,t]<-Z[,,t]-(Xbeta(X[,,,t],beta)+outer(a, b, "+"))}
+      for(t in 1:N){E[,,t]<-Z[,,t]-(Xbeta(array(X[,,,t],dim(X)[1:3]),beta)+
+                    outer(a, b, "+"))}
       shrink<- (s>.5*burn)
 
       if(symmetric)
@@ -385,7 +388,8 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
       EZ<-Ys<-array(dim=dim(Z))
       for (t in 1:N)
       {
-        EZ[,,t]<-Xbeta(X[,,,t], beta) + outer(a, b, "+") + U %*% t(V)
+        EZ[,,t]<-Xbeta(array(X[,,,t],dim(X)[1:3]),beta) + 
+                  outer(a, b, "+") + U %*% t(V)
         if(symmetric){ EZ[,,t]<-(EZ[,,t]+t(EZ[,,t]))/2 }
 
         if(model=="bin"){ Ys[,,t]<-simY_bin(EZ[,,t],rho) }
@@ -465,7 +469,8 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   EZ<-array(dim=dim(Y)) 
   for (t in 1:N)
   {
-    EZ[,,t]<-Xbeta(X[,,,t],apply(BETA,2,mean)) + outer(APM,BPM,"+")+UVPM 
+    EZ[,,t]<-Xbeta(array(X[,,,t],dim(X)[1:3]),apply(BETA,2,mean)) + 
+      outer(APM,BPM,"+")+UVPM 
   }
 
   names(APM)<-names(BPM)<-rownames(UVPM)<-colnames(UVPM)<-dimnames(Y)[[1]]

@@ -36,7 +36,8 @@ rbeta_ab_rep_fc <-
     
     for (t in 1:N){
       Z<-Z.T[,,t]
-      X<-array(X.T[,,,t],dim=dim(X.T)[1:3])
+      X<-array(X.T[,,,t],dim=dim(X.T)[1:3]) 
+      p<-dim(X)[3]
       Xr<-apply(X,c(1,3),sum)            # row sum
       Xc<-apply(X,c(2,3),sum)            # col sum
       mX<- apply(X,3,c)                  # design matrix
@@ -48,10 +49,13 @@ rbeta_ab_rep_fc <-
       XXs<-(to^2+td^2)*XX + 2*to*td*XXt  # sum of squares for transformed X
       Zs<-td*Z+to*t(Z)
       zr<-rowSums(Zs) ; zc<-colSums(Zs) ; zs<-sum(zc) ; n<-length(zr)
-      
+     
+      if(p>0)
+      { 
       lb<-lb+crossprod(mXs,c(Zs))
-      Qb<-Qb+XXs + XX/nrow(mXs)/N
-      
+      Qb<-Qb+XXs + (XX/nrow(mXs))/N   # WDN
+      }     
+ 
       Xsr<-td*Xr + to*Xc  # row sums for transformed X
       Xsc<-td*Xc + to*Xr
       
@@ -92,12 +96,17 @@ rbeta_ab_rep_fc <-
       Hcc<-H[(n+1):(2*n),(n+1):(2*n)]
       Qb<-Qb-t(Xr.T)%*%Hrr%*%Xr.T-t(Xc.T)%*%Hcr%*%Xr.T-t(Xr.T)%*%Hrc%*%Xc.T-t(Xc.T)%*%Hcc%*%Xc.T
       lb<-lb-t(Xr.T)%*%Hrr%*%Zr.T-t(Xc.T)%*%Hcr%*%Zr.T-t(Xr.T)%*%Hrc%*%Zc.T-t(Xc.T)%*%Hcc%*%Zc.T
+    } 
+
+    ##
+    if(p>0) 
+    {
       V.b<-solve(Qb)
       M.b<-V.b%*%lb
+      beta<-c(rmvnorm(1,M.b,V.b))
     }
-    ##
-    if(dim(X)[3]==0){     beta<-numeric(0) }
-    beta<-c(rmvnorm(1,M.b,V.b))
+    if(p==0){ beta<-numeric(0) } 
+
     
     Rr.T<-Zr.T-Xr.T%*%matrix(beta,ncol=1)
     Rc.T<-Zc.T-Xc.T%*%matrix(beta,ncol=1)
