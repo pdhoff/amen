@@ -4,7 +4,7 @@
 #' assuming they are the same across replicates. 
 #' 
 #' 
-#' @usage rUV_rep_fc(E.T,U,V,rho,s2=1)
+#' @usage rUV_rep_fc(E.T,U,V,rho,s2=1,shrink=TRUE)
 #' @param E.T Array of square residual relational matrix series with additive
 #' effects and covariates subtracted out. The third dimension of the array is
 #' for different replicates. Each slice of the array according to the third
