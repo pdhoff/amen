@@ -351,7 +351,7 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
         EA<-apply(E,c(1,2),mean) ; EA<-.5*(EA+t(EA))
         UV<-rUV_sym_fc(EA, U, V, s2/dim(E)[3],shrink) 
       }
-      if(!symmetric){UV<-rUV_fc(E, U, V,rho, s2,shrink) }
+      if(!symmetric){UV<-rUV_rep_fc(E, U, V,rho, s2,shrink) }
 
       U<-UV$U ; V<-UV$V
     }

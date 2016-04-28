@@ -1250,7 +1250,7 @@ Goodness of fit plots for these data appear in Figure
 \ref{fig:smonk}. Notice that the fit in terms of row heterogeneity is 
 very good. This is not too surprising: 
 The simulated sociomatrices used to produce this plot 
-are generated to satisfy the constraint imposed 
+are generated to satisfy %the constraint imposed 
 the outdegree constraint imposed by {\tt odmax}, which 
 greatly limits the possible amount of outdegree heterogeneity. 
 
@@ -1878,7 +1878,7 @@ large geographic distance is positively associated
 with cooperation. However,  a better interpretation might be 
 that large distance is negatively associated 
 with conflict, as most conflicts are regional.
-More refined hypotheses abut conflict and 
+More refined hypotheses about conflict and 
 cooperation could be evaluated by 
 fitting separate models 
 for the conflict network $(y_{i,j}<0)$  and the 
