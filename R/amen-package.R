@@ -31,7 +31,8 @@
 #' 
 #' plot(fit) 
 #' 
-#' 
+#' @import stats 
+#' @import graphics
 NULL
 
 

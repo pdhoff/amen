@@ -18,9 +18,9 @@
 
 
 <<echo=FALSE,purl=FALSE,message=FALSE>>=
-#library(knitr)
-#library(amen) 
-library(devtools) ; load_all("../")
+library(knitr)
+library(amen) 
+#library(devtools) ; load_all("../")
 
 pdf.options(pointsize=10)
 opts_chunk$set(size="footnotesize",message=FALSE,warning=FALSE,tidy=FALSE,
@@ -35,17 +35,20 @@ opts_chunk$set(size="footnotesize",message=FALSE,warning=FALSE,tidy=FALSE,
 \title{Dyadic data analysis with  {\tt amen}}
 \author{Peter D. Hoff
 \thanks{Departments of Statistics and Biostatistics, University of Washington, Seattle. 
-\url{http://www.stat.washington.edu/\~pdhoff/}
+\url{http://www.stat.washington.edu/\~pdhoff/}. 
 Development of this software and tutorial was supported  by
 NIH grant R01HD067509. } }
 \maketitle
 
 \begin{abstract} 
 Dyadic data on pairs of objects, such as relational  or social network data, 
+%
+%Measurements on pairs of objects 
+%Dyadic data 
 often exhibit
 strong statistical dependencies. Certain types of 
 second-order dependencies, such as 
-degree heterogeneity and reciprocity, can be well-represented with 
+degree heterogeneity and reciprocity, can be well represented with 
 additive random effects models. 
 Higher-order dependencies, 
 such as transitivity and stochastic equivalence, can often be represented with  multiplicative effects. 
@@ -53,13 +56,15 @@ The {\tt amen} package for the {\sf R} statistical
 computing environment
 provides estimation and inference 
 for a class of additive and multiplicative random effects models 
+%of 
+%dyadic data of a variety of types, 
 for 
 ordinal, continuous, binary and other types of 
 dyadic data. 
 The package also provides methods 
 for missing, censored and fixed-rank nomination data, as well 
 as longitudinal dyadic data.  This tutorial illustrates the 
-{\tt amen} package 
+use of the {\tt amen} package 
 via  example statistical analyses of several of these different  data types.
 
 \smallskip
@@ -75,8 +80,8 @@ regression, relational data, social network.
 \tableofcontents
 
 \section{The Gaussian AME model}
-A pair of objects, individuals or nodes is called a \emph{dyad}, and 
-a variable that is measured or observed on multiple dyads
+
+A variable that is measured or observed on pairs of objects
 is called a \emph{dyadic variable}.
 Data on such a variable may be referred to as 
 dyadic data, relational data, or 
@@ -90,7 +95,7 @@ with an undefined diagonal.
 The $i,j$th entry of $\bl Y$, 
 denoted  $y_{i,j}$, 
 gives the 
-value of the variable for  dyad $\{i,j\}$
+value of the variable for nodes $i$ and $j$ 
 from the perspective of node $i$, or in the direction 
 from $i$ to $j$. 
 For example, in a dataset describing friendship relations, 
@@ -160,14 +165,14 @@ y_{i,j} = \mu + a_i +b_j + \epsilon_{i,j}.
 In this model, 
 heterogeneity among the parameters 
 $\{a_i: i=1,\ldots, n\}$ and 
-$\{b_j : j=1,\ldots, n\}$ corresponds to 
+$\{b_j : j=1,\ldots, n\}$ give correspond to 
 observed heterogeneity in the row means 
 and column means of the sociomatrix, respectively. 
 If the $\epsilon_{i,j}$'s are assumed to be 
 i.i.d.\ from a mean-zero normal distribution, 
 the hypothesis of no row heterogeneity 
 (all $a_i$'s equal to zero) or 
-no column heterogeneity (all $b_j$'s equal to zero) 
+no row heterogeneity (all $b_j$'s equal to zero) 
 can be evaluated with normal-theory $F$-tests. 
 For the trade data, this can be done in {\sf R} as follows:
 
@@ -207,7 +212,7 @@ head( sort(bhat,decreasing=TRUE)  )
 @
 We note that these simple estimates here are 
 very close to, but not exactly 
-the same as, the least squares/maximum likelihood estimates
+the same as, the least-squares/maximum likelihood estimates
 (this is because of the undefined diagonal in the sociomatrix). 
 
 While straightforward to implement, this classical ANOVA analysis ignores 
@@ -229,7 +234,7 @@ each  (unordered) pair of nodes $i,j$ has two
 outcomes, $y_{i,j}$ and $y_{j,i}$.  
 It is often the case that
 $y_{i,j}$ and $y_{j,i}$ are correlated, as these 
-two observations come from the same dyad. 
+two observations come from the same \emph{dyad}, or pair of nodes. 
 
 Correlations between the additive effects can be evaluated empirically  
 simply by computing the sample covariance of the 
@@ -269,7 +274,7 @@ text(rmean,cmean,dimnames(Y)[[1]],cex=.7)
 As shown by these calculations and in Figure \ref{fig:trade_rmvcm}, 
 country-level export and import volumes are highly correlated, 
 as are the export and import volumes within country pairs. 
-A seminal model for analyzing such 
+A foundational model for analyzing such 
 within-node and within-dyad 
  dependence is 
 the \emph{social relations model}, or SRM \citep{warner_kenny_stoto_1979}, 
@@ -311,7 +316,7 @@ the association between the row means and column means of the sociomatrix.
 Additional variability across dyads is described by $\sigma^2_\epsilon$, 
 and within dyad correlation  (beyond that 
   described by $\sigma_{ab}$) is captured by $\rho$. 
-More precisely, straightforward calculations show that
+More precisely, straightforward calculations show that, 
 under this random effects model, 
 \begin{align} 
 \Var{ y_{i,j} } &= \sigma^2_a + 2 \sigma_{ab} + \sigma^2_b + \sigma_\epsilon^2 
@@ -327,7 +332,7 @@ model}.
 
 The {\tt amen} package provides model fitting and evaluation tools 
 for the SRM via the default values of the  {\tt ame} command:
-<<IR90s_fit_srm,cache=TRUE,fig.keep='last',results='hide',fig.cap='Default plots generated by the {\\tt ame} command.',fig.height=6,fig.width=5,fig.align='center'>>=
+<<IR90s_fit_srm,cache=TRUE,fig.keep='last',results='hide',fig.cap='Default plots generated by the ame command.',fig.height=6,fig.width=5,fig.align='center'>>=
 fit_SRM<-ame(Y) 
 @
 
@@ -340,16 +345,16 @@ which is shown in Figure \ref{fig:IR90s_fit_srm}.
 The top row gives
 traceplots of the
 parameter values
-simulated from their posterior distribution, 
+simulated from the posterior distribution, 
 including covariance parameters on the
 left and regression parameters on the right.
 The covariance parameters include $\Sigma_{ab}$,
 $\rho$, and $\sigma^2$, and are stored as
-the list component {\tt VC} in the fitted object.
-The only regression parameter for this  SRM model is the
+the list component \text{VC} in the fitted object.
+The only regression parameter for this model is the
 intercept $\mu$, which is included by default for the Gaussian SRM.
 The intercept, and any other regression parameters are
-stored as {\tt BETA} in the fitted object.
+stored as \text{BETA} in the fitted object.
 We can compare these estimates obtained from {\tt amen}
 to the estimates from the
 ANOVA-style approach as follows:
@@ -357,11 +362,11 @@ ANOVA-style approach as follows:
 muhat                                # empirical overall mean  
 mean(fit_SRM$BETA)                   # model-based estimate
 
-cov( cbind(ahat,bhat) )              # empirical row/column mean covariance 
+cov( cbind(ahat,bhat))               # empirical row/column mean covariance 
 apply(fit_SRM$VC[,1:3],2,mean)       # model-based estimate    
 
-cor( c(R), c(t(R)) , use="complete") # empirical residual dyadic correlation
-mean(fit_SRM$VC[,4])                 # model-based estimate
+cor( c(R), c(t(R)) ,use="complete")  # empirical residual dyadic correlation
+mean(fit_SRM$VC[,4] )                # model-based estimate
 @
 Posterior mean estimates of the row and column effects can be accessed
 from {\tt fit\_SRM\$APM}  and {\tt fit\_SRM\$BPM}, respectively.
@@ -378,7 +383,7 @@ plot( bhat, fit_SRM$BPM,xlab=expression(paste("ANOVA ",hat(b)) ) ,
                         ylab=expression(paste("Bayes ",hat(b)) )  )
 abline(0,1)
 @ 
-\caption{Bayes versus least squares parameter estimates.} 
+\caption{Bayes versus least-squares parameter estimates.} 
 \label{fig:bvols}
 \end{figure}
 
@@ -397,9 +402,7 @@ The blue histograms in the figure represent values of
 posterior predictive distribution. These histograms
 should be compared to the observed statistics {\tt gofstats(Y)},
 which for these data are
-\Sexpr{round(gofstats(Y),3)[1:3]} 
-and \Sexpr{round(gofstats(Y),3)[4]}, 
- given by vertical red lines in the figure.
+\Sexpr{round(gofstats(Y),3) }, given by vertical red lines in the figure.
 Generally speaking,
 large discrepancies between the posterior predictive distributions
 (histograms) and the observed statistics (red lines) suggest
@@ -459,18 +462,15 @@ dimnames(IR90s$dyadvars)[[3]]
 Xd<-IR90s$dyadvars[topgdp,topgdp,c(1,3,4,5)] 
 Xd[,,3]<-log(Xd[,,3]) 
 @
-\noindent
 Note that dyadic covariates are stored in an $n\times n \times p_d$ array, 
 where $n$ is the number of nodes and $p_d$ is the number of dyadic covariates. 
 
 
-The SRRM can be fit 
-by specifying the
-covariates in the {\tt ame} function:
+The SRRM can be fit using the {\tt ame} function by just specifying the 
+covariates:
 <<IR90s_fit_srrm,cache=TRUE,fig.keep='none',results='hide'>>=
 fit_srrm<-ame(Y,Xd=Xd,Xr=Xn,Xc=Xn)
 @ 
-\noindent
 Posterior mean estimates, standard deviations, nominal $z$-scores and $p$-values
 may be obtained with the {\tt summary} command:
 <<>>=
@@ -487,7 +487,7 @@ shared IGOs are both positively associated with trade between country pairs.
 
 
 It is instructive to compare these results to those that would be obtained 
-under an ordinary linear regression model that assumes i.i.d.\ residual standard error. 
+under an ordinary linear regression model that assumed i.i.d.\ residual standard error. 
 Such a model can be fit in the {\tt amen} package by opting 
 to fit a model with no row variance, column variance or dyadic correlation:
 <<IR90s_fit_rm,cache=TRUE,fig.keep='none',results='hide'>>=
@@ -500,8 +500,7 @@ summary(fit_rm)
 @
 
 The parameter standard deviations (i.e., standard errors) under this i.i.d.\  model are 
-almost all smaller 
-than those under the SRM fit. The explanation for this is that 
+almost all larger than those under the SRM fit. The explanation for this is that 
 the i.i.d.\ model wrongly assumes independent observations, and thus 
 overrepresents the precision of the parameter estimates. 
 The inappropriateness of the i.i.d.\ model can be seen via 
@@ -582,7 +581,7 @@ $\bl x_{r,i}$ relates to a person with characteristics
 $\bl x_{c,j}$. 
 This can be evaluated in the SRRM by including a set of regression 
 terms equivalent to 
-$\bl x_{r,i}^T \bl B \bl x_{c,i}$. 
+$\bl x_{r,i}^T \bl B \bl x_{c,i}$
 Although this term is multiplicative in the 
 covariates, it is linear in the parameters, as 
 \[ 
@@ -599,7 +598,7 @@ then  it is
 common to take $\bl B$  to be a diagonal matrix, in which case  
 \[ 
   \bl x_{r,i}^T \bl B \bl x_{c,i} = b_1 x_{r,i,1} x_{c,j,1}  + \cdots 
-    + b_p x_{r,i,p} x_{c,j,p}. 
+    b_p x_{r,i,p} x_{c,j,p}. 
 \] 
 Such terms in the regression model can often account 
 for network patterns such as transitivity and clustering, 
@@ -615,7 +614,7 @@ these multiplicative regression terms.
 This can be seen to a limited degree in the trade data: 
 Note that the number of shared IGOs and the polity interaction can both 
 be viewed as dyadic covariates obtained by multiplication of 
-nodal covariates. We can fit an SRRM without these effects as follows:
+nodal covariates. We can fit an SRRM without these effects:
 <<cache=TRUE,fig.keep='none',results='hide'>>=
 fit_srrm0<-ame(Y,Xd[,,1:2],Xn,Xn)
 @
@@ -628,17 +627,15 @@ hist(fit_srrm$GOF[-1,4],prob=TRUE,add=TRUE,
         col=rgb(clr[1],clr[2],clr[3],clr[4])) 
 abline(v=GOF[4],col="red")
 @
-\caption{Comparison of two  SRRMs
-in terms of the triadic dependence statistic: 
-with nodal
-interaction effects (blue) and without (green). }
+\caption{Comparison of the SRRM with (blue) and without (green) nodal 
+interaction effects, in terms of the triadic dependence statistic.}  
 \label{fig:mdcomp}
 \end{figure}
 
 
 A comparison of the resulting posterior predictive distribution of the transitivity statistic
 to that under the full SRRM (which included the multiplicative effects)
-is given  in Figure \ref{fig:mdcomp}. 
+is given  in Figure \ref{fig:mdcomp}:
 The figure shows that, while both models do not fully represent the triadic dependence 
 in the data, the model that includes the nodal interactions does slightly better. 
 This raises the possibility that there may exist other nodal attributes, not given 
@@ -651,7 +648,7 @@ In such cases,
 it can be useful to include \emph{latent} nodal 
 characteristics into the regression model, resulting in the following:
 \begin{equation}
- y_{i,j} = \beta_d^T \bl x_{d,i,j} + \beta_r^T \bl x_{r,i} +\beta_c^T \bl x_{c,j} +  a_i + b_j +  \bl u_i^T \bl v_j  +  \epsilon_{i,j}. 
+ y_{i,j} = \beta_d^T \bl x_{d,i,j} + \beta_r^T \bl x_{r,i} +\beta_c^T \bl x_{c,j} +  a_i + b_j +  \bl u_i^T \bl v_j  +  \epsilon_{i,j} ,  
 \label{eqn:ame}
 \end{equation}
 Here,  $\bl u_i$  is a vector of latent, unobserved factors or characteristics 
@@ -664,7 +661,7 @@ vectors.
 Note also
  that  basic results from matrix algebra indicate that 
 any type of network pattern that could be described by a regression 
-term of the form  $\bl x_{r,i}^T \bl B \bl x_{c,j}$ can also 
+term of the form  $\bl x_{r,i} \bl B \bl x_{c,j}$ can also 
 be described by the multiplicative effects term $\bl u_i^T \bl v_j$. 
 
 
@@ -680,7 +677,7 @@ and the SRM covariance model that recognizes the dyadic
 aspect of the data. 
 An AME model, like other latent factor models, requires the specification of the 
 dimension of the latent factors. In the {\tt amen} package, this can be 
-set with the option {\tt R} in the {\tt ame} command. 
+set with the option {\tt R} in the {\tt ame} command
 The letter {\tt R} here stands for ``rank'':  If $\bl U$ and $\bl V$ are $n\times R$ matrices 
 of the latent factors, then $\bl U\bl V^T$ has rank {\tt R}. 
 For example, 
@@ -689,11 +686,10 @@ a rank-2 AME model  may be fit as follows:
 fit_ame2<-ame(Y,Xd,Xn,Xn,R=2)
 @
 The diagnostic plots for this model  are given in Figure \ref{fig:trade_ame2}. 
-Note that unlike all previous models considered, this model provides an adequate fit in terms 
+Note that, unlike all previous models considered, this model provides an adequate fit in terms 
 of the triadic dependence statistic. 
 The regression parameter estimates and their standard errors lead to more or
-less similar conclusions as those from the SRRM, 
-except that the number of shared IGOs
+less similar conclusions as in the SRRM, except that the number of shared IGOs
 no longer has a large effect after controlling for the triadic dependence with the
 latent factors.
 <<>>=
@@ -755,7 +751,7 @@ Often we wish to analyze a dyadic outcome variable
 %Dyadic datasets often include variables that are
 that is 
 not well-represented by a normal model. 
-In some cases, such as with the trade data, the variable of interest can be transformed 
+In some cases, such as with trade data, the variable of interest can be transformed 
 so that the 
 Gaussian 
 AME model is reasonable.  In other cases, 
@@ -770,7 +766,7 @@ for most pairs in a population).
 In this section we describe extensions of the Gaussian AME model 
 to accommodate ordinal dyadic data, where in what follows, 
 ordinal means any outcome for which the possible values 
-can be put in some meaningful order. This includes discrete outcomes 
+can be put in some order. This includes discrete outcomes 
 (such as binary indicators or counts), ordered qualitative 
 outcomes (such as low/medium/high, i.e.\  the
 ``traditional'' definition of ordinal), and even continuous outcomes. 
@@ -782,19 +778,17 @@ The simplest type of ordinal dyadic variable is a binary indicator of some
 type of relationship between $i$ and $j$, 
 so that $y_{i,j} = $ 0 or 1 depending on whether the 
 relationship  is absent or present, respectively. 
-Such dyadic data, 
-%Data on such relations, 
-particularly data indicating 
-social interactions or friendships, are often collectively called 
-a \emph{social network}. For example, 
+Data on such relations, particularly those indicating 
+a  social interaction or friendship, are often called 
+\emph{social networks}. For example, 
 the {\tt amen} dataset {\tt lazegalaw} 
 %included in the {\tt amen} package
 includes a social network of friendship ties between 71 members 
 of a law firm, 
-along with data on two other dyadic variables and several nodal 
-variables. The friendship data are displayed as a graph in Figure 
-\ref{fig:llaw_graph}, where the nodes are colored according to 
-each lawyer's office location. 
+along with two other dyadic variables and several nodal 
+characteristics. The friendship data are displayed as a graph in Figure 
+\ref{fig:llaw_graph}, where the nodes are colored according to which 
+of three offices each lawyer works. 
 
 %\begin{figure}
 <<llaw_graph,fig.height=4.75,fig.width=4.75,fig.align='center',fig.cap='Graph of the friendship network between 71 lawyers. Node colors represent at which of the three offices each lawyer works.'>>=
@@ -824,10 +818,10 @@ y_{i,j} & = 1(z_{i,j}>0),
 where the distributions of the random effects $a_i$, $b_j$, 
 and $\epsilon_{i,j}$ follow the Gaussian SRM covariance 
 model as described previously. 
-This model expresses
+In words, this model expresses
 the observed binary variable $y_{i,j}$ as the indicator that some 
 continuous latent variable $z_{i,j}$ exceeds zero. 
-Assuming the SRM for the sociomatrix $\bl Z=\{z_{i,j}\}$ of latent variables 
+Assuming the SRM for the latent variable
 yields a model for the observed binary data that allows for 
 within-row, within-column and within-dyad dependence. 
 This model can be fit with the {\tt ame} command by specifying 
@@ -840,7 +834,6 @@ by a reduced model that lacks the SRM terms:
 <<cache=TRUE,fig.keep='none',results='hide'>>=
 fit_SRG<-ame(Y,model="bin",rvar=FALSE,cvar=FALSE,dcor=FALSE)  
 @
-\noindent
 This is a probit model that contains only an intercept, 
 and so is equivalent to the simple random graph model (SRG). 
 The fits of these two models in terms of the four 
@@ -850,7 +843,7 @@ Figure
 \ref{fig:ll_fcomp}. 
 As might be expected, the SRG fails in terms of all four statistics. 
 In contrast, the SRM model provides a good fit in terms 
-of the three statistics that represent  second-order dependence. 
+of the three statistics that represent second-order dependencies. 
 Both models fail in terms of representing third-order 
 dependence. 
 
@@ -870,7 +863,7 @@ for(k in 1:4)
   abline(v=gY[k],col="red")
 }
 @
-\caption{Comparison of the SRM (blue) and  the SRG (green) for the 
+\caption{Comparison of SRM (blue) and SRG (green) for the 
 Lazega law friendship network.} 
 \label{fig:ll_fcomp}
 \end{figure}
@@ -973,11 +966,11 @@ Lazega law friendship network.}
 The goodness-of-fit plots in Figure \ref{fig:ll_fame3}
 indicate no strong discrepancy between this model and 
 the data in terms of these statistics. 
-Inference then proceeds by examining
-the estimates of regression effects, 
+Inference then proceeds via 
+examination of the estimates of regression effects, 
 random effects and covariance parameters. 
 Interpretation of the multiplicative effects 
-can proceed by plotting them, looking for clusters, and 
+can proceed by plotting, looking for clusters, and 
 identification of nodes with large effects. 
 Additionally, it can be useful to look for associations between the 
 multiplicative effects and any nodal characteristics available. 
@@ -1057,7 +1050,7 @@ This is done using a variant of the
 rank likelihood} for ordinal data, described 
 in \citet{hoff_2007a} and \citet{hoff_2008b}. 
 While this approach is somewhat limiting
-(as estimation of $g$ is not specifically provided), 
+(as estimation of $g$ is not specifically provided for), 
 it simplifies some aspects of model 
 specification and parameter estimation. 
 In particular, the semiparametric approach 
@@ -1107,7 +1100,7 @@ Plots of row and column means versus age are given in
 Figure \ref{fig:sheep}, and indicate some evidence of an 
 age effect. Particularly, the number of times that 
 a sheep is dominated is decreasing on average with age. 
-We examine this effect more fully with an  ordinal probit regression, 
+We examine this effect more fully with a ordinal probit regression, 
 fitting a second-degree polynomial in the ages of the sheep:
 \begin{figure}
 <<echo=FALSE,fig.height=2.75,fig.width=7.5,fig.align='center'>>=
@@ -1154,7 +1147,7 @@ Data on human social networks are often
 obtained by asking 
 members of a study population to name 
 a fixed number of people with whom they are friends, 
-and possibly  to rank these friends in terms of their affinities to them. 
+and possibly  to rank their friends in terms of their affinities. 
 Such a survey method is called a \emph{fixed rank nomination} (FRN) 
 scheme, and is commonly used in studies of institutions such as 
 schools or businesses. For example, 
@@ -1250,7 +1243,7 @@ Goodness of fit plots for these data appear in Figure
 \ref{fig:smonk}. Notice that the fit in terms of row heterogeneity is 
 very good. This is not too surprising: 
 The simulated sociomatrices used to produce this plot 
-are generated to satisfy %the constraint imposed 
+are generated to satisfy the constraint imposed 
 the outdegree constraint imposed by {\tt odmax}, which 
 greatly limits the possible amount of outdegree heterogeneity. 
 
@@ -1297,16 +1290,16 @@ Some dyadic datasets are only partially observed, in that
 the value of $y_{i,j}$ is not observed for all pairs 
 $i,j$.  This can happen unintentionally or by design. 
 For example, to avoid the cost of measuring $y_{i,j}$ for 
-all $n(n-1)$ ordered pairs of nodes, some researchers use 
+all $n(n-1)$ pairs of nodes, some researchers will use 
 multi-stage link-tracing designs, in which 
 nodes are selected into the study in one stage of the 
 design based on their links to nodes included in previous 
 stages. 
 
 
-Partially observed dyadic data on a given nodeset
+Given a nodeset, partially observed dyadic data 
 can be represented by a sociomatrix in which the 
-ordered pairs for which data are not observed  are distinguished 
+pairs for which data are not observed  are distinguished 
 from pairs for which data are observed. 
 In {\sf R}, this is done by 
 filling each entry of the sociomatrix 
@@ -1331,8 +1324,8 @@ Such a procedure is appropriate if the missing values
 are \emph{missing at random}, or more specifically, if the 
 study design is \emph{ignorable}. 
 A study design is ignorable if 
-the probability of a missing data value for a pair is 
-independent of the model parameters and missing 
+the probability that the variable value for a dyad is 
+missing is independent of the model parameters and missing 
 values, conditional on the observed data values. 
 Many types of link tracing designs, such as egocentric and snowball sampling, 
 are ignorable \citep{thompson_frank_2000}. 
@@ -1343,7 +1336,7 @@ dyadic data is with an egocentric sample, in which nodes
 (or ``egos'') are randomly sampled from a population and then 
 asked about their ties and the ties between their friends. For example, 
 one type of egocentric study design might ask participants
-``with whom are you friends'' and ``which of your friends are friends 
+``whom are you friends with'' and ``which of your friends are friends 
 with each other.''  Data from such a design can be sufficient to estimate 
 parameters in an AME model. 
 
@@ -1389,8 +1382,8 @@ This particular instance of the design results in a sociomatrix
 where about \Sexpr{round(100*mean(is.na(Ys)))} 
 percent of the entries are missing
 (note that the diagonal is  already ``missing'' by definition). 
-Under this design, data between alters and non-alters of an ego
-are missing, as are data between alters that do not share an ego.
+Under this design, relations between alters and non-alters
+are missing, as are relations between alters that do not share an ego.
 <<>>=
 egos
 Ys[1:10,1:10]
@@ -1410,7 +1403,6 @@ apply(fit_pop$BETA,2,mean)
 
 apply(fit_ess$BETA,2,mean)
 @
-\noindent
 The estimates  are similar, even though the second fit is from  
 a dataset with \Sexpr{round(100*mean(is.na(Ys)))} 
 missing values. 
@@ -1447,7 +1439,7 @@ mean( ( fit_pop$YPM[miss] - Y[miss] )^2, na.rm=TRUE )
 
 mean( ( fit_ess$YPM[miss] - Y[miss] )^2, na.rm=TRUE )
 @
-The first and second numbers reflect ``within-sample'' 
+The first and second numbers reflects ``within-sample'' 
 and ``out-of-sample'' goodness of fit, respectively. The 
 small discrepancy between these numbers indicates that
 reasonable parameter estimates  for this model 
@@ -1481,7 +1473,7 @@ for(sim in 1:100)
 
 Finally, we consider the variability of the  parameter estimates 
 across egocentric samples with a small simulation study: For each 
-of 100 egocentric samples randomly generated as previously described, we obtain 
+of 100 egocentric samples randomly generated as previously described, we obtained 
 parameter estimates for the probit SRRM, 
 \begin{align*} 
 z_{i,j} &= \beta_0 +\beta_r x_i+\beta_c x_j +\beta_d x_{i,j}+\epsilon_{i,j}\\
@@ -1490,7 +1482,7 @@ y_{i,j} &= 1( z_{i,j}>0 ),
 where $x_i$ is a binary indicator that node $i$ is male, 
 and $x_{i,j}$ is the indicator that $i$ and $j$ are of the same sex. 
 The variability of the parameter estimates across
-egocentric samples is illustrated with histograms in 
+egocentric samples are  illustrated with histograms in 
 Figure \ref{fig:ess_betas}. An illustrative exercise would be to 
 see how increasing or decreasing the amount of missing data in the samples 
 (by increasing or decreasing the number of egos sampled) would 
@@ -1546,8 +1538,8 @@ as before,
 allows for 
 dyadic correlation between $\epsilon_{i,j,t}$ and  
 $\epsilon_{j,i,t}$ as before, but 
-assumes that
-$\epsilon_{i,j,t}$'s from 
+assumes 
+$\epsilon_{i,j,t}$'s that involve 
 different dyads \emph{or} different time points are independent. 
 In other words, the data under this 
 model are treated as 
@@ -1562,9 +1554,9 @@ via the
 time-dependent 
 regression terms. For example, autoregressive
 dependence can be modeled by including lagged values of the 
-sociomatrix as predictors. Additionally, 
+sociomatrix as regressors. Additionally, 
 time-varying regression parameters can be included in the 
-model by constructing interactions. 
+model by construction of interactions. 
 
 
 \subsection{Example: Analysis of a longitudinal binary outcome}
@@ -1642,9 +1634,8 @@ using a similar syntax as the {\tt ame} function,
 except now the 
 nodal attributes {\tt Xrow} and {\tt Xcol} are
 three-dimensional arrays, with dimensions corresponding 
-to nodes, variables and time points, respectively. 
-Similarly, 
-the dyadic regressor array {\tt Xdyad} is now four-dimensional, 
+to nodes, variables and time points, respectively, 
+and the dyadic regressor array {\tt Xdyad} is now four-dimensional, 
  with dimensions corresponding 
 to nodes, nodes,  variables and time points. 
 These arrays for this data analysis can be set up as follows:
@@ -1695,13 +1686,13 @@ the first four measurements was three weeks, whereas the
 interval between the last three measurements was six weeks. 
 As such, we may want to consider whether or not the 
 effects of the regressors might vary depending on the 
-time lag between measurements. Such a possibility can be evaluated simply 
+measurement. Such a possibility can be evaluated simply 
 by adding interaction terms to the regressors. 
 For example, to evaluate whether or not the effect of 
 $y_{i,j,t-1}$ on $z_{i,j,t}$ varies with measurement interval, 
 we can create a new dyadic covariate 
 $y_{i,j,t-1} w_{t}$ where 
-$w_t$ is a binary indicator that $t$ is 
+$w_t$ is a binary indicator that $t$ is in the 
 among the last three measurements. 
 Adding such terms for all of our regressors can be done as follows:
 <<>>=
@@ -1758,7 +1749,7 @@ a natural simplification of the AME  model
  \{ \epsilon_{i,j} \}  & \sim  \text{i.i.d.}  \ N(0,\sigma^2_e),  \nonumber
 \end{align}
 for $i<j$, with $y_{j,i} = y_{i,j}$ by design. 
-Most of the simplifications leading to this symmetric model are 
+Most of the simplifications leading to this symmetric case are 
 easy to understand, with the possible exception of the 
 change from $\bl u_i^T\bl v_j$ in the asymmetric case 
 to $\bl u_i^T \bs \Lambda \bl u_j$ here. 
@@ -1799,9 +1790,8 @@ in network data \citep{hoff_2008}.
 
 
 Symmetric versions of the  normal, probit and other AME models discussed  
-in the previous sections can be fit 
-by simply specifying the option  {\tt symmetric=TRUE} in the 
- {\tt ame} command. 
+in the previous sections can be fit using the {\tt ame} command 
+by simply specifying the option  {\tt symmetric=TRUE}. 
 We illustrate the use of this option with an analysis 
 of Cold War cooperation and conflict data, available 
 via the {\tt coldwar} dataset. 
@@ -1839,9 +1829,12 @@ we fit an  ordinal version of a rank-1 symmetric  AME  model
 <<cwfitR1,cache=TRUE,fig.keep='none',results='hide'>>=
 fit_cw_R1<-ame(Y,Xd,Xn,R=1,model="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=100)
 @ 
+
 %<<cwfitR2,cache=TRUE,fig.keep='none',results='hide'>>=
 %fit_cw_R2<-ame(Y,Xd,Xn,R=2,model="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=100)
 %@
+
+
 \begin{figure}
 <<echo=FALSE>>=
 plot(fit_cw_R1)
@@ -1849,7 +1842,8 @@ plot(fit_cw_R1)
 @
 \caption{Diagnostic plots for the rank-1 AME model of the {\tt coldwar} data.}
 \end{figure}
-\noindent
+
+
 Note that for this symmetric model, 
 the row regressors must be the same as the 
 column regressors, and so it is sufficient to 
@@ -1859,12 +1853,12 @@ algorithm for estimating the low-rank matrix
 $\bl U \bs \Lambda \bl U^T$ is slower than that 
 for the asymmetric matrix $\bl U\bl V^T$. For this reason
 we lengthened the burn-in period for the Markov chain, and increased 
-the number of iterations to 100,000 from the default value of 10,000. 
+the number of iterations to 20,000 from the default value of 10,000. 
 
 <<>>=
 summary(fit_cw_R1) 
 
-fit_cw_R1$L       # eigenvalue
+fit_cw_R1$L       # eigenvalues
 @
 The results indicate no strong association between 
 country-specific levels  of $z_{i,j}$ 
@@ -1878,31 +1872,11 @@ large geographic distance is positively associated
 with cooperation. However,  a better interpretation might be 
 that large distance is negatively associated 
 with conflict, as most conflicts are regional.
-More refined hypotheses about conflict and 
+More refined hypotheses abut conflict and 
 cooperation could be evaluated by 
 fitting separate models 
 for the conflict network $(y_{i,j}<0)$  and the 
 cooperation network $(y_{i,j}>0)$. 
-
-
-\begin{figure}
-<<fig.height=5,fig.width=7,echo=FALSE>>=
-u<-fit_cw_R1$U
-cnames<-rownames(u)
-urank<-rank(u)
-
-plot(urank,u,type="n",xlab="rank order of u")
-abline(h=0,col="gray")
-addlines(Y>0 , cbind(urank,u),col="green")
-addlines(Y<0 , cbind(urank,u),col="pink")
-text(urank,u,cnames,srt=-45,cex=1.0)
-@
-\caption{One-dimensional latent factor plot for the {\tt coldwar} analysis.
-Green  and red lines indicate cooperation and conflict,
-respectively.}
-\label{fig:cwfplot}
-\end{figure}
-
 
 
 
@@ -1945,10 +1919,119 @@ are generally on opposite sides of the origin.
 %\end{figure}
 
 
+\begin{figure}
+<<fig.height=5,fig.width=7,echo=FALSE>>=
+u<-fit_cw_R1$U
+cnames<-rownames(u)
+urank<-rank(u) 
+
+plot(urank,u,type="n",xlab="rank order of u")
+abline(h=0,col="gray") 
+addlines(Y>0 , cbind(urank,u),col="green")
+addlines(Y<0 , cbind(urank,u),col="pink")
+text(urank,u,cnames,srt=-45,cex=1.0) 
+@
+\caption{One-dimensional latent factor plot for the {\tt coldwar} analysis. 
+Green  and red lines indicate cooperation and conflict, 
+respectively.} 
+\label{fig:cwfplot}
+\end{figure}
 
 
-\bibliographystyle{chicago}
-\bibliography{/Users/pdhoff/Cloud/Common/refs}
+%\bibliographystyle{chicago}
+%\bibliography{/Users/pdhoff/Cloud/Common/refs}
+%\bibliography{amen}
+
+\begin{thebibliography}{}
+
+\bibitem[\protect\citeauthoryear{Bradu and Gabriel}{Bradu and
+  Gabriel}{1974}]{bradu_gabriel_1974}
+Bradu, D. and K.~R. Gabriel (1974).
+\newblock Simultaneous statistical inference on interactions in two-way
+  analysis of variance.
+\newblock {\em J. Amer. Statist. Assoc.\/}~{\em 69}, 428--436.
+
+\bibitem[\protect\citeauthoryear{Gollob}{Gollob}{1968}]{gollob_1968}
+Gollob, H.~F. (1968).
+\newblock A statistical model which combines features of factor analytic and
+  analysis of variance techniques.
+\newblock {\em Psychometrika\/}~{\em 33}, 73--115.
+
+\bibitem[\protect\citeauthoryear{Harris, Halpern, Whitsel, Hussey, Tabor,
+  Entzel, and Udry}{Harris et~al.}{2009}]{harris_2009}
+Harris, K., C.~Halpern, E.~Whitsel, J.~Hussey, J.~Tabor, P.~Entzel, and J.~Udry
+  (2009).
+\newblock The national longitudinal study of adolescent health: Research
+  design.
+
+\bibitem[\protect\citeauthoryear{Hoff, Fosdick, Volfovsky, and Stovel}{Hoff
+  et~al.}{2013}]{hoff_fosdick_volfovsky_stovel_2013}
+Hoff, P., B.~Fosdick, A.~Volfovsky, and K.~Stovel (2013).
+\newblock Likelihoods for fixed rank nomination networks.
+\newblock {\em Network Science\/}~{\em 1\/}(3), 253--277.
+
+\bibitem[\protect\citeauthoryear{Hoff}{Hoff}{2005}]{hoff_2005a}
+Hoff, P.~D. (2005).
+\newblock Bilinear mixed-effects models for dyadic data.
+\newblock {\em J. Amer. Statist. Assoc.\/}~{\em 100\/}(469), 286--295.
+
+\bibitem[\protect\citeauthoryear{Hoff}{Hoff}{2007}]{hoff_2007a}
+Hoff, P.~D. (2007).
+\newblock Extending the rank likelihood for semiparametric copula estimation.
+\newblock {\em Ann. Appl. Stat.\/}~{\em 1\/}(1), 265--283.
+
+\bibitem[\protect\citeauthoryear{Hoff}{Hoff}{2008a}]{hoff_2008}
+Hoff, P.~D. (2008a).
+\newblock Modeling homophily and stochastic equivalence in symmetric relational
+  data.
+\newblock In J.~Platt, D.~Koller, Y.~Singer, and S.~Roweis (Eds.), {\em
+  Advances in Neural Information Processing Systems 20}, pp.\  657--664.
+  Cambridge, MA: MIT Press.
+
+\bibitem[\protect\citeauthoryear{Hoff}{Hoff}{2008b}]{hoff_2008b}
+Hoff, P.~D. (2008b).
+\newblock Rank likelihood estimation for continuous and discrete data.
+\newblock {\em ISBA Bulletin\/}~{\em 15\/}(1), 8--10.
+
+\bibitem[\protect\citeauthoryear{Hoff}{Hoff}{2009}]{hoff_2009c}
+Hoff, P.~D. (2009).
+\newblock Multiplicative latent factor models for description and prediction of
+  social networks.
+\newblock {\em Computational and Mathematical Organization Theory\/}~{\em
+  15\/}(4), 261--272.
+
+\bibitem[\protect\citeauthoryear{Li and Loken}{Li and
+  Loken}{2002}]{li_loken_2002}
+Li, H. and E.~Loken (2002).
+\newblock A unified theory of statistical analysis and inference for variance
+  component models for dyadic data.
+\newblock {\em Statist. Sinica\/}~{\em 12\/}(2), 519--535.
+
+\bibitem[\protect\citeauthoryear{Sampson}{Sampson}{1969}]{sampson_1969}
+Sampson, S. (1969).
+\newblock Crisis in a cloister.
+\newblock {\em Unpublished doctoral dissertation, Cornell University\/}.
+
+\bibitem[\protect\citeauthoryear{Thompson and Frank}{Thompson and
+  Frank}{2000}]{thompson_frank_2000}
+Thompson, S.~K. and O.~Frank (2000).
+\newblock Model-based estimation with link-tracing sampling designs.
+\newblock {\em Survey Methodology\/}~{\em 26\/}(1), 87--98.
+
+\bibitem[\protect\citeauthoryear{Warner, Kenny, and Stoto}{Warner
+  et~al.}{1979}]{warner_kenny_stoto_1979}
+Warner, R., D.~A. Kenny, and M.~Stoto (1979).
+\newblock A new round robin analysis of variance for social interaction data.
+\newblock {\em Journal of Personality and Social Psychology\/}~{\em 37},
+  1742--1757.
+
+\bibitem[\protect\citeauthoryear{Wong}{Wong}{1982}]{wong_1982}
+Wong, G.~Y. (1982).
+\newblock Round robin analysis of variance via maximum likelihood.
+\newblock {\em J. Amer. Statist. Assoc.\/}~{\em 77\/}(380), 714--724.
+
+\end{thebibliography}
+
 
 
 

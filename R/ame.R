@@ -328,7 +328,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     }    
 
     # burn-in countdown
-    if(s%%odens==0&s<=burn){cat(round(100*s/burn,2)," pct burnin complete \n")}
+    if(s%%odens==0&s<=burn & print){cat(round(100*s/burn,2)," pct burnin complete \n")}
 
     # save parameter values and monitor the MC
     if(s%%odens==0 & s>burn) 
