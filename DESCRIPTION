@@ -15,7 +15,7 @@ Description: Analysis of dyadic network and relational data using additive and
     software was supported in part by NIH grant R01HD067509.
 Maintainer: Peter Hoff <peter.hoff@duke.edu>
 License: GPL-3
-Date: 2017-02-23
+Date: 2017-05-07
 LazyData: true
 Depends:
     R (>= 2.10)
