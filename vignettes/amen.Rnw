@@ -34,8 +34,8 @@ opts_chunk$set(size="footnotesize",message=FALSE,warning=FALSE,tidy=FALSE,
 
 \title{Dyadic data analysis with  {\tt amen}}
 \author{Peter D. Hoff
-\thanks{Departments of Statistics and Biostatistics, University of Washington, Seattle. 
-\url{http://www.stat.washington.edu/\~pdhoff/}. 
+\thanks{Department of Statistical Science, Duke University. 
+\url{https://pdhoff.github.io}. 
 Development of this software and tutorial was supported  by
 NIH grant R01HD067509. } }
 \maketitle

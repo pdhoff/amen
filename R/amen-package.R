@@ -12,14 +12,14 @@
 #' software was supported in part by NICHD grant R01HD067509. 
 #' 
 #' \tabular{ll}{ Package: \tab amen\cr Type: \tab Package\cr Version: \tab
-#' 1.3 \cr Date: \tab 2017-05-07 \cr License: \tab GPL-3 \cr }
+#' 1.3 \cr Date: \tab 2017-05-23 \cr License: \tab GPL-3 \cr }
 #' 
 #' @name amen-package
 #' @aliases amen-package amen
 #' @docType package
 #' @author Peter Hoff, Bailey Fosdick, Alex Volfovsky, Yanjun He
 #' 
-#' Maintainer: Peter Hoff <pdhoff@@uw.edu>
+#' Maintainer: Peter Hoff <peter.hoff@@duke.edu>
 #' @keywords package
 #' @examples
 #' 
@@ -219,8 +219,7 @@ NULL
 #' are evaluations of likeing at one and two timepoints previous to when the 
 #' other relations were measured. 
 #' 
-#' @source 
-#' \url{http://moreno.ss.uci.edu/data.html#sampson}
+#' @source Linton Freeman
 #' 
 #' @name sampsonmonks
 NULL
@@ -291,8 +290,7 @@ NULL
 #' \code{seniority} and \code{age} are given in years, and \code{female} is 
 #' a binary indicator. 
 #' 
-#' @source 
-#' \url{http://moreno.ss.uci.edu/data.html#lazega}
+#' @source Linton Freeman
 #' 
 #' @name lazegalaw
 NULL
@@ -306,7 +304,6 @@ NULL
 #' \item Y: A sociomatrix in which the value of the edge corresponds to an ad-hoc measure of intensity of the relation. Note that students were only allowed to nominate up to 5 male friends and 5 female friends. 
 #' \item X: Matrix of students attributes, including sex, race (1=white, 2=black, 3=hispanic, 4=asian, 5=mixed/other) and grade. 
 #' } 
-#' See \url{http://moreno.ss.uci.edu/data.html#adhealth} for more details. 
 #' @docType data
 #' @keywords datasets
 #' @format list 
@@ -322,7 +319,6 @@ NULL
 #' \item Y: A sociomatrix in which the value of the edge corresponds to an ad-hoc measure of intensity of the relation. Note that students were only allowed to nominate up to 5 male friends and 5 female friends. 
 #' \item X: Matrix of students attributes, including sex, race (1=white, 2=black, 3=hispanic, 4=asian, 5=mixed/other) and grade. 
 #' } 
-#' See \url{http://moreno.ss.uci.edu/data.html#adhealth} for more details.
 #' @docType data
 #' @keywords datasets
 #' @format list 
@@ -388,7 +384,7 @@ NULL
 #' \item  4 best friends
 #' }
 #' 
-#' @source \url{http://moreno.ss.uci.edu/data.html#vdb}
+#' @source Linton Freeman
 #' 
 #' @name dutchcollege
 NULL
@@ -411,8 +407,8 @@ NULL
 #' \item \code{age}: the age of each sheep in years. 
 #' }
 #' 
-#' @source 
-#' \url{http://moreno.ss.uci.edu/data.html#sheep}
+#' @source Linton Freeman  
+#'
 #' @name sheep
 NULL
 

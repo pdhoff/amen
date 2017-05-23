@@ -18,7 +18,7 @@ The categorical nodal attributes in \code{X} are coded as follows:
 \code{seniority} and \code{age} are given in years, and \code{female} is 
 a binary indicator.}
 \source{
-\url{http://moreno.ss.uci.edu/data.html#lazega}
+Linton Freeman
 }
 \description{
 Several nodal and dyadic variables measured on 71 attorneys in a law firm.

@@ -10,7 +10,7 @@ dominance encounters.
 \item \code{age}: the age of each sheep in years. 
 }}
 \source{
-\url{http://moreno.ss.uci.edu/data.html#sheep}
+Linton Freeman
 }
 \description{
 Number of dominance encounters between 28 female bighorn sheep. 

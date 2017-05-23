@@ -19,7 +19,7 @@ software was supported in part by NICHD grant R01HD067509.
 }
 \details{
 \tabular{ll}{ Package: \tab amen\cr Type: \tab Package\cr Version: \tab
-1.3 \cr Date: \tab 2017-05-07 \cr License: \tab GPL-3 \cr }
+1.3 \cr Date: \tab 2017-05-23 \cr License: \tab GPL-3 \cr }
 }
 \examples{
 
@@ -35,7 +35,7 @@ plot(fit)
 \author{
 Peter Hoff, Bailey Fosdick, Alex Volfovsky, Yanjun He
 
-Maintainer: Peter Hoff <pdhoff@uw.edu>
+Maintainer: Peter Hoff <peter.hoff@duke.edu>
 }
 \keyword{package}
 

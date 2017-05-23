@@ -14,8 +14,7 @@ students in community 9 of the AddHealth study.
 \itemize{
 \item Y: A sociomatrix in which the value of the edge corresponds to an ad-hoc measure of intensity of the relation. Note that students were only allowed to nominate up to 5 male friends and 5 female friends. 
 \item X: Matrix of students attributes, including sex, race (1=white, 2=black, 3=hispanic, 4=asian, 5=mixed/other) and grade. 
-} 
-See \url{http://moreno.ss.uci.edu/data.html#adhealth} for more details.
+}
 }
 \keyword{datasets}
 

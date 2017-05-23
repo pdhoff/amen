@@ -15,7 +15,7 @@ measurements range from -1 to 4, indicating the following:
 \item  4 best friends
 }}
 \source{
-\url{http://moreno.ss.uci.edu/data.html#vdb}
+Linton Freeman
 }
 \description{
 Longitudinal relational measurements and nodal characteristics 
