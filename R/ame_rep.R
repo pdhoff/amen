@@ -218,6 +218,7 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   { 
     mu<-mean(Z[,,t],na.rm=TRUE) 
     a<-rowMeans(Z[,,t],na.rm=TRUE) ; b<-colMeans(Z[,,t],na.rm=TRUE)
+    a[is.na(a)]<- 0 ; b[is.na(b)]<-0  # added 2017-10-16 
     ZA[,,t]<-mu + outer(a,b,"+")
   }
   Z[is.na(Z)]<-ZA[is.na(Z)] 
