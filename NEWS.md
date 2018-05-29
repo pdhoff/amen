@@ -12,9 +12,9 @@ or if you have strong objections to some of the changes.
 
 1. Changes to `rbeta_ab_fc`:
   a. The function now takes as optional arguments a prior mean
-     and a prior precision matrix for beta. 
+     and a prior precision matrix for beta.    
   b. The default prior mean is zero and the default prior 
-     precision is much smaller than in 1.3. 
+     precision is much smaller than in 1.3.   
   c. The function no longer takes as arguments all the items 
      computed from the design array. Instead, these items 
      are either attributes of the design array `X`, or if 
@@ -35,8 +35,8 @@ or if you have strong objections to some of the changes.
    function. 
 
 3. Changes to `design_array`: Derived quantities for the MCMC 
-     are precomputed using the `precomputeX` function and stored 
-     as attributes in the constructed design array.  
+   are precomputed using the `precomputeX` function and stored 
+   as attributes in the constructed design array.  
 
 4. Changes to `ame`: There is now an additional parameter 
    `prior`, which is a list of hyperparameters (empty by default). 
@@ -49,8 +49,8 @@ or if you have strong objections to some of the changes.
 5. Modified `simZ`, just changing some notation. 
 
 6. Modified `rs2_fc` in two ways:
-  a. The diagonal of the error matrix is now part of the update.
-  b. The function now takes optional prior parameter values.
+  a. The diagonal of the error matrix is now part of the update.  
+  b. The function now takes optional prior parameter values.  
  
 7. Added a secondary triadic dependence gof statistic. Also 
    modified `ame` and `plot.ame` to plot the additional statistic. 
