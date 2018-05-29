@@ -23,4 +23,3 @@ gofstats(YX_nrm$Y)
 
 }
 \keyword{datasets}
-

@@ -15,8 +15,19 @@ function(x, ...)
   fit<-x 
   require(amen) 
 
-  gof<-1*(nrow(fit$GOF)>1) 
-  par(mfrow=c(1+2*gof,2),mar=c(3,3,1,1),mgp=c(1.75,.75,0))
+  gof<-nrow(fit$GOF)>1
+
+  if(!gof | length(beta)==0 )
+  {
+    par(mfrow=c(1+2*gof,2),mar=c(3,3,1,1),mgp=c(1.75,0.75,0))
+  }
+  if(gof & length(beta)>0 )
+  {
+    par(mar=c(3,3,1,1),mgp=c(1.75,0.75,0))
+    layout(matrix(c(1,3,5,1,3,5,2,4,6,2,4,7),3,4)  )
+  }
+
+
 
   mVC<-apply(fit$VC,2,median)
   matplot(fit$VC,type="l",lty=1,ylab="VC")
@@ -32,7 +43,7 @@ function(x, ...)
 
   if(gof)
   {
-    for(k in 1:4)
+    for(k in 1:5)
     {
       hist(fit$GOF[-1,k],xlim=range(fit$GOF[,k]),main="",prob=TRUE,
            xlab=colnames(fit$GOF)[k],col="lightblue",ylab="",yaxt="n")

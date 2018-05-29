@@ -20,4 +20,3 @@ Eleven years of import and export data between 229 countries.
 The data use the SITC Rev. 1 commodity classification, aggregated at the 
 first level (AG1).
 }
-

@@ -1,29 +1,55 @@
-#' Gibbs sampling of additive row and column effects and regression coefficient
+#' Conditional simulation of additive effects and regression coefficients
 #' 
-#' Simulates from the joint full conditional distribution of (a,b,beta)
+#' Simulates from the joint full conditional distribution of (beta,a,b)
+#' in a social relations regression model
 #' 
-#' 
-#' @usage rbeta_ab_fc(Z, Sab, rho, X, mX, mXt, XX, XXt, Xr, Xc, s2 = 1)
-#' @param Z n X n (latent) normal relational matrix, with multiplicative
-#' effects subtracted out
+#' @usage rbeta_ab_fc(Z, Sab, rho, X, s2 = 1, iV0=NULL,m0=NULL)
+#' @param Z n X n (latent) normal relational matrix, assumed to follow a 
+#' social relations regression model (with any multiplicative effects 
+#' subtracted out). 
 #' @param Sab row and column covariance
 #' @param rho dyadic correlation
 #' @param X n x n x p covariate array
-#' @param mX design matrix (matricizied version of X)
-#' @param mXt dyad-transposed design matrix
-#' @param XX regression sums of squares
-#' @param XXt crossproduct sums of squares
-#' @param Xr row sums for X
-#' @param Xc column sums for X
 #' @param s2 dyadic variance
+#' @param iV0 prior precision matrix for regression parameters
+#' @param m0 prior mean vector for regression parameters
+#' 
 #' @return \item{beta}{regression coefficients} \item{a}{additive row effects}
 #' \item{b}{additive column effects}
 #' @author Peter Hoff
 #' @export rbeta_ab_fc
-rbeta_ab_fc <-
-function(Z,Sab,rho,X,mX,mXt,XX,XXt,Xr,Xc,s2=1) 
+rbeta_ab_fc<-
+function(Z,Sab,rho,X=NULL,s2=1,iV0=NULL,m0=NULL)
 {
+
+  ### make fake design matrix if none provided
+  if(is.null(X)){ X<-design_array(intercept=FALSE,n=nrow(Z)) }
+  ###
+
+  ### calculate statistics of X 
+  if(is.null(attributes(X)$XX))
+  { 
+    X<-precomputeX(X) 
+    warning("Summary statistics of X are not precomputed. ", 
+             "Run X<-precomputeX(X) to speed up calculations.") 
+  }
   ### 
+
+  ### assign statistics of X
+  Xr<-attributes(X)$Xr 
+  Xc<-attributes(X)$Xc
+  mX<-attributes(X)$mX
+  mXt<-attributes(X)$mXt
+  XX<-attributes(X)$XX
+  XXt<-attributes(X)$XXt
+  ###
+
+  ### set priors 
+  if(is.null(iV0)){iV0<-(XX+diag(diag(XX)/length(Z),nrow=nrow(XX)))/length(Z)^2}
+  if(is.null(m0)){ m0<-rep(0,dim(X)[3]) } 
+  ###
+
+  ### decorrelation
   p<-dim(X)[3] 
   Se<-matrix(c(1,rho,rho,1),2,2)*s2
   iSe2<-mhalf(solve(Se))
@@ -31,24 +57,22 @@ function(Z,Sab,rho,X,mX,mXt,XX,XXt,Xr,Xc,s2=1)
   Sabs<-iSe2%*%Sab%*%iSe2
   tmp<-eigen(Sabs)
   k<-sum(zapsmall(tmp$val)>0 )
-  ###
 
-  ###
   mXs<-td*mX+to*mXt                  # matricized transformed X
   XXs<-(to^2+td^2)*XX + 2*to*td*XXt  # sum of squares for transformed X
   Zs<-td*Z+to*t(Z)
   zr<-rowSums(Zs) ; zc<-colSums(Zs) ; zs<-sum(zc) ; n<-length(zr) 
   ###
 
-  ## dyadic and prior contributions  
+  ### dyadic and prior contributions  
   if(p>0)
   {
-    lb<- crossprod(mXs,c(Zs)) 
-    Qb<- XXs + XX/nrow(mXs) 
+    lb<- crossprod(mXs,c(Zs)) + iV0%*%m0
+    Qb<- XXs + iV0 
   }
-  ##
+  ###
 
-  ## row and column reduction
+  ### row and column reduction
   ab<-matrix(0,nrow(Z),2)
   if(k>0)
   {
@@ -77,18 +101,22 @@ function(Z,Sab,rho,X,mX,mXt,XX,XXt,Xr,Xc,s2=1)
                iA[2,1]*(tmp+t(tmp)) +  sum(C)*Xss%*%t(Xss) ) 
     }
   }
-  ##
-  if(dim(X)[3]==0){     beta<-numeric(0) }
- 
+  ###
+
+  ### if no covariates
+  if(dim(X)[3]==0){ beta<-numeric(0) }
+  ###
+
+  ### if covariates 
   if(p>0) 
   { 
-  V<-solve(Qb)
-  m<-V%*%(lb)
-  beta<-c(rmvnorm(1,m,V)) 
+    V<-solve(Qb)
+    m<-V%*%(lb)
+    beta<-c(rmvnorm(1,m,V)) 
   }
-  ####
+  ###
  
-  #### simulate a, b 
+  ### simulate a, b 
   if(k>0) 
   {
     E<- Zs-Xbeta(td*X+to*aperm(X,c(2,1,3)),beta)

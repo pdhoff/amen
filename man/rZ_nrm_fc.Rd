@@ -26,4 +26,3 @@ Simulates missing values of a sociomatrix under a normal AME model
 \author{
 Peter Hoff
 }
-

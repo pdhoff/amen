@@ -17,4 +17,3 @@ students in community 9 of the AddHealth study.
 }
 }
 \keyword{datasets}
-

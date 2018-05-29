@@ -22,4 +22,3 @@ Simulate Z given its expectation and covariance
 \author{
 Peter Hoff
 }
-

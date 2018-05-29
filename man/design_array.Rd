@@ -26,4 +26,3 @@ Computes the design socioarray of covariate values for an AME fit
 \author{
 Peter Hoff
 }
-

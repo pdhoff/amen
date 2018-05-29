@@ -20,4 +20,3 @@ Simulates a network, i.e. a binary relational matrix
 \author{
 Peter Hoff
 }
-

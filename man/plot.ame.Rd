@@ -21,4 +21,3 @@ posterior predictive checks.
 \author{
 Peter Hoff
 }
-

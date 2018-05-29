@@ -22,4 +22,3 @@ gofstats(YX_frn$Y)
 
 }
 \keyword{datasets}
-

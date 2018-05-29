@@ -4,8 +4,8 @@
 \alias{raSab_frn_fc}
 \title{Simulate a and Sab from full conditional distributions under frn likelihood}
 \usage{
-raSab_frn_fc(Z, Y, YL, a, b, Sab, odmax, odobs, SS =
-round(sqrt(nrow(Z))))
+raSab_frn_fc(Z, Y, YL, a, b, Sab, odmax, odobs, Sab0=NULL, eta0=NULL,
+SS=round(sqrt(nrow(Z))))
 }
 \arguments{
 \item{Z}{a square matrix, the current value of Z}
@@ -26,6 +26,10 @@ each individual}
 
 \item{odobs}{observed outdegree}
 
+\item{Sab0}{prior (inverse) scale matrix for the prior distribution}
+
+\item{eta0}{prior degrees of freedom for the prior distribution}
+
 \item{SS}{number of iterations}
 }
 \value{
@@ -38,4 +42,3 @@ Simulate a and Sab from full conditional distributions under frn likelihood
 \author{
 Peter Hoff
 }
-

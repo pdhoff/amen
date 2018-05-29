@@ -32,4 +32,3 @@ across replicates.
 \author{
 Peter Hoff, Yanjun He
 }
-

@@ -23,4 +23,3 @@ Linton Freeman
 \description{
 Several nodal and dyadic variables measured on 71 attorneys in a law firm.
 }
-

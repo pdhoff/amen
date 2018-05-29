@@ -37,4 +37,3 @@ Y[i,j]>0 => Z[i,j]>0 , (3) Y[i,j]=0 & odobs[i]<odmax[i] => Z[i,j]<0
 \author{
 Peter Hoff
 }
-

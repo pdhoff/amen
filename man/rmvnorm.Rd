@@ -25,4 +25,3 @@ normal distribution
 \author{
 Peter Hoff
 }
-

@@ -34,4 +34,3 @@ simulates Z under the constraints (1) Y[i,j]=1, Y[i,k]=0 => Z[i,j]>Z[i,k] ,
 \author{
 Peter Hoff
 }
-

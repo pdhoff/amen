@@ -24,4 +24,3 @@ Metropolis update for dyadic correlation with independent replicate data.
 \author{
 Peter Hoff, Yanjun He
 }
-

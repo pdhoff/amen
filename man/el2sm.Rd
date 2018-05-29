@@ -29,4 +29,3 @@ el2sm(E) - Y
 \author{
 Peter Hoff
 }
-

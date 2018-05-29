@@ -91,7 +91,7 @@ circplot<-function(Y,U=NULL,V=NULL,row.names=rownames(Y),col.names=colnames(Y),
 
   if(!add)
   {
-    par(mfrow=c(1,1),mar=c(1,1,1,1) )
+    par( mar=c(1,1,1,1) )
     plot(u*1.2,type="n",xaxt="n",yaxt="n",xlab="",ylab="",bty=bty) 
   }
   links<-which(Y!=0, arr.ind = TRUE)

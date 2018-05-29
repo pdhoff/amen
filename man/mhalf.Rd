@@ -18,4 +18,3 @@ Computes the symmetric square root of a positive definite matrix
 \author{
 Peter Hoff
 }
-

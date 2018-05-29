@@ -4,15 +4,16 @@
 \alias{ame}
 \title{AME model fitting routine}
 \usage{
-ame(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL, rvar = !(model=="rrl") ,
-cvar = TRUE,  dcor = !symmetric, nvar=TRUE, R = 0, model="nrm",
-intercept=!is.element(model,c("rrl","ord")),
+ame(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL, family, R=0, rvar = !(family=="rrl") ,
+cvar = TRUE,  dcor = !symmetric, nvar=TRUE,
+intercept=!is.element(family,c("rrl","ord")),
 symmetric=FALSE,
 odmax=rep(max(apply(Y>0,1,sum,na.rm=TRUE)),nrow(Y)), seed = 1, nscan =
-10000, burn = 500, odens = 25, plot=TRUE, print = TRUE, gof=TRUE)
+10000, burn = 500, odens = 25, plot=TRUE, print = TRUE, gof=TRUE,
+prior=list())
 }
 \arguments{
-\item{Y}{an n x n square relational matrix of relations. See model below for
+\item{Y}{an n x n square relational matrix of relations. See family below for
 various data types.}
 
 \item{Xdyad}{an n x n x pd array of covariates}
@@ -20,6 +21,11 @@ various data types.}
 \item{Xrow}{an n x pr matrix of nodal row covariates}
 
 \item{Xcol}{an n x pc matrix of nodal column covariates}
+
+\item{family}{character: one of "nrm","bin","ord","cbin","frn","rrl" - see
+the details below}
+
+\item{R}{integer: dimension of the multiplicative effects (can be zero)}
 
 \item{rvar}{logical: fit row random effects (asymmetric case)?}
 
@@ -29,18 +35,13 @@ various data types.}
 
 \item{nvar}{logical: fit nodal random effects (symmetric case)?}
 
-\item{R}{integer: dimension of the multiplicative effects (can be zero)}
-
-\item{model}{character: one of "nrm","bin","ord","cbin","frn","rrl" - see
-the details below}
-
 \item{intercept}{logical: fit model with an intercept?}
 
 \item{symmetric}{logical: Is the sociomatrix symmetric by design?}
 
 \item{odmax}{a scalar integer or vector of length n giving the maximum
 number of nominations that each node may make - used for "frn" and "cbin"
-models}
+families}
 
 \item{seed}{random seed}
 
@@ -55,6 +56,8 @@ models}
 \item{print}{logical: print results while running?}
 
 \item{gof}{logical: calculate goodness of fit statistics?}
+
+\item{prior}{list: A list of hyperparameters for the prior distribution}
 }
 \value{
 \item{BETA}{posterior samples of regression coefficients}
@@ -100,7 +103,7 @@ for this model.
 \examples{
 
 data(YX_frn) 
-fit<-ame(YX_frn$Y,YX_frn$X,burn=5,nscan=5,odens=1,model="frn")
+fit<-ame(YX_frn$Y,YX_frn$X,burn=5,nscan=5,odens=1,family="frn")
 # you should run the Markov chain much longer than this
 
  
@@ -108,4 +111,3 @@ fit<-ame(YX_frn$Y,YX_frn$X,burn=5,nscan=5,odens=1,model="frn")
 \author{
 Peter Hoff
 }
-

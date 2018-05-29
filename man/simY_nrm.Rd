@@ -22,4 +22,3 @@ Simulates a normal relational matrix
 \author{
 Peter Hoff
 }
-

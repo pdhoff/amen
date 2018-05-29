@@ -9,12 +9,11 @@
 #' @param Xdyad an n x n x pd array of dyadic covariates
 #' @param intercept logical
 #' @param n number of rows/columns
-#' @return an n x n x (pr+pc+pd+intercept) 3-way array
+#' @return an n x n x (pr+pc+pd+intercept) 3-way array 
 #' @author Peter Hoff
 #' @export design_array
 design_array<-function(Xrow=NULL,Xcol=NULL,Xdyad=NULL,intercept=TRUE,n)
 { 
-
 
 ### covariate array
 pr<-length(Xrow)/n
@@ -23,6 +22,7 @@ pd<-length(Xdyad)/n^2
 X<-array(dim=c(n,n,pr+pc+pd))
 dnX<-NULL
 ###
+
 
 
 ### row covariates
@@ -58,9 +58,12 @@ if(pd>0)
 }      
 ###
 
+# ### remove constant predictors
+# if(rmcc){ X<-X[,,apply(X,3,sd,na.rm=TRUE)>0,drop=FALSE] }
+
 
 ### add intercept 
-if(!any(apply(X,3,function(x){var(c(x),na.rm=TRUE)})==0) & intercept )
+if(!any(apply(X,3,function(x){var(c(x),na.rm=TRUE)})==0) & intercept)
 {
   X1<-array(dim=c(0,0,1)+dim(X))
   X1[,,1]<-1 ; X1[,,-1]<-X
@@ -84,6 +87,9 @@ if( sum(is.na(X)) > sum( is.na(apply(X,3,diag)) ) )
 X[is.na(X)]<-0
 ###
 
+### do precomputations
+X<-precomputeX(X)
+###
 
 X
 }

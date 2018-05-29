@@ -1,7 +1,7 @@
 Package: amen
 Title: Additive and Multiplicative Effects Models for Networks and Relational
     Data
-Version: 1.3
+Version: 1.4.1
 Author: Peter Hoff, Bailey Fosdick, Alex Volfovsky, Yanjun He
 Description: Analysis of dyadic network and relational data using additive and
     multiplicative effects (AME) models. The basic model includes
@@ -18,11 +18,11 @@ Description: Analysis of dyadic network and relational data using additive and
     software was supported in part by NIH grant R01HD067509.
 Maintainer: Peter Hoff <peter.hoff@duke.edu>
 License: GPL-3
-Date: 2017-10-16
+Date: 2018-05-23
 LazyData: true
 Depends:
     R (>= 2.10)
 Suggests:
     coda,network,knitr
 VignetteBuilder: knitr
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1

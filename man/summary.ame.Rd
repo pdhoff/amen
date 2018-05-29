@@ -21,4 +21,3 @@ Summary method for an AME object
 \author{
 Peter Hoff
 }
-

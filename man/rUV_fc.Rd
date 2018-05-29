@@ -4,7 +4,7 @@
 \alias{rUV_fc}
 \title{Gibbs sampling of U and V}
 \usage{
-rUV_fc(E, U, V, rho, s2 = 1, shrink=TRUE)
+rUV_fc(E, U, V, rho, s2 = 1, Psi0=NULL, kappa0=NULL )
 }
 \arguments{
 \item{E}{square residual relational matrix}
@@ -17,7 +17,9 @@ rUV_fc(E, U, V, rho, s2 = 1, shrink=TRUE)
 
 \item{s2}{dyadic variance}
 
-\item{shrink}{adaptively shrink the factors with a hierarchical prior}
+\item{Psi0}{scale parameter for the prior for the covariance matrix of U,V}
+
+\item{kappa0}{degrees of freedom parameter for the prior for the covariance matrix of U,V}
 }
 \value{
 \item{U}{a new value of U} \item{V}{a new value of V}
@@ -28,4 +30,3 @@ A Gibbs sampler for updating the multiplicative effect matrices U and V
 \author{
 Peter Hoff
 }
-

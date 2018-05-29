@@ -32,4 +32,3 @@ assuming they are the same across replicates.
 \author{
 Peter Hoff, Yanjun He
 }
-

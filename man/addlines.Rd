@@ -32,4 +32,3 @@ addlines(Y,X,col=Y[Y!=0])
 \author{
 Peter Hoff
 }
-

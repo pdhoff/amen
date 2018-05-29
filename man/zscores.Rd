@@ -18,4 +18,3 @@ Computes the normal scores corresponding to the ranks of a data vector
 \author{
 Peter Hoff
 }
-

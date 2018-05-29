@@ -68,6 +68,6 @@ function(Z,EZ,rho,Y,YL,odmax,odobs)
     } 
   }
 
-  diag(Z)<-rnorm(nrow(Z),diag(EZ),1)
+  diag(Z)<-rnorm(nrow(Z),diag(EZ),sqrt(1+rho))
   Z
 }

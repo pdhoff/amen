@@ -64,4 +64,3 @@ circplot(IR90s$dyadvars[,,1])
 \author{
 Peter Hoff
 }
-

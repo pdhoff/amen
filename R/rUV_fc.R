@@ -3,27 +3,30 @@
 #' A Gibbs sampler for updating the multiplicative effect matrices U and V
 #' 
 #' 
-#' @usage rUV_fc(E, U, V, rho, s2 = 1, shrink=TRUE)
+#' @usage rUV_fc(E, U, V, rho, s2 = 1, Psi0=NULL, kappa0=NULL )
 #' @param E square residual relational matrix
 #' @param U current value of U
 #' @param V current value of V
 #' @param rho dyadic correlation
 #' @param s2 dyadic variance
-#' @param shrink adaptively shrink the factors with a hierarchical prior
+#' @param Psi0 scale parameter for the prior for the covariance matrix of U,V
+#' @param kappa0 degrees of freedom parameter for the prior for the covariance matrix of U,V
 #'
 #' @return \item{U}{a new value of U} \item{V}{a new value of V}
 #' @author Peter Hoff
 #' @export rUV_fc
 rUV_fc <-
-function(E,U,V,rho,s2=1,shrink=TRUE)
-{
+function(E,U,V,rho,s2=1,Psi0=NULL,kappa0=NULL)
+{ 
+
+  if(is.null(Psi0)){ Psi0<-diag(2*ncol(U))/ncol(U) }
+  if(is.null(kappa0)){ kappa0<-2+2*ncol(U) }
+
   R<-ncol(U) ; n<-nrow(U)
   UV<-cbind(U,V)
-  if(shrink)
-  {
-   Suv<-solve(rwish(solve(diag(nrow=2*R)+t(UV)%*%UV),n+R+2))
-  }
-  if(!shrink){ Suv<-diag(n,nrow=2*R)  }
+
+  ## update cov(U,V)
+  Suv<-solve(rwish(solve(kappa0*Psi0+t(UV)%*%UV),n+kappa0)) 
 
   Se<-matrix(c(1,rho,rho,1),2,2)*s2
   iSe2<-mhalf(solve(Se))

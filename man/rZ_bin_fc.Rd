@@ -25,4 +25,3 @@ and a binary relational matrix Y
 \author{
 Peter Hoff
 }
-

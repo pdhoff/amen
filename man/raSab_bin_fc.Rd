@@ -4,7 +4,7 @@
 \alias{raSab_bin_fc}
 \title{Simulate a and Sab from full conditional distributions under bin likelihood}
 \usage{
-raSab_bin_fc(Z, Y, a, b, Sab, SS = round(sqrt(nrow(Z))))
+raSab_bin_fc(Z, Y, a, b, Sab, Sab0=NULL, eta0=NULL, SS = round(sqrt(nrow(Z))))
 }
 \arguments{
 \item{Z}{a square matrix, the current value of Z}
@@ -16,6 +16,10 @@ raSab_bin_fc(Z, Y, a, b, Sab, SS = round(sqrt(nrow(Z))))
 \item{b}{current value of column effects}
 
 \item{Sab}{current value of Cov(a,b)}
+
+\item{Sab0}{prior (inverse) scale matrix for the prior distribution}
+
+\item{eta0}{prior degrees of freedom for the prior distribution}
 
 \item{SS}{number of iterations}
 }
@@ -29,4 +33,3 @@ Simulate a and Sab from full conditional distributions under bin likelihood
 \author{
 Peter Hoff
 }
-

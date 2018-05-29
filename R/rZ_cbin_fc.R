@@ -59,8 +59,9 @@ function(Z,EZ,rho,Y,odmax,odobs)
     Z[up]<-ez+sz*qnorm(runif(sum(up),pnorm((lb-ez)/sz),pnorm((ub-ez)/sz)))
   }
 
-  #diag(Z)<-rnorm(nrow(Z),diag(EZ),1)
-  Z[is.na(Y)]<- rnorm(sum(is.na(Y)),EZ[is.na(Y)],1)
+  diag(Z)<-rnorm(nrow(Z),diag(EZ),sqrt(1+rho))
+  Z[is.na(Y)]<- rnorm(sum(is.na(Y)),EZ[is.na(Y)],1) # not right - doesn't use rho
+
   Z
 }
 

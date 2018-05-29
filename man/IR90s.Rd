@@ -29,4 +29,3 @@ including information on conflicts, trade and other variables.
 Except for the conflict variable, the variables are averages
 across the decade.
 }
-

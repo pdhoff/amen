@@ -25,4 +25,3 @@ The time interval between the first four measurements was
 three weeks, whereas the interval between the last three 
 was six weeks.
 }
-

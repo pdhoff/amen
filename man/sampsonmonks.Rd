@@ -15,4 +15,3 @@ Linton Freeman
 \description{
 Several dyadic variables measured on 18 members of a monastery.
 }
-

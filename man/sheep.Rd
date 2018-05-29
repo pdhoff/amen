@@ -17,4 +17,3 @@ Number of dominance encounters between 28 female bighorn sheep.
 Cell (i,j) records the number of times sheep i dominated sheep j. 
 From Hass (1991).
 }
-

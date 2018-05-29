@@ -35,4 +35,3 @@ netplot(Y,X)
 \author{
 Peter Hoff
 }
-

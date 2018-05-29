@@ -22,4 +22,3 @@ Gibbs update for dyadic variance with independent replicate relational data
 \author{
 Peter Hoff, Yanjun He
 }
-

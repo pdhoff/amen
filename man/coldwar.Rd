@@ -17,4 +17,3 @@ Xun Cao : \url{http://polisci.la.psu.edu/people/xuc11}
 \description{
 Positive and negative relations between countries during the cold war
 }
-

@@ -12,7 +12,7 @@
 #' software was supported in part by NICHD grant R01HD067509. 
 #' 
 #' \tabular{ll}{ Package: \tab amen\cr Type: \tab Package\cr Version: \tab
-#' 1.3 \cr Date: \tab 2017-10-16 \cr License: \tab GPL-3 \cr }
+#' 1.4.1 \cr Date: \tab 2018-05-23 \cr License: \tab GPL-3 \cr }
 #' 
 #' @name amen-package
 #' @aliases amen-package amen
@@ -25,7 +25,7 @@
 #' 
 #' 
 #' data(YX_frn)
-#' fit<-ame(YX_frn$Y,YX_frn$X,burn=5,nscan=5,odens=1,model="frn")
+#' fit<-ame(YX_frn$Y,YX_frn$X,burn=5,nscan=5,odens=1,family="frn")
 #' 
 #' summary(fit)
 #' 

@@ -22,4 +22,3 @@ gofstats(YX_bin$Y)
 
 }
 \keyword{datasets}
-

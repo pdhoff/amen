@@ -22,4 +22,3 @@ gofstats(YX_ord$Y)
 
 }
 \keyword{datasets}
-

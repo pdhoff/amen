@@ -19,4 +19,3 @@ gofstats(YX_bin_long$Y[,,1])
 
 }
 \keyword{datasets}
-

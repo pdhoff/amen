@@ -2,8 +2,8 @@
 % Please edit documentation in R/amen-package.R
 \docType{package}
 \name{amen-package}
-\alias{amen}
 \alias{amen-package}
+\alias{amen}
 \title{Additive and Multiplicative Effects Models for Networks and Relational Data}
 \description{
 Analysis of network and relational data using additive and multiplicative
@@ -19,13 +19,13 @@ software was supported in part by NICHD grant R01HD067509.
 }
 \details{
 \tabular{ll}{ Package: \tab amen\cr Type: \tab Package\cr Version: \tab
-1.3 \cr Date: \tab 2017-05-23 \cr License: \tab GPL-3 \cr }
+1.4.1 \cr Date: \tab 2018-05-23 \cr License: \tab GPL-3 \cr }
 }
 \examples{
 
 
 data(YX_frn)
-fit<-ame(YX_frn$Y,YX_frn$X,burn=5,nscan=5,odens=1,model="frn")
+fit<-ame(YX_frn$Y,YX_frn$X,burn=5,nscan=5,odens=1,family="frn")
 
 summary(fit)
 
@@ -38,4 +38,3 @@ Peter Hoff, Bailey Fosdick, Alex Volfovsky, Yanjun He
 Maintainer: Peter Hoff <peter.hoff@duke.edu>
 }
 \keyword{package}
-

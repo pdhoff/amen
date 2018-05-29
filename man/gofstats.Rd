@@ -27,4 +27,3 @@ gofstats(YX_nrm$Y)
 \author{
 Peter Hoff
 }
-

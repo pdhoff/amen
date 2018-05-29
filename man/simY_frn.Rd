@@ -27,4 +27,3 @@ Simulate an relational matrix based on a fixed rank nomination scheme
 \author{
 Peter Hoff
 }
-

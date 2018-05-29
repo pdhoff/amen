@@ -23,4 +23,3 @@ distribution
 \author{
 Peter Hoff
 }
-

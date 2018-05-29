@@ -3,7 +3,7 @@
 #' Simulates a random Wishart-distributed matrix
 #' 
 #' 
-#' @usage rwish(S0, nu = dim(S0)[1] + 1)
+#' @usage rwish(S0, nu = dim(S0)[1] + 2)
 #' @param S0 a positive definite matrix
 #' @param nu a positive integer
 #' @return a positive definite matrix
@@ -24,7 +24,7 @@
 #' 
 #' @export rwish
 rwish <-
-function(S0,nu=dim(S0)[1]+1)
+function(S0,nu=dim(S0)[1]+2)
 {
   # sample from a Wishart distribution 
   # with expected value nu*S0 

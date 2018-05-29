@@ -23,4 +23,3 @@ gofstats(YX_cbin$Y)
 
 }
 \keyword{datasets}
-

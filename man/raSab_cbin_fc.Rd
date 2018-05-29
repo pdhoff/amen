@@ -5,7 +5,7 @@
 \title{Simulate a and Sab from full conditional distributions under the cbin
 likelihood}
 \usage{
-raSab_cbin_fc(Z, Y, a, b, Sab, odmax, odobs, SS =
+raSab_cbin_fc(Z, Y, a, b, Sab, odmax, odobs, Sab0=NULL, eta0=NULL,SS =
 round(sqrt(nrow(Z))))
 }
 \arguments{
@@ -24,6 +24,10 @@ each individual}
 
 \item{odobs}{observed outdegree}
 
+\item{Sab0}{prior (inverse) scale matrix for the prior distribution}
+
+\item{eta0}{prior degrees of freedom for the prior distribution}
+
 \item{SS}{number of iterations}
 }
 \value{
@@ -37,4 +41,3 @@ likelihood
 \author{
 Peter Hoff
 }
-

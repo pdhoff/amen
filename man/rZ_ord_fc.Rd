@@ -25,4 +25,3 @@ and partial rank information provided by W
 \author{
 Peter Hoff
 }
-

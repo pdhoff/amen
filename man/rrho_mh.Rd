@@ -22,4 +22,3 @@ Metropolis update for dyadic correlation
 \author{
 Peter Hoff
 }
-

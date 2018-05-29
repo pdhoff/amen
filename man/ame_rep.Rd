@@ -4,22 +4,27 @@
 \alias{ame_rep}
 \title{AME model fitting routine for replicated relational data}
 \usage{
-ame_rep(Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL, rvar = !(model=="rrl")
-, cvar = TRUE, dcor = !symmetric, nvar=TRUE,  R = 0, model="nrm",
-intercept=!is.element(model,c("rrl","ord")),
+ame_rep(Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL, family, R=0, rvar = !(family=="rrl"),
+cvar = TRUE, dcor = !symmetric, nvar=TRUE,  
+intercept=!is.element(family,c("rrl","ord")),
 symmetric=FALSE,
 odmax=rep(max(apply(Y>0,c(1,3),sum,na.rm=TRUE)),nrow(Y[,,1])), seed = 1,
 nscan = 10000, burn = 500, odens = 25, plot=TRUE, print = TRUE, gof=TRUE)
 }
 \arguments{
 \item{Y}{an n x n x T array of relational matrix, where the third dimension correponds to replicates (over time, for example). See
-model below for various data types.}
+family below for various data types.}
 
 \item{Xdyad}{an n x n x pd x T array of covariates}
 
 \item{Xrow}{an n x pr x T array of nodal row covariates}
 
 \item{Xcol}{an n x pc x T array of nodal column covariates}
+
+\item{family}{character: one of "nrm","bin","ord","cbin","frn","rrl" - see
+the details below}
+
+\item{R}{integer: dimension of the multiplicative effects (can be zero)}
 
 \item{rvar}{logical: fit row random effects (asymmetric case)?}
 
@@ -29,18 +34,13 @@ model below for various data types.}
 
 \item{nvar}{logical: fit nodal random effects (symmetric case)?}
 
-\item{R}{integer: dimension of the multiplicative effects (can be zero)}
-
-\item{model}{character: one of "nrm","bin","ord","cbin","frn","rrl" - see
-the details below}
-
 \item{intercept}{logical: fit model with an intercept?}
 
 \item{symmetric}{logical: Is the sociomatrix symmetric by design?}
 
 \item{odmax}{a scalar integer or vector of length n giving the maximum
 number of nominations that each node may make - used for "frn" and "cbin"
-models}
+families}
 
 \item{seed}{random seed}
 
@@ -103,11 +103,10 @@ for this model.
 \examples{
 
 data(YX_bin_long) 
-fit<-ame_rep(YX_bin_long$Y,YX_bin_long$X,burn=5,nscan=5,odens=1,model="bin")
+fit<-ame_rep(YX_bin_long$Y,YX_bin_long$X,burn=5,nscan=5,odens=1,family="bin")
 # you should run the Markov chain much longer than this
 
 }
 \author{
 Peter Hoff, Yanjun He
 }
-

@@ -2,13 +2,14 @@
 % Please edit documentation in R/rbeta_ab_fc.R
 \name{rbeta_ab_fc}
 \alias{rbeta_ab_fc}
-\title{Gibbs sampling of additive row and column effects and regression coefficient}
+\title{Conditional simulation of additive effects and regression coefficients}
 \usage{
-rbeta_ab_fc(Z, Sab, rho, X, mX, mXt, XX, XXt, Xr, Xc, s2 = 1)
+rbeta_ab_fc(Z, Sab, rho, X, s2 = 1, iV0=NULL,m0=NULL)
 }
 \arguments{
-\item{Z}{n X n (latent) normal relational matrix, with multiplicative
-effects subtracted out}
+\item{Z}{n X n (latent) normal relational matrix, assumed to follow a 
+social relations regression model (with any multiplicative effects 
+subtracted out).}
 
 \item{Sab}{row and column covariance}
 
@@ -16,28 +17,20 @@ effects subtracted out}
 
 \item{X}{n x n x p covariate array}
 
-\item{mX}{design matrix (matricizied version of X)}
-
-\item{mXt}{dyad-transposed design matrix}
-
-\item{XX}{regression sums of squares}
-
-\item{XXt}{crossproduct sums of squares}
-
-\item{Xr}{row sums for X}
-
-\item{Xc}{column sums for X}
-
 \item{s2}{dyadic variance}
+
+\item{iV0}{prior precision matrix for regression parameters}
+
+\item{m0}{prior mean vector for regression parameters}
 }
 \value{
 \item{beta}{regression coefficients} \item{a}{additive row effects}
 \item{b}{additive column effects}
 }
 \description{
-Simulates from the joint full conditional distribution of (a,b,beta)
+Simulates from the joint full conditional distribution of (beta,a,b)
+in a social relations regression model
 }
 \author{
 Peter Hoff
 }
-
