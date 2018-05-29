@@ -10,7 +10,7 @@ if this screws up something you've been working on,
 or if you have strong objections to some of the changes. 
 
 
-1. Changes to `rbeta_ab_fc`:
+1. Changes to `rbeta_ab_fc`:    
   a. The function now takes as optional arguments a prior mean
      and a prior precision matrix for beta.    
   b. The default prior mean is zero and the default prior 
@@ -42,13 +42,13 @@ or if you have strong objections to some of the changes.
    `prior`, which is a list of hyperparameters (empty by default). 
    Parameters for which priors may be set include    
    `beta` (see `rbeta_ab_fc`), 
-   `s2` (see `rs2_fc`)
-   `Sab` (see `rSab_fc`)  
+   `s2` (see `rs2_fc`),
+   `Sab` (see `rSab_fc`),
    `Suv` (see `rUV_fc`). 
 
 5. Modified `simZ`, just changing some notation. 
 
-6. Modified `rs2_fc` in two ways:
+6. Modified `rs2_fc` in two ways:    
   a. The diagonal of the error matrix is now part of the update.  
   b. The function now takes optional prior parameter values.  
  
