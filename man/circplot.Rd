@@ -6,9 +6,9 @@
 \usage{
 circplot(Y, U = NULL, V = NULL, row.names = rownames(Y),
   col.names = colnames(Y), plotnames = TRUE, vscale = 0.8,
-  pscale = 1.75, lcol = "gray", rcol = "brown", ccol = "blue",
-  pch = 16, lty = 3, jitter = 0.1 * (nrow(Y)/(1 + nrow(Y))), bty = "n",
-  add = FALSE)
+  pscale = 1.75, mscale = 0.3, lcol = "gray", rcol = "brown",
+  ccol = "blue", pch = 16, lty = 3, jitter = 0.1 * (nrow(Y)/(1 +
+  nrow(Y))), bty = "n", add = FALSE)
 }
 \arguments{
 \item{Y}{(matrix) m by n relational matrix.}
@@ -26,6 +26,8 @@ circplot(Y, U = NULL, V = NULL, row.names = rownames(Y),
 \item{vscale}{(scalar) scaling factor for V coordinates.}
 
 \item{pscale}{(scalar) scaling factor for plotting characters.}
+
+\item{mscale}{(scalar) scaling factor for plotting characters.}
 
 \item{lcol}{(scalar or vector) line color(s) for the nonzero elements of Y.}
 

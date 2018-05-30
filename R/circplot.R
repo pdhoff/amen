@@ -9,7 +9,8 @@
 #' @param col.names (character vector) names of the columns objects.
 #' @param plotnames (logical) plot row and column names.
 #' @param vscale (scalar) scaling factor for V coordinates.
-#' @param pscale (scalar) scaling factor for plotting characters.
+#' @param pscale (scalar) scaling factor for plotting characters. 
+#' @param mscale (scalar) scaling factor for plotting characters.
 #' @param lcol (scalar or vector) line color(s) for the nonzero elements of Y.
 #' @param rcol (scalar or vector) node color(s) for the rows.
 #' @param ccol (scalar or vector) node color(s) for the columns.
@@ -40,7 +41,7 @@
 #' 
 #' @export 
 circplot<-function(Y,U=NULL,V=NULL,row.names=rownames(Y),col.names=colnames(Y),
-                   plotnames=TRUE,vscale=.8,pscale=1.75,
+                   plotnames=TRUE,vscale=.8,pscale=1.75,mscale=.3,
                    lcol="gray",rcol="brown",ccol="blue",pch=16,lty=3,
                    jitter=.1*(nrow(Y)/(1+nrow(Y))) ,bty="n",add=FALSE )
 {
@@ -102,8 +103,8 @@ circplot<-function(Y,U=NULL,V=NULL,row.names=rownames(Y),col.names=colnames(Y),
   {
     if(is.null(row.names)){ row.names<-as.character(1:nrow(Y)) }
     if(is.null(col.names)){ col.names<-as.character(1:ncol(Y)) }
-    text(u[rsum>0,] , row.names[rsum>0],cex=pscale*(mu[rsum>0])^.3,col=rcol)
-    text(v[csum>0,] , col.names[csum>0],cex=pscale*(mv[csum>0])^.3,col=ccol)
+    text(u[rsum>0,],row.names[rsum>0],cex=pscale*(mu[rsum>0])^mscale,col=rcol)
+    text(v[csum>0,],col.names[csum>0],cex=pscale*(mv[csum>0])^mscale,col=ccol)
   }
 
   if(!plotnames)

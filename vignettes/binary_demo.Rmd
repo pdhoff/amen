@@ -1,0 +1,49 @@
+---
+title: "Modeling a binary network outcome"
+author: "Peter Hoff"
+date: "`r substring(Sys.time(),1,10)`"
+---
+
+
+```{r}
+library(amen)
+```
+
+```{r}
+data(lazegalaw)
+
+Y<-lazegalaw$Y[,,2]
+Xd<-lazegalaw$Y[,,-2]
+Xn<-lazegalaw$X[,c(1,2,4,5,6)]
+
+dimnames(Xd)[[3]]
+dimnames(Xn)[[2]]
+
+```{r,results='hide',message=FALSE}
+netplot(lazegalaw$Y[,,2],ncol=Xn[,3])
+```
+
+```{r,fig.keep='last',results='hide',cache=TRUE}
+fitSRRM<-ame(Y, Xd=Xd, Xr=Xn, Xc=Xn, family="bin")
+```
+
+```{r}
+summary(fitSRRM) 
+```
+
+
+
+```{r,fig.keep='last',results='hide',cache=TRUE}
+fitAME<-ame(Y, Xd=Xd, Xr=Xn, Xc=Xn, R=3, family="bin")
+```
+
+```{r}
+summary(fitAME) 
+```
+
+
+
+
+
+
+

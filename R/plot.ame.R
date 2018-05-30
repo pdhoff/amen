@@ -16,12 +16,13 @@ function(x, ...)
   require(amen) 
 
   gof<-nrow(fit$GOF)>1
+  p<-ncol(fit$BETA)
 
-  if(!gof | length(beta)==0 )
+  if(!gof | p==0 )
   {
     par(mfrow=c(1+2*gof,2),mar=c(3,3,1,1),mgp=c(1.75,0.75,0))
   }
-  if(gof & length(beta)>0 )
+  if(gof & p>0 )
   {
     par(mar=c(3,3,1,1),mgp=c(1.75,0.75,0))
     layout(matrix(c(1,3,5,1,3,5,2,4,6,2,4,7),3,4)  )
@@ -33,11 +34,11 @@ function(x, ...)
   matplot(fit$VC,type="l",lty=1,ylab="VC")
   abline(h=mVC,col=1:length(mVC) )
 
-  if(ncol(fit$BETA)>0) 
+  if(p>0) 
   { 
     mBETA<-apply(fit$BETA,2,median)
-    matplot(fit$BETA,type="l",lty=1,col=1:length(mBETA),ylab="BETA")
-    abline(h=mBETA,col=1:length(mBETA) )
+    matplot(fit$BETA,type="l",lty=1,col=1:p,ylab="BETA")
+    abline(h=mBETA,col=1:p )
     abline(h=0,col="gray")
   }
 
