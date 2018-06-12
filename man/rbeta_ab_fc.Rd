@@ -4,12 +4,11 @@
 \alias{rbeta_ab_fc}
 \title{Conditional simulation of additive effects and regression coefficients}
 \usage{
-rbeta_ab_fc(Z, Sab, rho, X, s2 = 1, iV0=NULL,m0=NULL)
+rbeta_ab_fc(Z, Sab, rho, X = NULL, s2 = 1, offset = 0, iV0 = NULL,
+  m0 = NULL, g = length(Z))
 }
 \arguments{
-\item{Z}{n X n (latent) normal relational matrix, assumed to follow a 
-social relations regression model (with any multiplicative effects 
-subtracted out).}
+\item{Z}{n X n normal relational matrix}
 
 \item{Sab}{row and column covariance}
 
@@ -19,9 +18,15 @@ subtracted out).}
 
 \item{s2}{dyadic variance}
 
+\item{offset}{a matrix of the same dimension as Z. It is assumed that 
+Z-offset follows a SRRM, so the offset should contain any multiplicative 
+effects (such as \code{U\%*\% t(V) } )}
+
 \item{iV0}{prior precision matrix for regression parameters}
 
 \item{m0}{prior mean vector for regression parameters}
+
+\item{g}{prior variance scale for g-prior when iV0 is unspecified}
 }
 \value{
 \item{beta}{regression coefficients} \item{a}{additive row effects}

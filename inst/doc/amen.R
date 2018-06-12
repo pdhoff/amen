@@ -116,7 +116,7 @@ fit_srrm0<-ame(Y,Xd[,,1:2],Xn,Xn,family="nrm")
 
 ## ----echo=FALSE,fig.height=3,fig.width=6---------------------------------
 hist(fit_srrm0$GOF[-1,4],main="",yaxt="n",ylab="",prob=TRUE,col="lightgreen",breaks=12,
-      xlab=names(GOF)[4] ,xlim=range(fit_srrm0$GOF[,4]),ylim=c(0,17) )
+      xlab=names(GOF)[4] ,xlim=range(fit_srrm0$GOF[,4]),ylim=c(0,20) )
 hist(fit_srrm$GOF[-1,4],prob=TRUE,add=TRUE, 
         col=rgb(clr[1],clr[2],clr[3],clr[4])) 
 abline(v=GOF[4],col="red")
@@ -254,10 +254,7 @@ Y<-sampsonmonks[,,3]
 apply(Y>0,1,sum,na.rm=T)
 
 ## ----cache=TRUE,fig.keep='none',results='hide'---------------------------
-odmax<-rep(3,nrow(Y)) 
-odmax[ apply(Y>0,1,sum,na.rm=T)>3 ]<-4 
-
-fit<-ame(Y,R=2,family="frn",odmax=odmax,intercept=FALSE) 
+fit<-ame(Y,R=2,family="frn",odmax=4) 
 
 ## ------------------------------------------------------------------------
 summary(fit) 
@@ -337,8 +334,8 @@ beta_pop<-apply(fit_pop$BETA,2,mean)
 par(mfrow=c(2,2),mar=c(3,3,1,1),mgp=c(1.75,.75,0))
 for(k in 1:4)
 {
-  hist( BETA_SS[,k] ,col="lightgreen", main="",ylab="",xlab=cnames[k],yaxt="n",
-         xlim=1.2*range(c(beta_pop[k],BETA_SS[,k])) ) 
+  hist( BETA_SS[,k] ,col="lightgreen", main="",ylab="",xlab=cnames[k],yaxt="n")
+         #xlim=1.2*range(c(beta_pop[k],BETA_SS[,k])) ) 
   abline(v=beta_pop[k],lwd=2,col="blue")
 }
 
@@ -421,11 +418,10 @@ Xd[,,3]<-log(coldwar$distance)                      # log distance
 dimnames(Xd)[[3]]<-c("igdp","ipol","ldist") 
 
 ## ----cwfitR1,cache=TRUE,fig.keep='none',results='hide'-------------------
-fit_cw_R1<-ame(Y,Xd,Xn,R=1,family="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=100)
+fit_cw_R1<-ame(Y,Xd,Xn,R=1,family="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=50)
 
 ## ----echo=FALSE----------------------------------------------------------
 plot(fit_cw_R1)
-#plot(fit_cw_R2)
 
 ## ------------------------------------------------------------------------
 summary(fit_cw_R1) 

@@ -4,22 +4,25 @@
 \alias{rUV_fc}
 \title{Gibbs sampling of U and V}
 \usage{
-rUV_fc(E, U, V, rho, s2 = 1, Psi0=NULL, kappa0=NULL )
+rUV_fc(Z, U, V, Suv, rho, s2 = 1, offset = 0)
 }
 \arguments{
-\item{E}{square residual relational matrix}
+\item{Z}{n X n normal relational matrix}
 
 \item{U}{current value of U}
 
 \item{V}{current value of V}
 
+\item{Suv}{covariance of (U V)}
+
 \item{rho}{dyadic correlation}
 
 \item{s2}{dyadic variance}
 
-\item{Psi0}{scale parameter for the prior for the covariance matrix of U,V}
-
-\item{kappa0}{degrees of freedom parameter for the prior for the covariance matrix of U,V}
+\item{offset}{a matrix of the same dimension as Z. It is assumed that
+Z-offset is equal to the multiplicative effects plus dyadic noise, so the 
+offset should contain any additive effects (such as \code{Xbeta(X,beta+ 
+outer(a,b,"+")  }  )}
 }
 \value{
 \item{U}{a new value of U} \item{V}{a new value of V}

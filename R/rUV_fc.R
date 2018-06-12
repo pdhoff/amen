@@ -2,31 +2,26 @@
 #' 
 #' A Gibbs sampler for updating the multiplicative effect matrices U and V
 #' 
-#' 
-#' @usage rUV_fc(E, U, V, rho, s2 = 1, Psi0=NULL, kappa0=NULL )
-#' @param E square residual relational matrix
+#' @param Z n X n normal relational matrix
 #' @param U current value of U
-#' @param V current value of V
+#' @param V current value of V 
+#' @param Suv covariance of (U V) 
 #' @param rho dyadic correlation
 #' @param s2 dyadic variance
-#' @param Psi0 scale parameter for the prior for the covariance matrix of U,V
-#' @param kappa0 degrees of freedom parameter for the prior for the covariance matrix of U,V
+#' @param offset a matrix of the same dimension as Z. It is assumed that   
+#' Z-offset is equal to the multiplicative effects plus dyadic noise, so the 
+#' offset should contain any additive effects (such as \code{Xbeta(X,beta+ 
+#' outer(a,b,"+")  }  )
 #'
 #' @return \item{U}{a new value of U} \item{V}{a new value of V}
 #' @author Peter Hoff
 #' @export rUV_fc
 rUV_fc <-
-function(E,U,V,rho,s2=1,Psi0=NULL,kappa0=NULL)
+function(Z,U,V,Suv,rho,s2=1,offset=0)
 { 
+  E<-Z-offset
 
-  if(is.null(Psi0)){ Psi0<-diag(2*ncol(U))/ncol(U) }
-  if(is.null(kappa0)){ kappa0<-2+2*ncol(U) }
-
-  R<-ncol(U) ; n<-nrow(U)
-  UV<-cbind(U,V)
-
-  ## update cov(U,V)
-  Suv<-solve(rwish(solve(kappa0*Psi0+t(UV)%*%UV),n+kappa0)) 
+  R<-ncol(U) 
 
   Se<-matrix(c(1,rho,rho,1),2,2)*s2
   iSe2<-mhalf(solve(Se))

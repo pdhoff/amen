@@ -68,7 +68,7 @@ software was supported in part by NICHD grant R01HD067509." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
       </span>
     </div>
 
@@ -145,8 +145,8 @@ software was supported in part by NICHD grant R01HD067509.</p>
     <table class='table'>
 <tr><td>Package:</td><td>amen</td></tr>
 <tr><td>Type:</td><td>Package</td></tr>
-<tr><td>Version:</td><td>1.4.1</td></tr>
-<tr><td>Date:</td><td>2018-05-23</td></tr>
+<tr><td>Version:</td><td>1.4.2</td></tr>
+<tr><td>Date:</td><td>2018-06-08</td></tr>
 <tr><td>License:</td><td>GPL-3</td></tr>
 <tr><td></td><td>Package:</td></tr>
 </table>
@@ -161,25 +161,27 @@ software was supported in part by NICHD grant R01HD067509.</p>
 #&gt; 60  pct burnin complete 
 #&gt; 80  pct burnin complete 
 #&gt; 100  pct burnin complete 
-#&gt; 6 -1.88 -0.09 -0.06 0.12 0.1 0.73 0.05 0.01 : 0.26 0.03 0.08 0.05 1 </div><div class='img'><img src='amen-package-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 7 -1.92 -0.02 -0.01 0.1 0.08 0.75 0.05 0.01 : 0.32 0.04 0.07 0.05 1 </div><div class='img'><img src='amen-package-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 8 -1.98 -0.01 0.03 0.1 0.07 0.77 0.06 0.03 : 0.32 0.04 0.07 0.06 1 </div><div class='img'><img src='amen-package-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 9 -2.03 0 0.07 0.09 0.07 0.78 0.07 0.02 : 0.33 0.04 0.07 0.07 1 </div><div class='img'><img src='amen-package-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 10 -2.07 0.01 0.1 0.09 0.08 0.8 0.08 0.03 : 0.39 0.03 0.08 0.07 1 </div><div class='input'>
+#&gt; 6 -1.83 0.06 0.07 0.04 0.05 0.73 0.08 0.02 : 0.11 0 0.05 0.65 1 </div><div class='img'><img src='amen-package-1.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 7 -1.86 0.08 0.14 0.05 0.06 0.72 0.09 0.04 : 0.13 0.01 0.05 0.66 1 </div><div class='img'><img src='amen-package-2.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 8 -1.9 0.06 0.15 0.05 0.08 0.74 0.09 0.02 : 0.17 0.02 0.05 0.67 1 </div><div class='img'><img src='amen-package-3.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 9 -1.93 0.05 0.15 0.03 0.08 0.76 0.1 0.02 : 0.18 0.02 0.05 0.68 1 
+#&gt; 4 4 4 4 4 4 4 4 </div><div class='img'><img src='amen-package-4.png' alt='' width='700' height='433' /></div><div class='output co'>#&gt; 10 -1.96 0.06 0.16 0.04 0.07 0.79 0.1 0.03 : 0.19 0.02 0.05 0.69 1 
+#&gt; 5 5 5 5 5 5 5 5 </div><div class='input'>
 <span class='fu'>summary</span>(<span class='no'>fit</span>)</div><div class='output co'>#&gt; 
 #&gt; Regression coefficients:
 #&gt;                 pmean   psd  z-stat p-val
-#&gt; intercept.dyad -2.071 0.151 -13.757 0.000
-#&gt; rgpa.dyad       0.013 0.058   0.218 0.827
-#&gt; rsmoke.dyad     0.102 0.118   0.862 0.389
-#&gt; cgpa.dyad       0.094 0.019   4.986 0.000
-#&gt; csmoke.dyad     0.079 0.036   2.205 0.027
-#&gt; igrade.dyad     0.797 0.049  16.100 0.000
-#&gt; igpa.dyad       0.083 0.031   2.661 0.008
-#&gt; ismoke.dyad     0.026 0.027   0.935 0.350
+#&gt; intercept.dyad -1.961 0.102 -19.186 0.000
+#&gt; rgpa.dyad       0.058 0.032   1.793 0.073
+#&gt; rsmoke.dyad     0.159 0.059   2.714 0.007
+#&gt; cgpa.dyad       0.039 0.028   1.430 0.153
+#&gt; csmoke.dyad     0.070 0.032   2.170 0.030
+#&gt; igrade.dyad     0.786 0.076  10.303 0.000
+#&gt; igpa.dyad       0.101 0.021   4.820 0.000
+#&gt; ismoke.dyad     0.026 0.021   1.230 0.219
 #&gt; 
 #&gt; Variance parameters:
 #&gt;     pmean   psd
-#&gt; va  0.389 0.132
-#&gt; cab 0.034 0.014
-#&gt; vb  0.077 0.012
-#&gt; rho 0.071 0.019
+#&gt; va  0.194 0.070
+#&gt; cab 0.023 0.020
+#&gt; vb  0.051 0.010
+#&gt; rho 0.686 0.025
 #&gt; ve  1.000 0.000</div><div class='input'>
 <span class='fu'>plot</span>(<span class='no'>fit</span>)</div><div class='img'><img src='amen-package-5.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>

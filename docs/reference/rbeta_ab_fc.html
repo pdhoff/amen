@@ -60,7 +60,7 @@ in a social relations regression model" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
       </span>
     </div>
 
@@ -123,16 +123,15 @@ in a social relations regression model</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rbeta_ab_fc</span>(<span class='no'>Z</span>, <span class='no'>Sab</span>, <span class='no'>rho</span>, <span class='no'>X</span>, <span class='kw'>s2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>iV0</span><span class='kw'>=</span><span class='kw'>NULL</span>,<span class='kw'>m0</span><span class='kw'>=</span><span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>rbeta_ab_fc</span>(<span class='no'>Z</span>, <span class='no'>Sab</span>, <span class='no'>rho</span>, <span class='kw'>X</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>s2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>iV0</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>m0</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>g</span> <span class='kw'>=</span> <span class='fu'>length</span>(<span class='no'>Z</span>))</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>Z</th>
-      <td><p>n X n (latent) normal relational matrix, assumed to follow a 
-social relations regression model (with any multiplicative effects 
-subtracted out).</p></td>
+      <td><p>n X n normal relational matrix</p></td>
     </tr>
     <tr>
       <th>Sab</th>
@@ -151,12 +150,22 @@ subtracted out).</p></td>
       <td><p>dyadic variance</p></td>
     </tr>
     <tr>
+      <th>offset</th>
+      <td><p>a matrix of the same dimension as Z. It is assumed that 
+Z-offset follows a SRRM, so the offset should contain any multiplicative 
+effects (such as <code>U%*% t(V) </code> )</p></td>
+    </tr>
+    <tr>
       <th>iV0</th>
       <td><p>prior precision matrix for regression parameters</p></td>
     </tr>
     <tr>
       <th>m0</th>
       <td><p>prior mean vector for regression parameters</p></td>
+    </tr>
+    <tr>
+      <th>g</th>
+      <td><p>prior variance scale for g-prior when iV0 is unspecified</p></td>
     </tr>
     </table>
     

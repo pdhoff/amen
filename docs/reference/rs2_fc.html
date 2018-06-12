@@ -59,7 +59,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
       </span>
     </div>
 
@@ -121,18 +121,25 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>rs2_fc</span>(<span class='no'>E</span>, <span class='no'>rho</span>,<span class='kw'>nu0</span><span class='kw'>=</span><span class='kw'>NULL</span>,<span class='kw'>s20</span><span class='kw'>=</span><span class='kw'>NULL</span>)</pre>
+    <pre class="usage"><span class='fu'>rs2_fc</span>(<span class='no'>Z</span>, <span class='no'>rho</span>,<span class='kw'>offset</span><span class='kw'>=</span><span class='fl'>0</span>,<span class='kw'>nu0</span><span class='kw'>=</span><span class='kw'>NULL</span>,<span class='kw'>s20</span><span class='kw'>=</span><span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>E</th>
-      <td><p>square residual relational matrix</p></td>
+      <th>Z</th>
+      <td><p>n X n normal relational matrix</p></td>
     </tr>
     <tr>
       <th>rho</th>
       <td><p>current value of rho</p></td>
+    </tr>
+    <tr>
+      <th>offset</th>
+      <td><p>matrix of the same dimension as Z. It is assumed that Z-offset
+is equal to dyadic noise, so the offset should contain any additive and 
+multiplicative effects (such as <code>Xbeta(X,beta+ U%*%t(V) +  
+outer(a,b,"+")  </code> )</p></td>
     </tr>
     <tr>
       <th>nu0</th>

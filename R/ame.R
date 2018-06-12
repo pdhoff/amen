@@ -110,6 +110,30 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   # some settings for symmetric case
   if(symmetric){ Xcol<-Xrow ; rvar<-cvar<-nvar }
 
+  # g-prior setting for nromal data 
+  if(family=="nrm" & is.null(prior$g))
+  { 
+    prior$g<-sum(!is.na(Y))*var(c(Y),na.rm=TRUE)
+  }
+
+  # set informative priors if family isnt normal 
+  if(family!="nrm")
+  {  
+    YB<-1*(Y!=min(Y,na.rm=TRUE) )
+    ybar<-mean(YB,na.rm=TRUE) ; mu<-qnorm(ybar)
+    E<- (YB - ybar)/dnorm(qnorm(ybar)) ; diag(E)<-0
+    a<-rowMeans(E,na.rm=TRUE)  ; a[is.na(a)]<-0 
+    b<-colMeans(E,na.rm=TRUE)  ; b[is.na(b)]<-0
+    vscale<-mean(diag(cov(cbind(a,b))))
+    PHAT<-pnorm(mu+outer(a,b,"+"))
+    vdfmlt<-.25/mean(PHAT*(1-PHAT))
+    if(is.null(prior$Sab0)){ prior$Sab0<-diag(2)*vscale }
+    if(is.null(prior$Suv0)){ prior$Suv0<-diag(2*R)*vscale } 
+    if(is.null(prior$eta0)){ prior$eta0<-round(4*vdfmlt) } 
+    if(is.null(prior$kappa0)){ prior$kappa0<-round((2*R+2)*vdfmlt) }  
+    if(is.null(prior$g)){ prior$g<-sum(!is.na(Y)) }
+  }
+
   # construct design matrix
   n<-nrow(Y) 
   pr<-length(Xrow)/n
@@ -191,12 +215,36 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   Z[is.na(Z)]<-ZA[is.na(Z)] 
    
 
-  # other starting values
+  #### other starting values
+
+  # beta
   beta<-rep(0,dim(X)[3]) 
-  s2<-1 
-  rho<-0
+  if(dim(X)[3]>0) 
+  {
+    beta<-solve( attributes(X)$XX + diag(dim(X)[3]))%*% 
+        crossprod(attributes(X)$mX,c(Z)) 
+  } 
+
+  # a,b,Sab
+  E<-Z-Xbeta(X,beta)  
+  a<-rowMeans(E,na.rm=TRUE)*rvar ; b<-colMeans(E,na.rm=TRUE)*cvar
+  a[is.na(a)]<-0 ; b[is.na(b)]<-0 
   Sab<-cov(cbind(a,b))*tcrossprod(c(rvar,cvar))
-  U<-V<-matrix(0, nrow(Y), R)  
+
+  # s2, rho
+  E<-E-outer(a,b,"+")  
+  s2<-1
+  if(family=="nrm"){s2<-mean(E^2)}
+  rho<-cor( c(E[upper.tri(E)]), c(t(E)[upper.tri(E)]) )*dcor  
+
+  # U,V 
+  U<-V<-matrix(0,nrow(Y),R) 
+  if(R>0) 
+  {  
+    sE<-svd(E)
+    U<-sE$u[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)
+    V<-sE$v[,1:R,drop=FALSE]%*%diag(sqrt(sE$d[1:R]),nrow=R)
+  }
 
   # output items
   BETA <- matrix(nrow = 0, ncol = dim(X)[3] - pr*symmetric)
@@ -229,14 +277,6 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     colnames(BETA)<-c(bni,bnn,bnd) 
   }    
 
-  # marginal means and regression sums of squares
-  Xr<-apply(X,c(1,3),sum)            # row sum
-  Xc<-apply(X,c(2,3),sum)            # col sum
-  mX<- apply(X,3,c)                  # design matrix
-  mXt<-apply(aperm(X,c(2,1,3)),3,c)  # dyad-transposed design matrix
-  XX<-t(mX)%*%mX                     # regression sums of squares
-  XXt<-t(mX)%*%mXt                   # crossproduct sums of squares
-
   # MCMC 
   have_coda<-suppressWarnings(
                try(requireNamespace("coda",quietly = TRUE),silent=TRUE))
@@ -257,7 +297,9 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     if (family=="nrm") s2<-rs2_fc(Z-EZ,rho,nu0=prior$nu0,s20=prior$s20)  
 
     # update beta, a b
-    tmp <- rbeta_ab_fc(Z-U%*%t(V),Sab,rho,X,s2,iV0=prior$iV0,m0=prior$m0)
+    #tmp <- rbeta_ab_fc(Z-U%*%t(V),Sab,rho,X,s2,iV0=prior$iV0,m0=prior$m0)
+    tmp <- rbeta_ab_fc(Z-U%*%t(V),Sab,rho,X,s2,iV0=prior$iV0,m0=prior$m0,
+                       g=prior$g) 
     beta <- tmp$beta
     a <- tmp$a * rvar
     b <- tmp$b * cvar 
@@ -267,23 +309,23 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     if(rvar & cvar & !symmetric)
     {
 
-      Sab<-rSab_fc(a,b,prior$Sab0,prior$eta0)    
+      Sab<-rSab_fc(a,b,Sab0=prior$Sab0,eta0=prior$eta0)    
 
       if(family=="bin")
       {
-        tmp<-raSab_bin_fc(Z,Y,a,b,Sab,prior$Sab0,prior$eta0) 
+        tmp<-raSab_bin_fc(Z,Y,a,b,Sab,Sab0=prior$Sab0,eta0=prior$eta0) 
         Z<-tmp$Z;Sab<-tmp$Sab;a<-tmp$a
       }
 
       if(family=="cbin")
       {
-        tmp<-raSab_cbin_fc(Z,Y,a,b,Sab,odmax,odobs,prior$Sab0,prior$eta0)
+        tmp<-raSab_cbin_fc(Z,Y,a,b,Sab,odmax,odobs,Sab0=prior$Sab0,eta0=prior$eta0)
         Z<-tmp$Z;Sab<-tmp$Sab;a<-tmp$a
       }
       
       if(family=="frn")
       { 
-        tmp<-raSab_frn_fc(Z,Y,YL,a,b,Sab,odmax,odobs,prior$Sab0,prior$eta0) 
+        tmp<-raSab_frn_fc(Z,Y,YL,a,b,Sab,odmax,odobs,Sab0=prior$Sab0,eta0=prior$eta0) 
         Z<-tmp$Z;Sab<-tmp$Sab;a<-tmp$a 
       }
     }
@@ -310,7 +352,11 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     # update rho
     if(dcor) 
     {
-      rho<-rrho_mh(Z-(Xbeta(X, beta) + outer(a, b, "+") + U %*% t(V)), rho,s2)
+      if(rvar & cvar){rho<-rrho_fc(Z,Sab,s2,offset=Xbeta(X,beta) + U%*%t(V)) }
+      if(!(rvar&cvar))
+      { 
+        rho<-rrho_mh(Z,rho,s2,offset=Xbeta(X,beta) + U%*%t(V)+ outer(a,b,"+"))  
+      }
     }
 
     # shrink rho - symmetric case 
@@ -323,7 +369,11 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
       shrink<- (s>.5*burn)
 
       if(symmetric){ UV<-rUV_sym_fc(E, U, V, s2) }
-      if(!symmetric){UV<-rUV_fc(E, U, V,rho, s2,prior$Psi0,prior$kappa0) }
+      if(!symmetric)
+      { 
+        Suv<-rSuv_fc(U,V,Suv0=prior$Suv0,kappa0=prior$kappa0)
+        UV<-rUV_fc(E, U, V,Suv,rho, s2) 
+      }
 
       U<-UV$U ; V<-UV$V
     }    

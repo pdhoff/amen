@@ -4,23 +4,28 @@ author: "Peter Hoff"
 date: "`r substring(Sys.time(),1,10)`"
 ---
 
-
+Load the library:
 ```{r}
 library(amen)
 ```
 
+Set up the data:
 ```{r}
 data(lazegalaw)
 
 Y<-lazegalaw$Y[,,2]
+Xn<-lazegalaw$X[,c(2,4,5,6)]
 Xd<-lazegalaw$Y[,,-2]
-Xn<-lazegalaw$X[,c(1,2,4,5,6)]
+Xd<-array( c(Xd,outer(Xn[,4],Xn[,4],"==")),dim=dim(Xd)+c(0,0,1))
+dimnames(Xd)[[3]]<-c("advice","cowork","samepractice")
 
 dimnames(Xd)[[3]]
 dimnames(Xn)[[2]]
+```	
 
+plot the network with "practice" denoted by plotting color:
 ```{r,results='hide',message=FALSE}
-netplot(lazegalaw$Y[,,2],ncol=Xn[,3])
+netplot(lazegalaw$Y[,,2],ncol=Xn[,4])
 ```
 
 ```{r,fig.keep='last',results='hide',cache=TRUE}

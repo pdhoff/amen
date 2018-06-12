@@ -4,10 +4,12 @@
 \alias{zscores}
 \title{rank-based z-scores}
 \usage{
-zscores(y)
+zscores(y,ties.method="average")
 }
 \arguments{
 \item{y}{a numeric vector}
+
+\item{ties.method}{method for dealing with ties}
 }
 \value{
 a numeric vector

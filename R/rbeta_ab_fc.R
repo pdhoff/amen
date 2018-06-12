@@ -3,24 +3,26 @@
 #' Simulates from the joint full conditional distribution of (beta,a,b)
 #' in a social relations regression model
 #' 
-#' @usage rbeta_ab_fc(Z, Sab, rho, X, s2 = 1, iV0=NULL,m0=NULL)
-#' @param Z n X n (latent) normal relational matrix, assumed to follow a 
-#' social relations regression model (with any multiplicative effects 
-#' subtracted out). 
+#' @param Z n X n normal relational matrix
 #' @param Sab row and column covariance
 #' @param rho dyadic correlation
 #' @param X n x n x p covariate array
 #' @param s2 dyadic variance
+#' @param offset a matrix of the same dimension as Z. It is assumed that 
+#' Z-offset follows a SRRM, so the offset should contain any multiplicative 
+#' effects (such as \code{U\%*\% t(V) } )
 #' @param iV0 prior precision matrix for regression parameters
-#' @param m0 prior mean vector for regression parameters
+#' @param m0 prior mean vector for regression parameters 
+#' @param g prior variance scale for g-prior when iV0 is unspecified 
 #' 
 #' @return \item{beta}{regression coefficients} \item{a}{additive row effects}
 #' \item{b}{additive column effects}
 #' @author Peter Hoff
 #' @export rbeta_ab_fc
 rbeta_ab_fc<-
-function(Z,Sab,rho,X=NULL,s2=1,iV0=NULL,m0=NULL)
+function(Z,Sab,rho,X=NULL,s2=1,offset=0,iV0=NULL,m0=NULL,g=length(Z))
 {
+  Z<-Z-offset
 
   ### make fake design matrix if none provided
   if(is.null(X)){ X<-design_array(intercept=FALSE,n=nrow(Z)) }
@@ -44,13 +46,30 @@ function(Z,Sab,rho,X=NULL,s2=1,iV0=NULL,m0=NULL)
   XXt<-attributes(X)$XXt
   ###
 
+  ### 
+  p<-dim(X)[3]
+  n<-nrow(Z)
+  ###
+
   ### set priors 
-  if(is.null(iV0)){iV0<-(XX+diag(diag(XX)/length(Z),nrow=nrow(XX)))/length(Z)^2}
+  if(p>0 & is.null(iV0))
+  { 
+    # g-prior plus small ridge in case XX is singular
+    iV0<-XX/g + diag(diag(XX),nrow=nrow(XX))/g^2  
+
+    # now flatten prior on intercept
+    if(all(mX[,1]==1))
+    {  
+      V0<-solve(iV0) 
+      V0[1,1]<-V0[1,1] + sqrt(g) - g/n^2 
+      iV0<-solve(V0)  
+    } 
+  } 
+
   if(is.null(m0)){ m0<-rep(0,dim(X)[3]) } 
   ###
 
   ### decorrelation
-  p<-dim(X)[3] 
   Se<-matrix(c(1,rho,rho,1),2,2)*s2
   iSe2<-mhalf(solve(Se))
   td<-iSe2[1,1] ; to<-iSe2[1,2]
@@ -61,7 +80,7 @@ function(Z,Sab,rho,X=NULL,s2=1,iV0=NULL,m0=NULL)
   mXs<-td*mX+to*mXt                  # matricized transformed X
   XXs<-(to^2+td^2)*XX + 2*to*td*XXt  # sum of squares for transformed X
   Zs<-td*Z+to*t(Z)
-  zr<-rowSums(Zs) ; zc<-colSums(Zs) ; zs<-sum(zc) ; n<-length(zr) 
+  zr<-rowSums(Zs) ; zc<-colSums(Zs) ; zs<-sum(zc) 
   ###
 
   ### dyadic and prior contributions  
@@ -76,7 +95,6 @@ function(Z,Sab,rho,X=NULL,s2=1,iV0=NULL,m0=NULL)
   ab<-matrix(0,nrow(Z),2)
   if(k>0)
   {
-    n<-nrow(Z)
     G<-tmp$vec[,1:k] %*% sqrt(diag(tmp$val[1:k],nrow=k))
     K<-matrix(c(0,1,1,0),2,2)
     A<-n*t(G)%*%G + diag(k)
@@ -120,7 +138,7 @@ function(Z,Sab,rho,X=NULL,s2=1,iV0=NULL,m0=NULL)
   if(k>0) 
   {
     E<- Zs-Xbeta(td*X+to*aperm(X,c(2,1,3)),beta)
-    er<-rowSums(E) ; ec<-colSums(E) ; es<-sum(ec) ; n<-length(er) 
+    er<-rowSums(E) ; ec<-colSums(E) ; es<-sum(ec) 
     m<-t(t(crossprod(rbind(er,ec),t(iA0%*%t(G)))) + rowSums(es*C0%*%t(G)) )
     hiA0<-mhalf(iA0)
     e<-matrix(rnorm(n*k),n,k) 

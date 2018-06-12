@@ -56,7 +56,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
       </span>
     </div>
 
@@ -111,14 +111,34 @@
       <small>Source: <a href='http://github.com/pdhoff/amen/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="amen-1-4-2" class="section level1">
+<h1 class="page-header">
+<a href="#amen-1-4-2" class="anchor"></a>amen 1.4.2<small> Unreleased </small>
+</h1>
+<div id="changes" class="section level4">
+<h4 class="hasAnchor">
+<a href="#changes" class="anchor"></a>Changes</h4>
+<ul>
+<li><p>Added a function <code>rrho_fc</code> that updates the dyadic correlation <code>rho</code> from its full conditional distribution, leading to faster-mixing Markov chains.</p></li>
+<li><p>Changed <code>rZ_fc_bin</code> to avoid numerical instabilities that lead to infinities.</p></li>
+<li><p>Changed <code>ame_rep</code> so that the GOF statistics are calculated for each rep.</p></li>
+<li><p>Changed the default priors. For fitting non-normal models to sparse data, the priors on the covariance matrices <code>Sab</code> and <code>Suv</code> have a smaller scale. Also changed the prior on <code>beta</code> to be a g-prior on the non-intercept coefficients but a more diffuse prior on the intercept.</p></li>
+<li><p>Changed the name of the covariance of <code>U</code> and <code>V</code> from <code>Psi</code> to <code>Suv</code>.</p></li>
+<li><p>Moved the update of <code>Suv</code> outside of the update for <code>U</code> and <code>V</code>.</p></li>
+<li><p>Added an argument <code>offset</code> to most Gibbs sampling functions. The function documentation indicates what things should be subtracted off (offset) for each update.</p></li>
+<li><p>Fixed a bug in plot.ame that created the wrong number of panels when <code>p=0</code>.</p></li>
+<li><p>Added a secondary plotting parameter to <code>circplot</code>.</p></li>
+</ul>
+</div>
+</div>
     <div id="amen-1-4-1" class="section level1">
 <h1 class="page-header">
 <a href="#amen-1-4-1" class="anchor"></a>amen 1.4.1<small> Unreleased </small>
 </h1>
 <p>This update from 1.3 is a medium-sized step towards making <code>amen</code> more modular, so that individuals can build their own custom AME models. There are some medium-sized changes detailed below. The vignette sill works fine, but please let me know if this screws up something you’ve been working on, or if you have strong objections to some of the changes.</p>
-<div id="changes" class="section level4">
+<div id="changes-1" class="section level4">
 <h4 class="hasAnchor">
-<a href="#changes" class="anchor"></a>Changes</h4>
+<a href="#changes-1" class="anchor"></a>Changes</h4>
 <ul>
 <li><p>Change to <code>rbeta_ab_fc</code>: The function now takes as optional arguments a prior mean and a prior precision matrix for beta.<br>
 The default prior mean is zero and the default prior precision is much smaller than in 1.3.</p></li>
@@ -140,6 +160,7 @@ the diagonal of the error matrix is now part of the update; the function now tak
 to prevent inadvertent fits of the normal model to binary data.</p></li>
 <li><p>The order of the “model/family” and “R” parameter have been changed in the <code>ame</code> and <code>ame_rep</code> functions.</p></li>
 <li><p>The <code>rUV_fc</code> function now takes arguments for the prior distribution over Psi, the covariance matrix of U and V.</p></li>
+<li><p>The <code>zscores</code> function now takes an optional argument for dealing with ties.</p></li>
 </ul>
 </div>
 <div id="to-do-list" class="section level3">
@@ -164,6 +185,7 @@ to prevent inadvertent fits of the normal model to binary data.</p></li>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#amen-1-4-2">1.4.2</a></li>
         <li><a href="#amen-1-4-1">1.4.1</a></li>
       </ul>
     </div>

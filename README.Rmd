@@ -2,6 +2,11 @@
 
 #### Additive and multiplicative effects network models
 
+
+
+[Package website](https://pdhoff.github.io/amen/)
+
+
 ```{r,echo=FALSE}
 library(amen)
 ```
@@ -16,6 +21,7 @@ fitC<-ame(Y,family="bin",R=2,nscan=5000)
 ```{r,echo=FALSE}
 circplot(IR90s$dyadvars[,,1],U=fitC$U,V=fitC$V,pscale=1.15,mscale=.3,jitter=.3)
 ```
+
 
 #### About
 Additive and multiplicative effects (AME) models 

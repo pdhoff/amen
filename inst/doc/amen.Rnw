@@ -622,7 +622,7 @@ fit_srrm0<-ame(Y,Xd[,,1:2],Xn,Xn,family="nrm")
 \begin{figure}
 <<echo=FALSE,fig.height=3,fig.width=6>>=
 hist(fit_srrm0$GOF[-1,4],main="",yaxt="n",ylab="",prob=TRUE,col="lightgreen",breaks=12,
-      xlab=names(GOF)[4] ,xlim=range(fit_srrm0$GOF[,4]),ylim=c(0,17) )
+      xlab=names(GOF)[4] ,xlim=range(fit_srrm0$GOF[,4]),ylim=c(0,20) )
 hist(fit_srrm$GOF[-1,4],prob=TRUE,add=TRUE, 
         col=rgb(clr[1],clr[2],clr[3],clr[4])) 
 abline(v=GOF[4],col="red")
@@ -1223,16 +1223,19 @@ Y<-sampsonmonks[,,3]
 
 apply(Y>0,1,sum,na.rm=T)
 @
-Notice that two of the monks didn't follow the survey instructions, and 
-nominated more than three other monks. We treat the maximum 
-number of nominations for these two monks as four. 
-This can be done using the {\tt ame} fitting function, and 
-specifying the FRN likelihood and the number of maximum nominations as follows:
+Notice that two of the monks didn't follow the survey instructions and 
+nominated more than three other monks.  
+Evidently, nominating four other monks was possible and 
+so we take the maximum  
+number of nominations to be four.% for these two monks as four. 
+Fitting the model with the {\tt ame} function can be done by 
+specifying the FRN likelihood:%
+% and the number of maximum nominations as follows:
+%odmax<-rep(3,nrow(Y))
+%odmax[ apply(Y>0,1,sum,na.rm=T)>3 ]<-4
+%
 <<cache=TRUE,fig.keep='none',results='hide'>>=
-odmax<-rep(3,nrow(Y)) 
-odmax[ apply(Y>0,1,sum,na.rm=T)>3 ]<-4 
-
-fit<-ame(Y,R=2,family="frn",odmax=odmax,intercept=FALSE) 
+fit<-ame(Y,R=2,family="frn",odmax=4) 
 @
 
 <<>>=
@@ -1240,12 +1243,20 @@ summary(fit)
 @
 
 Goodness of fit plots for these data appear in Figure 
-\ref{fig:smonk}. Notice that the fit in terms of row heterogeneity is 
-very good. This is not too surprising: 
-The simulated sociomatrices used to produce this plot 
-are generated to satisfy the constraint imposed 
-the outdegree constraint imposed by {\tt odmax}, which 
-greatly limits the possible amount of outdegree heterogeneity. 
+\ref{fig:smonk}.
+% Notice that the fit in terms of row heterogeneity is 
+%very good. This is not too surprising: 
+%The simulated sociomatrices used to produce this plot 
+%are generated to satisfy the constraint imposed 
+%the outdegree constraint imposed by {\tt odmax}, which 
+%greatly limits the possible amount of outdegree heterogeneity. 
+Notice that the fitted model overstates the amount of row heterogeneity. 
+This is because the only observed row heterogeneity comes from the  
+two monks who didn't follow the survey directions, resulting in an 
+asymmetric outdegree 
+distribution with mass on only two values, three and four. 
+This is not 
+well-modeled by a normal random effects model for the $a_i$'s. 
 
 \begin{figure}
 <<echo=FALSE,fig.height=6,fig.width=5,fig.align='center'>>=
@@ -1449,8 +1460,6 @@ this egocentric sample.
 
 
 
-
-
 <<mdsimstudy,cache=TRUE,echo=FALSE,results='hide'>>=
 BETA_SS<-NULL
 for(sim in 1:100)
@@ -1497,8 +1506,8 @@ beta_pop<-apply(fit_pop$BETA,2,mean)
 par(mfrow=c(2,2),mar=c(3,3,1,1),mgp=c(1.75,.75,0))
 for(k in 1:4)
 {
-  hist( BETA_SS[,k] ,col="lightgreen", main="",ylab="",xlab=cnames[k],yaxt="n",
-         xlim=1.2*range(c(beta_pop[k],BETA_SS[,k])) ) 
+  hist( BETA_SS[,k] ,col="lightgreen", main="",ylab="",xlab=cnames[k],yaxt="n")
+         #xlim=1.2*range(c(beta_pop[k],BETA_SS[,k])) ) 
   abline(v=beta_pop[k],lwd=2,col="blue")
 }
 @
@@ -1827,18 +1836,14 @@ As such, we view this as an ordinal outcome, to  which
 we fit an  ordinal version of a rank-1 symmetric  AME  model 
  using the {\tt ame} command:
 <<cwfitR1,cache=TRUE,fig.keep='none',results='hide'>>=
-fit_cw_R1<-ame(Y,Xd,Xn,R=1,family="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=100)
+fit_cw_R1<-ame(Y,Xd,Xn,R=1,family="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=50)
 @ 
 
-%<<cwfitR2,cache=TRUE,fig.keep='none',results='hide'>>=
-%fit_cw_R2<-ame(Y,Xd,Xn,R=2,family="ord",symmetric=TRUE,burn=1000,nscan=100000,odens=100)
-%@
 
 
 \begin{figure}
 <<echo=FALSE>>=
 plot(fit_cw_R1)
-#plot(fit_cw_R2)
 @
 \caption{Diagnostic plots for the rank-1 AME model of the {\tt coldwar} data.}
 \end{figure}

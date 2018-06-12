@@ -59,7 +59,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.1</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
       </span>
     </div>
 
@@ -121,14 +121,14 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>rUV_fc</span>(<span class='no'>E</span>, <span class='no'>U</span>, <span class='no'>V</span>, <span class='no'>rho</span>, <span class='kw'>s2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>Psi0</span><span class='kw'>=</span><span class='kw'>NULL</span>, <span class='kw'>kappa0</span><span class='kw'>=</span><span class='kw'>NULL</span> )</pre>
+    <pre class="usage"><span class='fu'>rUV_fc</span>(<span class='no'>Z</span>, <span class='no'>U</span>, <span class='no'>V</span>, <span class='no'>Suv</span>, <span class='no'>rho</span>, <span class='kw'>s2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>0</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
-      <th>E</th>
-      <td><p>square residual relational matrix</p></td>
+      <th>Z</th>
+      <td><p>n X n normal relational matrix</p></td>
     </tr>
     <tr>
       <th>U</th>
@@ -139,6 +139,10 @@
       <td><p>current value of V</p></td>
     </tr>
     <tr>
+      <th>Suv</th>
+      <td><p>covariance of (U V)</p></td>
+    </tr>
+    <tr>
       <th>rho</th>
       <td><p>dyadic correlation</p></td>
     </tr>
@@ -147,12 +151,11 @@
       <td><p>dyadic variance</p></td>
     </tr>
     <tr>
-      <th>Psi0</th>
-      <td><p>scale parameter for the prior for the covariance matrix of U,V</p></td>
-    </tr>
-    <tr>
-      <th>kappa0</th>
-      <td><p>degrees of freedom parameter for the prior for the covariance matrix of U,V</p></td>
+      <th>offset</th>
+      <td><p>a matrix of the same dimension as Z. It is assumed that
+Z-offset is equal to the multiplicative effects plus dyadic noise, so the 
+offset should contain any additive effects (such as <code>Xbeta(X,beta+ 
+outer(a,b,"+")  </code>  )</p></td>
     </tr>
     </table>
     

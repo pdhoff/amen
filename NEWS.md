@@ -1,3 +1,31 @@
+# amen 1.4.2 
+
+#### Changes 
+
+* Added a function `rrho_fc` that updates the dyadic correlation `rho` from its full conditional distribution, leading to faster-mixing Markov chains. 
+
+* Changed `rZ_fc_bin` to avoid numerical instabilities that lead to infinities. 
+
+* Changed `ame_rep` so that the GOF statistics are calculated for each rep. 
+
+* Changed the default priors. For fitting non-normal models to sparse 
+data, the priors on the covariance matrices `Sab` and `Suv` have a smaller
+scale. Also changed the prior on `beta` to be a g-prior on the non-intercept 
+coefficients but a more diffuse prior on the intercept. 
+
+* Changed the name of the covariance of `U` and `V` from  `Psi` to `Suv`. 
+
+* Moved the update of `Suv` outside of the update for `U` and `V`. 
+
+* Added an argument `offset` to most Gibbs sampling functions. The function documentation indicates what things should be subtracted off (offset) for each update. 
+
+* Fixed a bug in plot.ame that created the wrong number of panels when `p=0`.
+
+* Added a secondary plotting parameter to  `circplot`.
+
+
+
+
 # amen 1.4.1
 
 This update from 1.3 is a medium-sized step towards making 
@@ -80,6 +108,8 @@ or if you have strong objections to some of the changes.
 
 * The `rUV_fc` function now takes arguments for the prior distribution 
     over Psi, the covariance matrix of U and V. 
+
+* The `zscores` function now takes an optional argument for dealing with ties. 
 
 ### To do list:
 
