@@ -235,9 +235,9 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,family,R=0,
   UVPS <- U %*% t(V) * 0 
   APS<-BPS<- rep(0,nrow(Y[,,1]))  
   YPS<-array(0,dim=dim(Y)) ; dimnames(YPS)<-dimnames(Y)
-  GOF<-matrix(rowMeans(apply(Y,3,gofstats)),1,5)  
-  rownames(GOF)<-"obs"
-  colnames(GOF)<- c("sd.rowmean","sd.colmean","dyad.dep","cycle.dep","trans.dep")
+  GOF<-array( apply(Y,3,gofstats) ,c(5,N,1)) 
+  dimnames(GOF)[[1]]<-c("sd.rowmean","sd.colmean","dyad.dep","cycle.dep","trans.dep")  
+  if(!is.null(dimnames(Y)[[3]]) ){ dimnames(GOF)[[2]]<-dimnames(Y)[[3]]} 
   names(APS)<-names(BPS)<-rownames(U)<-rownames(V)<-rownames(Y[,,1])
    
   # names of parameters, asymmetric case  
@@ -294,6 +294,7 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,family,R=0,
     a <- tmp$a * rvar
     b <- tmp$b * cvar 
     if(symmetric){ a<-b<-(a+b)/2 }
+
  
     # update Sab - full SRM
     if(rvar & cvar & !symmetric )
@@ -334,7 +335,6 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,family,R=0,
      
     # shrink rho - symmetric case 
     if(symmetric){ rho<-min(.9999,1-1/sqrt(s)) }
-
 
 
     # update U,V
@@ -397,9 +397,8 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,family,R=0,
         if(family=="rrl"){ Ys[,,t]<-simY_rrl(EZ[,,t],rho,odobs,YO=Y[,,t] ) }
         if(family=="nrm"){ Ys[,,t]<-simY_nrm(EZ[,,t],rho,s2) }
         if(family=="ord"){ Ys[,,t]<-simY_ord(EZ[,,t],rho,Y[,,t]) }
-    
         if(symmetric)
-        {  
+        { 
           Yst<-Ys[,,t] ; Yst[lower.tri(Yst)]<-0 ; Ys[,,t]<-Yst+t(Yst)
         }
 
@@ -409,7 +408,13 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,family,R=0,
       YPS<-YPS+Ys
 
       # save posterior predictive GOF stats
-      if(gof){Ys[is.na(Y)]<-NA ;GOF<-rbind(GOF,rowMeans(apply(Ys,3,gofstats)))}
+      if(gof)
+      {
+        Ys[is.na(Y)]<-NA  
+        GOF<-array( c(GOF,apply(Ys,3,gofstats)), dim=dim(GOF)+c(0,0,1)) 
+        dimnames(GOF)[[1]]<-c("sd.rowmean","sd.colmean",
+                              "dyad.dep","cycle.dep","trans.dep")
+      }
        
       # print MC progress 
       if(print) 
@@ -450,12 +455,13 @@ ame_rep<-function(Y, Xdyad=NULL, Xrow=NULL, Xcol=NULL,family,R=0,
 
         # plot GOF 
         if(gof)
-        {
+        { 
+          DG<-sweep( GOF[,,-1,drop=FALSE],c(1,2),GOF[,,1],"-")   
+          DG<-zapsmall(DG) 
           for(k in 1:5)
-          {
-            hist(GOF[-1,k],xlim=range(GOF[,k]),main="",prob=TRUE,
-                 xlab=colnames(GOF)[k],col="lightblue",ylab="",yaxt="n")
-            abline(v=GOF[1,k],col="red")
+          { 
+            boxplot(t(DG[k,,]),col="lightblue",ylab=dimnames(GOF)[[1]][k]) 
+            abline(h=0,col="gray") 
           }
         }
 
