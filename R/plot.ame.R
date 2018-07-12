@@ -43,13 +43,29 @@ function(x, ...)
   }
 
   if(gof)
-  {
-    for(k in 1:5)
+  { 
+    ## ame 
+    if(length(dim(fit$GOF))==2)
     {
-      hist(fit$GOF[-1,k],xlim=range(fit$GOF[,k]),main="",prob=TRUE,
-           xlab=colnames(fit$GOF)[k],col="lightblue",ylab="",yaxt="n")
-           abline(v=fit$GOF[1,k],col="red")
-    }
-  }
+      for(k in 1:5)
+      {
+        hist(fit$GOF[-1,k],xlim=range(fit$GOF[,k]),main="",prob=TRUE,
+             xlab=colnames(fit$GOF)[k],col="lightblue",ylab="",yaxt="n")
+             abline(v=fit$GOF[1,k],col="red")
+      }
+    } 
+    ## ame_rep
+    if(length(dim(fit$GOF))==3)  
+    { 
+      DG<-sweep( fit$GOF[,,-1,drop=FALSE],c(1,2),fit$GOF[,,1],"-")
+      DG<-zapsmall(DG)
+      for(k in 1:5)
+      {
+        boxplot(t(DG[k,,]),col="lightblue",ylab=dimnames(fit$GOF)[[1]][k])
+        abline(h=0,col="gray")
+      }
+    } 
+  } 
+
 }
 

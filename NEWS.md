@@ -2,6 +2,8 @@
 
 #### Changes 
 
+* Fixed a bug so that `plot.ame` works for both `ame` and `ame_rep`. 
+
 * Added a function `rrho_fc` that updates the dyadic correlation `rho` from its full conditional distribution, leading to faster-mixing Markov chains. 
 
 * Changed `rZ_fc_bin` to avoid numerical instabilities that lead to infinities. 
@@ -19,7 +21,7 @@ coefficients but a more diffuse prior on the intercept.
 
 * Added an argument `offset` to most Gibbs sampling functions. The function documentation indicates what things should be subtracted off (offset) for each update. 
 
-* Fixed a bug in plot.ame that created the wrong number of panels when `p=0`.
+* Fixed a bug in `plot.ame` that created the wrong number of panels when `p=0`.
 
 * Added a secondary plotting parameter to  `circplot`.
 
