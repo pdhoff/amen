@@ -24,16 +24,16 @@ circplot(IR90s$dyadvars[,,1],U=fitC$U,V=fitC$V,pscale=1.15,mscale=.3,jitter=.3)
 
 
 #### About
-Additive and multiplicative effects (AME) models 
+Additive and multiplicative effects network models (AMEN models)
 provide a statistical modeling framework for dyadic network and 
 relational data, built upon familiar data analysis tools such as 
 linear regression, random effects models and matrix decompositions. 
 The `amen` package provides Bayesian model fitting algorithms
-for AME models, and accommodates a variety of types of 
+for AMEN models, and accommodates a variety of types of 
 network relations, 
 including continuous, binary and ordinal dyadic variables. 
 
-The basic  AME model is of the form 
+The basic AMEN model is of the form 
 $y_{i,j} \sim  \beta^\top x_{i,j} + u_i^\top v_j + a_i +b_j + \epsilon_{i,j}$
 where 
 
@@ -60,12 +60,28 @@ install.packages("amen")
 ```
 
 
-#### Documentation
+#### Documentation and citation
 
-A tutorial and many data analysis examples are available 
+A tutorial article and many data analysis examples are available 
 via the [vignette](https://github.com/pdhoff/amen/blob/master/inst/doc/amen.pdf). Please cite this as 
 
 Hoff, P.D. (2015) "Dyadic data analysis with *amen*". arXiv:1506.08237. 
+
+A review article that provides some mathematical details and derivations 
+is available on [arXiv](https://arxiv.org/abs/1807.08038). Please cite this
+
+Hoff, P.D. (2018) "Additive and multiplicative effects network models". arXiv:1807.08038. 
+
+The first version of the AMEN model appeared in 
+
+Hoff, P.D. (2005) "Bilinear mixed-effects models for dyadic data"
+JASA 100(469) 286-295. 
+
+That version assumed the multiplicative sender and receiver effects were equal ($u_i=v_i$). The AMEN model in its current form does not have this 
+restriction. The current AMEN model first appeared in 
+
+Hoff, P.D., Fosdick, B.K., Volfovsky, A. and Stovel, K. (2013) "Likelihoods for fixed rank nomination networks". Network Science, 1(3):253–277. 
+
 
 #### Some examples
 
