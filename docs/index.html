@@ -108,8 +108,8 @@
 <div id="about" class="section level4">
 <h4 class="hasAnchor">
 <a href="#about" class="anchor"></a>About</h4>
-<p>Additive and multiplicative effects (AME) models provide a statistical modeling framework for dyadic network and relational data, built upon familiar data analysis tools such as linear regression, random effects models and matrix decompositions. The <code>amen</code> package provides Bayesian model fitting algorithms for AME models, and accommodates a variety of types of network relations, including continuous, binary and ordinal dyadic variables.</p>
-<p>The basic AME model is of the form <span class="math inline">\(y_{i,j} \sim \beta^\top x_{i,j} + u_i^\top v_j + a_i +b_j + \epsilon_{i,j}\)</span> where</p>
+<p>Additive and multiplicative effects network models (AMEN models) provide a statistical modeling framework for dyadic network and relational data, built upon familiar data analysis tools such as linear regression, random effects models and matrix decompositions. The <code>amen</code> package provides Bayesian model fitting algorithms for AMEN models, and accommodates a variety of types of network relations, including continuous, binary and ordinal dyadic variables.</p>
+<p>The basic AMEN model is of the form <span class="math inline">\(y_{i,j} \sim \beta^\top x_{i,j} + u_i^\top v_j + a_i +b_j + \epsilon_{i,j}\)</span> where</p>
 <ul>
 <li><p><span class="math inline">\(y_{i,j}\)</span> is the observed dyadic variable being modeled and <span class="math inline">\(x_{i,j}\)</span> is an observed vector of regressors;</p></li>
 <li><p><span class="math inline">\(a_i + b_j + \epsilon_{i,j}\)</span> is an additive random effects term that describes sender and receiver variance (such as outdegree and indegree heterogeneity) and dyadic correlation;</p></li>
@@ -125,11 +125,17 @@ devtools::<span class="kw">install_github</span>(<span class="st">"pdhoff/amen"<
 <span class="co"># CRAN-approved version on CRAN</span>
 <span class="kw">install.packages</span>(<span class="st">"amen"</span>)</code></pre></div>
 </div>
-<div id="documentation" class="section level4">
+<div id="documentation-and-citation" class="section level4">
 <h4 class="hasAnchor">
-<a href="#documentation" class="anchor"></a>Documentation</h4>
-<p>A tutorial and many data analysis examples are available via the <a href="https://github.com/pdhoff/amen/blob/master/inst/doc/amen.pdf">vignette</a>. Please cite this as</p>
+<a href="#documentation-and-citation" class="anchor"></a>Documentation and citation</h4>
+<p>A tutorial article and many data analysis examples are available via the <a href="https://github.com/pdhoff/amen/blob/master/inst/doc/amen.pdf">vignette</a>. Please cite this as</p>
 <p>Hoff, P.D. (2015) “Dyadic data analysis with <em>amen</em>”. arXiv:1506.08237.</p>
+<p>A review article that provides some mathematical details and derivations is available on <a href="https://arxiv.org/abs/1807.08038">arXiv</a>. Please cite this</p>
+<p>Hoff, P.D. (2018) “Additive and multiplicative effects network models”. arXiv:1807.08038.</p>
+<p>The first version of the AMEN model appeared in</p>
+<p>Hoff, P.D. (2005) “Bilinear mixed-effects models for dyadic data” JASA 100(469) 286-295.</p>
+<p>That version assumed the multiplicative sender and receiver effects were equal (<span class="math inline">\(u_i=v_i\)</span>). The AMEN model in its current form does not have this restriction. The current AMEN model first appeared in</p>
+<p>Hoff, P.D., Fosdick, B.K., Volfovsky, A. and Stovel, K. (2013) “Likelihoods for fixed rank nomination networks”. Network Science, 1(3):253–277.</p>
 </div>
 <div id="some-examples" class="section level4">
 <h4 class="hasAnchor">

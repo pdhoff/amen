@@ -119,6 +119,7 @@
 <h4 class="hasAnchor">
 <a href="#changes" class="anchor"></a>Changes</h4>
 <ul>
+<li><p>Fixed a bug so that <code>plot.ame</code> works for both <code>ame</code> and <code>ame_rep</code>.</p></li>
 <li><p>Added a function <code>rrho_fc</code> that updates the dyadic correlation <code>rho</code> from its full conditional distribution, leading to faster-mixing Markov chains.</p></li>
 <li><p>Changed <code>rZ_fc_bin</code> to avoid numerical instabilities that lead to infinities.</p></li>
 <li><p>Changed <code>ame_rep</code> so that the GOF statistics are calculated for each rep.</p></li>
@@ -126,7 +127,7 @@
 <li><p>Changed the name of the covariance of <code>U</code> and <code>V</code> from <code>Psi</code> to <code>Suv</code>.</p></li>
 <li><p>Moved the update of <code>Suv</code> outside of the update for <code>U</code> and <code>V</code>.</p></li>
 <li><p>Added an argument <code>offset</code> to most Gibbs sampling functions. The function documentation indicates what things should be subtracted off (offset) for each update.</p></li>
-<li><p>Fixed a bug in plot.ame that created the wrong number of panels when <code>p=0</code>.</p></li>
+<li><p>Fixed a bug in <code>plot.ame</code> that created the wrong number of panels when <code>p=0</code>.</p></li>
 <li><p>Added a secondary plotting parameter to <code>circplot</code>.</p></li>
 </ul>
 </div>
