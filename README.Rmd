@@ -74,10 +74,10 @@ Hoff, P.D. (2018) "Additive and multiplicative effects network models". arXiv:18
 
 The first version of the AMEN model appeared in 
 
-Hoff, P.D. (2005) "Bilinear mixed-effects models for dyadic data"
+Hoff, P.D. (2005) "Bilinear mixed-effects models for dyadic data".
 JASA 100(469) 286-295. 
 
-That version assumed the multiplicative sender and receiver effects were equal ($u_i=v_i$). The AMEN model in its current form does not have this 
+That version restricted the multiplicative sender and receiver effects to be equal ($u_i=v_i$). The AMEN model in its current form does not have this 
 restriction. The current AMEN model first appeared in 
 
 Hoff, P.D., Fosdick, B.K., Volfovsky, A. and Stovel, K. (2013) "Likelihoods for fixed rank nomination networks". Network Science, 1(3):253–277. 
