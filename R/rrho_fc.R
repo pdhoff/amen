@@ -72,13 +72,16 @@ llsrmRho<-function(Y,Sab,rhos,s2=1)
 #' regression terms and multiplicative effects (such as 
 #' \code{Xbeta(X,beta+ U\%*\%t(V) }   )
 #' @param ngp the number of points for an unevenly-spaced 
-#' grid on which to approximate the full conditional distribution
+#' grid on which to approximate the full conditional distribution 
+#' @param asp use arc sine prior (TRUE) or uniform prior (FALSE) 
 #' 
 #' @return a value of rho
 #' @author Peter Hoff
 #' @export rrho_fc
-rrho_fc<-function(Z,Sab,s2=1,offset=0,ngp=100)
+rrho_fc<-function(Z,Sab,s2=1,offset=0,ngp=100,asp=NULL)
 { 
+  if(is.null(asp)){ asp<-TRUE } 
+
   E<-Z-offset
 
   ## first obtain rough estimate of rho and its sd
@@ -99,12 +102,13 @@ rrho_fc<-function(Z,Sab,s2=1,offset=0,ngp=100)
 
   ## griddy Gibbs
   ll<-llsrmRho(E,Sab,rhos,s2)
-  prho<-exp( ll-max(ll) - .5*log(1-rhos^2) )
+  prho<-exp( ll-max(ll) - asp*.5*log(1-rhos^2) )
   Frho<-c(0,cumsum(prho)/sum(prho),1)
   rhos<-c(0,rhos,1)
   f<-runif(1)
   k<-max(which(Frho<f))
-  rhos[k] + (rhos[k+1]-rhos[k])*(f-Frho[k])/(Frho[k+1]-Frho[k])
+  rho<-rhos[k] + (rhos[k+1]-rhos[k])*(f-Frho[k])/(Frho[k+1]-Frho[k])
+  min(abs(rho),.995)*sign(rho)
 }
 
 

@@ -1,7 +1,7 @@
 Package: amen
 Title: Additive and Multiplicative Effects Models for Networks and Relational
     Data
-Version: 1.4.2
+Version: 1.4.3
 Authors@R: c(person("Peter","Hoff",role=c("aut","cre"),
                     email="peter.hoff@duke.edu"),
              person("Bailey","Fosdick",role=c("aut")),
@@ -24,7 +24,7 @@ Maintainer: Peter Hoff <peter.hoff@duke.edu>
 URL: http://github.com/pdhoff/amen
 BugReports: https://github.com/pdhoff/amen/issues
 License: GPL-3
-Date: 2018-06-12
+Date: 2018-07-31
 LazyData: true
 Depends:
     R (>= 2.10)

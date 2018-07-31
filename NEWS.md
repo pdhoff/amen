@@ -1,3 +1,14 @@
+# amen 1.4.3 
+
+* added functionality to fit generalized bilinear mixed effects models, e.g., Poisson or logistic regression model (see the demo on Poisson regression). 
+
+* Added an option so that `rho` can either have an arc sine prior or a uniform prior. 
+
+* rho is now restricted to lie between -.995 and +.995 in order to avoid the Markov chain from getting stuck at extreme values.  
+
+* Changed `design_array` so that it tries to figure out the number of nodes from the covariate information. 
+
+
 # amen 1.4.2 
 
 #### Changes 
@@ -114,6 +125,12 @@ or if you have strong objections to some of the changes.
 * The `zscores` function now takes an optional argument for dealing with ties. 
 
 ### To do list:
+
+* Incorporate a method to deal with missing values in predictors. 
+
+* Methods for logistic regression, (overdispersed) Poisson and tobit models. 
+
+* Allow for user-specified link functions. 
 
 * Allow prior means for (`a`,`b`,`U`,`V`) and a prior for `rho`. 
    The former will facilitate hierarchical or longitudinal modeling. 

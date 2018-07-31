@@ -59,7 +59,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.3</span>
       </span>
     </div>
 
@@ -83,6 +83,12 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/binary_demo.html">Modeling a binary network outcome</a>
+    </li>
+    <li>
+      <a href="../articles/diy_Poisson_demo.html">DIY overdispersed Poisson network model</a>
+    </li>
+    <li>
+      <a href="../articles/diy_binary_demo.html">DIY modeling of a binary network outcome</a>
     </li>
   </ul>
 </li>
@@ -153,8 +159,15 @@
     <pre class="examples"><div class='input'>
 <span class='fu'>data</span>(<span class='no'>addhealthc3</span>)
 <span class='no'>Y</span><span class='kw'>&lt;-</span><span class='no'>addhealthc3</span>$<span class='no'>Y</span>
-<span class='no'>X</span><span class='kw'>&lt;-</span><span class='fu'><a href='xnet.html'>xnet</a></span>(<span class='no'>Y</span>)
-<span class='fu'><a href='netplot.html'>netplot</a></span>(<span class='no'>Y</span>,<span class='no'>X</span>)</div><div class='input'><span class='fu'>addlines</span>(<span class='no'>Y</span>,<span class='no'>X</span>,<span class='kw'>col</span><span class='kw'>=</span><span class='no'>Y</span>[<span class='no'>Y</span><span class='kw'>!=</span><span class='fl'>0</span>])</div><div class='img'><img src='addlines-1.png' alt='' width='700' height='433' /></div><div class='input'>
+<span class='no'>X</span><span class='kw'>&lt;-</span><span class='fu'><a href='xnet.html'>xnet</a></span>(<span class='no'>Y</span>)</div><div class='output co'>#&gt; <span class='message'>Loading required package: network</span></div><div class='output co'>#&gt; <span class='message'>network: Classes for Relational Data</span>
+#&gt; <span class='message'>Version 1.13.0.1 created on 2015-08-31.</span>
+#&gt; <span class='message'>copyright (c) 2005, Carter T. Butts, University of California-Irvine</span>
+#&gt; <span class='message'>                    Mark S. Handcock, University of California -- Los Angeles</span>
+#&gt; <span class='message'>                    David R. Hunter, Penn State University</span>
+#&gt; <span class='message'>                    Martina Morris, University of Washington</span>
+#&gt; <span class='message'>                    Skye Bender-deMoll, University of Washington</span>
+#&gt; <span class='message'> For citation information, type citation("network").</span>
+#&gt; <span class='message'> Type help("network-package") to get started.</span></div><div class='input'><span class='fu'><a href='netplot.html'>netplot</a></span>(<span class='no'>Y</span>,<span class='no'>X</span>)</div><div class='input'><span class='fu'>addlines</span>(<span class='no'>Y</span>,<span class='no'>X</span>,<span class='kw'>col</span><span class='kw'>=</span><span class='no'>Y</span>[<span class='no'>Y</span><span class='kw'>!=</span><span class='fl'>0</span>])</div><div class='img'><img src='addlines-1.png' alt='' width='700' height='433' /></div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">

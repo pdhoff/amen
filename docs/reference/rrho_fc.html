@@ -60,7 +60,7 @@ distribution using griddy Gibbs sampling" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.3</span>
       </span>
     </div>
 
@@ -84,6 +84,12 @@ distribution using griddy Gibbs sampling" />
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/binary_demo.html">Modeling a binary network outcome</a>
+    </li>
+    <li>
+      <a href="../articles/diy_Poisson_demo.html">DIY overdispersed Poisson network model</a>
+    </li>
+    <li>
+      <a href="../articles/diy_binary_demo.html">DIY modeling of a binary network outcome</a>
     </li>
   </ul>
 </li>
@@ -123,7 +129,7 @@ distribution using griddy Gibbs sampling</p>
     
     </div>
 
-    <pre class="usage"><span class='fu'>rrho_fc</span>(<span class='no'>Z</span>, <span class='no'>Sab</span>, <span class='kw'>s2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>ngp</span> <span class='kw'>=</span> <span class='fl'>100</span>)</pre>
+    <pre class="usage"><span class='fu'>rrho_fc</span>(<span class='no'>Z</span>, <span class='no'>Sab</span>, <span class='kw'>s2</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>offset</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>ngp</span> <span class='kw'>=</span> <span class='fl'>100</span>, <span class='kw'>asp</span> <span class='kw'>=</span> <span class='kw'>NULL</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -151,6 +157,10 @@ regression terms and multiplicative effects (such as
       <th>ngp</th>
       <td><p>the number of points for an unevenly-spaced 
 grid on which to approximate the full conditional distribution</p></td>
+    </tr>
+    <tr>
+      <th>asp</th>
+      <td><p>use arc sine prior (TRUE) or uniform prior (FALSE)</p></td>
     </tr>
     </table>
     

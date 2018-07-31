@@ -87,8 +87,8 @@ Hoff, P.D., Fosdick, B.K., Volfovsky, A. and Stovel, K. (2013) "Likelihoods for 
 
 * [Modeling a binary outcome](articles/binary_demo.html)
 
-* [Modeling an ordinal outcome](articles/ordinal_demo.html)
+* [DIY Modeling of a binary outcome](articles/diy_binary_demo.html)
 
-* [Modeling a continuous outcome](articles/continuous_demo.html)
+* [DIY Poisson regression](articles/diy_Poisson_demo.html)
 
 

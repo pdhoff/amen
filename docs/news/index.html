@@ -56,7 +56,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">amen</a>
-        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.2</span>
+        <span class="label label-default" data-toggle="tooltip" data-placement="bottom" title="Released package">1.4.3</span>
       </span>
     </div>
 
@@ -80,6 +80,12 @@
   <ul class="dropdown-menu" role="menu">
     <li>
       <a href="../articles/binary_demo.html">Modeling a binary network outcome</a>
+    </li>
+    <li>
+      <a href="../articles/diy_Poisson_demo.html">DIY overdispersed Poisson network model</a>
+    </li>
+    <li>
+      <a href="../articles/diy_binary_demo.html">DIY modeling of a binary network outcome</a>
     </li>
   </ul>
 </li>
@@ -111,6 +117,17 @@
       <small>Source: <a href='http://github.com/pdhoff/amen/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="amen-1-4-3" class="section level1">
+<h1 class="page-header">
+<a href="#amen-1-4-3" class="anchor"></a>amen 1.4.3<small> Unreleased </small>
+</h1>
+<ul>
+<li><p>added functionality to fit generalized bilinear mixed effects models, e.g., Poisson or logistic regression model (see the demo on Poisson regression).</p></li>
+<li><p>Added an option so that <code>rho</code> can either have an arc sine prior or a uniform prior.</p></li>
+<li><p>rho is now restricted to lie between -.995 and +.995 in order to avoid the Markov chain from getting stuck at extreme values.</p></li>
+<li><p>Changed <code>design_array</code> so that it tries to figure out the number of nodes from the covariate information.</p></li>
+</ul>
+</div>
     <div id="amen-1-4-2" class="section level1">
 <h1 class="page-header">
 <a href="#amen-1-4-2" class="anchor"></a>amen 1.4.2<small> Unreleased </small>
@@ -168,6 +185,9 @@ to prevent inadvertent fits of the normal model to binary data.</p></li>
 <h3 class="hasAnchor">
 <a href="#to-do-list" class="anchor"></a>To do list:</h3>
 <ul>
+<li><p>Incorporate a method to deal with missing values in predictors.</p></li>
+<li><p>Methods for logistic regression, (overdispersed) Poisson and tobit models.</p></li>
+<li><p>Allow for user-specified link functions.</p></li>
 <li><p>Allow prior means for (<code>a</code>,<code>b</code>,<code>U</code>,<code>V</code>) and a prior for <code>rho</code>. The former will facilitate hierarchical or longitudinal modeling.</p></li>
 <li><p>Incorporate prior specification into the <code>ame_rep</code> wrapper function.</p></li>
 <li><p>Incorporate more full prior specifications for the symmetric case.</p></li>
@@ -186,6 +206,7 @@ to prevent inadvertent fits of the normal model to binary data.</p></li>
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#amen-1-4-3">1.4.3</a></li>
         <li><a href="#amen-1-4-2">1.4.2</a></li>
         <li><a href="#amen-1-4-1">1.4.1</a></li>
       </ul>

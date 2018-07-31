@@ -4,7 +4,7 @@
 \alias{rrho_fc}
 \title{Griddy Gibbs update for dyadic correlation}
 \usage{
-rrho_fc(Z, Sab, s2 = 1, offset = 0, ngp = 100)
+rrho_fc(Z, Sab, s2 = 1, offset = 0, ngp = 100, asp = NULL)
 }
 \arguments{
 \item{Z}{n X n normal relational matrix}
@@ -20,6 +20,8 @@ regression terms and multiplicative effects (such as
 
 \item{ngp}{the number of points for an unevenly-spaced 
 grid on which to approximate the full conditional distribution}
+
+\item{asp}{use arc sine prior (TRUE) or uniform prior (FALSE)}
 }
 \value{
 a value of rho

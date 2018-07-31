@@ -110,7 +110,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   # some settings for symmetric case
   if(symmetric){ Xcol<-Xrow ; rvar<-cvar<-nvar }
 
-  # g-prior setting for nromal data 
+  # g-prior setting for normal data 
   if(family=="nrm" & is.null(prior$g))
   { 
     prior$g<-sum(!is.na(Y))*var(c(Y),na.rm=TRUE)
@@ -119,7 +119,10 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   # set informative priors if family isnt normal 
   if(family!="nrm")
   {  
-    YB<-1*(Y!=min(Y,na.rm=TRUE) )
+    ydist<-table(Y)
+    ymode<-as.numeric(names(ydist)[ ydist==max(ydist) ])[1] 
+    ## eg, in a sparse binary network, ymode will be zero 
+    YB<-1*(Y!=ymode) 
     ybar<-mean(YB,na.rm=TRUE) ; mu<-qnorm(ybar)
     E<- (YB - ybar)/dnorm(qnorm(ybar)) ; diag(E)<-0
     a<-rowMeans(E,na.rm=TRUE)  ; a[is.na(a)]<-0 
@@ -294,38 +297,55 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     if(family=="rrl"){ Z<-rZ_rrl_fc(Z,EZ,rho,Y,YL)} 
 
     # update s2
-    if (family=="nrm") s2<-rs2_fc(Z-EZ,rho,nu0=prior$nu0,s20=prior$s20)  
+    if(family=="nrm"){ s2<-rs2_fc(Z-EZ,rho,nu0=prior$nu0,s20=prior$s20)  } 
+
+    # update rho
+    if(dcor){ rho <- rrho_mh(Z-EZ,rho,s2,asp = prior$asp)} 
+
+    # shrink rho - symmetric case 
+    if(symmetric){ rho<-min(.9999,1-1/sqrt(s)) }
 
     # update beta, a b
-    #tmp <- rbeta_ab_fc(Z-U%*%t(V),Sab,rho,X,s2,iV0=prior$iV0,m0=prior$m0)
     tmp <- rbeta_ab_fc(Z-U%*%t(V),Sab,rho,X,s2,iV0=prior$iV0,m0=prior$m0,
                        g=prior$g) 
-    beta <- tmp$beta
+    beta <- tmp$beta 
     a <- tmp$a * rvar
     b <- tmp$b * cvar 
     if(symmetric){ a<-b<-(a+b)/2 }
 
+    # update U,V
+    if (R > 0)
+    {
+      E<-Z-(Xbeta(X,beta)+outer(a,b,"+"))  ; if(symmetric){ E<-.5*(E+t(E)) }
+      shrink<- (s>.5*burn)
+      if(symmetric){ UV<-rUV_sym_fc(E, U, V, s2) }
+      if(!symmetric)
+      {
+        Suv<-rSuv_fc(U,V,Suv0=prior$Suv0,kappa0=prior$kappa0)
+        UV<-rUV_fc(E, U, V,Suv,rho, s2)
+      }
+      U<-UV$U ; V<-UV$V
+    }
+
     # update Sab - full SRM
     if(rvar & cvar & !symmetric)
     {
-
       Sab<-rSab_fc(a,b,Sab0=prior$Sab0,eta0=prior$eta0)    
-
       if(family=="bin")
       {
         tmp<-raSab_bin_fc(Z,Y,a,b,Sab,Sab0=prior$Sab0,eta0=prior$eta0) 
         Z<-tmp$Z;Sab<-tmp$Sab;a<-tmp$a
       }
-
       if(family=="cbin")
       {
-        tmp<-raSab_cbin_fc(Z,Y,a,b,Sab,odmax,odobs,Sab0=prior$Sab0,eta0=prior$eta0)
+        tmp<-raSab_cbin_fc(Z,Y,a,b,Sab,odmax,odobs,
+                           Sab0=prior$Sab0,eta0=prior$eta0)
         Z<-tmp$Z;Sab<-tmp$Sab;a<-tmp$a
       }
-      
       if(family=="frn")
       { 
-        tmp<-raSab_frn_fc(Z,Y,YL,a,b,Sab,odmax,odobs,Sab0=prior$Sab0,eta0=prior$eta0) 
+        tmp<-raSab_frn_fc(Z,Y,YL,a,b,Sab,odmax,odobs,
+                          Sab0=prior$Sab0,eta0=prior$eta0) 
         Z<-tmp$Z;Sab<-tmp$Sab;a<-tmp$a 
       }
     }
@@ -349,37 +369,12 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
       Sab[1,2]<-Sab[2,1]<-.999*Sab[1,1]   
     }
 
-    # update rho
-    if(dcor) 
-    {
-      if(rvar & cvar){rho<-rrho_fc(Z,Sab,s2,offset=Xbeta(X,beta) + U%*%t(V)) }
-      if(!(rvar&cvar))
-      { 
-        rho<-rrho_mh(Z,rho,s2,offset=Xbeta(X,beta) + U%*%t(V)+ outer(a,b,"+"))  
-      }
-    }
-
-    # shrink rho - symmetric case 
-    if(symmetric){ rho<-min(.9999,1-1/sqrt(s)) }
-
-    # update U,V
-    if (R > 0) 
-    { 
-      E<-Z-(Xbeta(X,beta)+outer(a,b,"+"))  ; if(symmetric){ E<-.5*(E+t(E)) }
-      shrink<- (s>.5*burn)
-
-      if(symmetric){ UV<-rUV_sym_fc(E, U, V, s2) }
-      if(!symmetric)
-      { 
-        Suv<-rSuv_fc(U,V,Suv0=prior$Suv0,kappa0=prior$kappa0)
-        UV<-rUV_fc(E, U, V,Suv,rho, s2) 
-      }
-
-      U<-UV$U ; V<-UV$V
-    }    
 
     # burn-in countdown
-    if(s%%odens==0&s<=burn & print){cat(round(100*s/burn,2)," pct burnin complete \n")}
+    if(s%%odens==0&s<=burn & print)
+    {
+      cat(round(100*s/burn,2)," pct burnin complete \n")
+    }
 
     # save parameter values and monitor the MC
     if(s%%odens==0 & s>burn) 

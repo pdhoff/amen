@@ -12,8 +12,18 @@
 #' @return an n x n x (pr+pc+pd+intercept) 3-way array 
 #' @author Peter Hoff
 #' @export design_array
-design_array<-function(Xrow=NULL,Xcol=NULL,Xdyad=NULL,intercept=TRUE,n)
+design_array<-function(Xrow=NULL,Xcol=NULL,Xdyad=NULL,intercept=TRUE,n=NULL)
 { 
+
+if(is.null(n))
+{
+  if(is.matrix(Xrow)){ n<-nrow(Xrow) }
+  if(is.matrix(Xcol)){ n<-nrow(Xcol) }
+  if(is.matrix(Xdyad)){ n<-nrow(Xdyad) }
+  if(is.array(Xdyad)){ n<-dim(Xdyad)[1] }  
+  if(is.null(n)){ cat("Error: n must be specified") }
+}
+
 
 ### covariate array
 pr<-length(Xrow)/n
