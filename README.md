@@ -5,7 +5,7 @@ amen
 
 [Package website](https://pdhoff.github.io/amen/)
 
-![](README_files/figure-markdown_github/unnamed-chunk-2-1.png)
+![](../README_files/figure-markdown_github/unnamed-chunk-2-1.png)
 
 #### About
 
