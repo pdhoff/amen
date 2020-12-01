@@ -4,10 +4,12 @@
 \name{YX_rrl}
 \alias{YX_rrl}
 \title{row-specific ordinal relational data and covariates}
-\format{The format is: List of 2 $ Y: num [1:100, 1:100] NA 0 3 0 3 1 0 1 1
+\format{
+The format is: List of 2 $ Y: num [1:100, 1:100] NA 0 3 0 3 1 0 1 1
 0 ...  $ X: num [1:100, 1:100, 1:5] 1 1 1 1 1 1 1 1 1 1 ...  ..- attr(*,
 "dimnames")=List of 3 .. ..$ : NULL .. ..$ : NULL .. ..$ : chr [1:5] "cgpa"
-"csmoke" "igrade" "ismoke" ...}
+"csmoke" "igrade" "ismoke" ...
+}
 \usage{
 data(YX_rrl)
 }

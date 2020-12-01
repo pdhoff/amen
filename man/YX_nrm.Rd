@@ -4,10 +4,12 @@
 \name{YX_nrm}
 \alias{YX_nrm}
 \title{normal relational data and covariates}
-\format{The format is: List of 2 $ Y: num [1:100, 1:100] NA -4.05 -0.181
+\format{
+The format is: List of 2 $ Y: num [1:100, 1:100] NA -4.05 -0.181
 -3.053 -1.579 ...  $ X: num [1:100, 1:100, 1:8] 1 1 1 1 1 1 1 1 1 1 ...  ..-
 attr(*, "dimnames")=List of 3 .. ..$ : NULL .. ..$ : NULL .. ..$ : chr [1:8]
-"intercept" "rgpa" "rsmoke" "cgpa" ...}
+"intercept" "rgpa" "rsmoke" "cgpa" ...
+}
 \usage{
 data(YX_nrm)
 }

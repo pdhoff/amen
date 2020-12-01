@@ -3,7 +3,8 @@
 \name{IR90s}
 \alias{IR90s}
 \title{International relations in the 90s}
-\format{A list consisting of a socioarray \code{dyadvars} of 
+\format{
+A list consisting of a socioarray \code{dyadvars} of 
 dyadic variables and matrix  \code{nodevars} of nodal variables. 
 The dyadic variables include
 \itemize{
@@ -18,7 +19,8 @@ The nodal variables include
 \item population (in millions); 
 \item gdp (in billions of dollars); 
 \item polity 
-}}
+}
+}
 \source{
 Michael Ward.
 }

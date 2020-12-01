@@ -1,7 +1,7 @@
 Package: amen
 Title: Additive and Multiplicative Effects Models for Networks and Relational
     Data
-Version: 1.4.3
+Version: 1.4.4
 Authors@R: c(person("Peter","Hoff",role=c("aut","cre"),
                     email="peter.hoff@duke.edu"),
              person("Bailey","Fosdick",role=c("aut")),
@@ -15,7 +15,7 @@ Description: Analysis of dyadic network and relational data using additive and
     models (Hoff(2009) <DOI:10.1007/s10588-008-9040-4>). 
     Four different link functions accommodate different
     relational data structures, including binary/network data (bin), normal
-    relational data (nrm), ordinal relational data (ord) and data from
+    relational data (nrm), zero-inflated positive outcomes using a tobit model (tob), ordinal relational data (ord) and data from
     fixed-rank nomination schemes (frn).  Several of these link functions are
     discussed in Hoff, Fosdick, Volfovsky and Stovel (2013) 
     <DOI:10.1017/nws.2013.17>. Development of this
@@ -24,11 +24,11 @@ Maintainer: Peter Hoff <peter.hoff@duke.edu>
 URL: http://github.com/pdhoff/amen
 BugReports: https://github.com/pdhoff/amen/issues
 License: GPL-3
-Date: 2018-07-31
+Date: 2020-11-30
 LazyData: true
 Depends:
     R (>= 2.10)
 Suggests:
     coda,network,knitr
 VignetteBuilder: knitr
-RoxygenNote: 6.0.1
+RoxygenNote: 7.1.1

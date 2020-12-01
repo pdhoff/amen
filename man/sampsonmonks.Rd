@@ -3,12 +3,14 @@
 \name{sampsonmonks}
 \alias{sampsonmonks}
 \title{Sampson's monastery data}
-\format{A socioarray whose dimensions represent nominators, nominatees and relations. 
+\format{
+A socioarray whose dimensions represent nominators, nominatees and relations. 
 Each monk was asked to rank up to three other monks on a variety of positive 
 and negative relations. A rank of three indicates the "highest" ranking for 
 a particular relational variable. The relations \code{like_m2} and \code{like_m1}
 are evaluations of likeing at one and two timepoints previous to when the 
-other relations were measured.}
+other relations were measured.
+}
 \source{
 Linton Freeman
 }

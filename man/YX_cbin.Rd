@@ -4,10 +4,12 @@
 \name{YX_cbin}
 \alias{YX_cbin}
 \title{Censored binary nomination data and covariates}
-\format{The format is: List of 2 $ Y: num [1:100, 1:100] NA 0 0 0 1 0 0 0 0
+\format{
+The format is: List of 2 $ Y: num [1:100, 1:100] NA 0 0 0 1 0 0 0 0
 3 ...  $ X: num [1:100, 1:100, 1:8] 1 1 1 1 1 1 1 1 1 1 ...  ..- attr(*,
 "dimnames")=List of 3 .. ..$ : NULL .. ..$ : NULL .. ..$ : chr [1:8]
-"intercept" "rgpa" "rsmoke" "cgpa" ...}
+"intercept" "rgpa" "rsmoke" "cgpa" ...
+}
 \usage{
 data(YX_cbin)
 }

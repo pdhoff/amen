@@ -1,3 +1,7 @@
+# amen 1.4.4 
+
+* added a tobit link, for relational data that are zero or positive
+
 # amen 1.4.3 
 
 * added functionality to fit generalized bilinear mixed effects models, e.g., Poisson or logistic regression model (see the demo on Poisson regression). 

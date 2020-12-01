@@ -4,8 +4,17 @@
 \alias{rbeta_ab_fc}
 \title{Conditional simulation of additive effects and regression coefficients}
 \usage{
-rbeta_ab_fc(Z, Sab, rho, X = NULL, s2 = 1, offset = 0, iV0 = NULL,
-  m0 = NULL, g = length(Z))
+rbeta_ab_fc(
+  Z,
+  Sab,
+  rho,
+  X = NULL,
+  s2 = 1,
+  offset = 0,
+  iV0 = NULL,
+  m0 = NULL,
+  g = length(Z)
+)
 }
 \arguments{
 \item{Z}{n X n normal relational matrix}

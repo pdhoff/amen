@@ -3,7 +3,8 @@
 \name{comtrade}
 \alias{comtrade}
 \title{Comtrade data}
-\format{A list consisting of a socioarray \code{Trade} and a vector 
+\format{
+A list consisting of a socioarray \code{Trade} and a vector 
 \code{dollars2010} of inflation rates. The socioarray gives 
 yearly trade volume (exports and imports) 
 in dollars for 10 different commodity classes 
@@ -11,7 +12,8 @@ for eleven years between 229 countries. This gives a five-way
 array. The first index is the reporting country, so 
 \code{Trade[i,j,t,k,1]} is what \code{i} reports for exports to 
 \code{j}, but in general this is not the same as 
-\code{Trade[j,i,t,k,2]}, what \code{j} reports as importing from \code{i}.}
+\code{Trade[j,i,t,k,2]}, what \code{j} reports as importing from \code{i}.
+}
 \source{
 \url{http://comtrade.un.org/}, \url{http://www.measuringworth.com/}
 }

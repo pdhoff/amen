@@ -3,14 +3,16 @@
 \name{coldwar}
 \alias{coldwar}
 \title{Cold War data}
-\format{A list including the following dyadic and nodal variables:
+\format{
+A list including the following dyadic and nodal variables:
 \itemize{
 \item \code{cc}: a socioarray of ordinal levels of military 
 cooperation (positive) and conflict (negative), every 5 years; 
 \item \code{distance}: between-country distance (in thousands of kilometers); 
 \item \code{gdp}: country gdp in dollars every 5 years; 
 \item \code{polity}: country polity every 5 years.  
-}}
+}
+}
 \source{
 Xun Cao : \url{http://polisci.la.psu.edu/people/xuc11}
 }

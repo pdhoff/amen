@@ -4,11 +4,25 @@
 \alias{circplot}
 \title{Circular network plot}
 \usage{
-circplot(Y, U = NULL, V = NULL, row.names = rownames(Y),
-  col.names = colnames(Y), plotnames = TRUE, vscale = 0.8,
-  pscale = 1.75, mscale = 0.3, lcol = "gray", rcol = "brown",
-  ccol = "blue", pch = 16, lty = 3, jitter = 0.1 * (nrow(Y)/(1 +
-  nrow(Y))), bty = "n", add = FALSE)
+circplot(
+  Y,
+  U = NULL,
+  V = NULL,
+  row.names = rownames(Y),
+  col.names = colnames(Y),
+  plotnames = TRUE,
+  vscale = 0.8,
+  pscale = 1.75,
+  mscale = 0.3,
+  lcol = "gray",
+  rcol = "brown",
+  ccol = "blue",
+  pch = 16,
+  lty = 3,
+  jitter = 0.1 * (nrow(Y)/(1 + nrow(Y))),
+  bty = "n",
+  add = FALSE
+)
 }
 \arguments{
 \item{Y}{(matrix) m by n relational matrix.}

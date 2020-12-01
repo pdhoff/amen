@@ -12,7 +12,7 @@
 #' software was supported in part by NICHD grant R01HD067509. 
 #' 
 #' \tabular{ll}{ Package: \tab amen\cr Type: \tab Package\cr Version: \tab
-#' 1.4.3 \cr Date: \tab 2018-07-31 \cr License: \tab GPL-3 \cr }
+#' 1.4.4 \cr Date: \tab 2020-11-30 \cr License: \tab GPL-3 \cr }
 #' 
 #' @name amen-package
 #' @aliases amen-package amen

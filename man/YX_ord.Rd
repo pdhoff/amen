@@ -4,10 +4,12 @@
 \name{YX_ord}
 \alias{YX_ord}
 \title{ordinal relational data and covariates}
-\format{The format is: List of 2 $ Y: num [1:100, 1:100] NA 0 3 0 3 1 0 1 1
+\format{
+The format is: List of 2 $ Y: num [1:100, 1:100] NA 0 3 0 3 1 0 1 1
 0 ...  $ X: num [1:100, 1:100, 1:7] 1 1 1 1 1 1 1 1 1 1 ...  ..- attr(*,
 "dimnames")=List of 3 .. ..$ : NULL .. ..$ : NULL .. ..$ : chr [1:7] "rgpa"
-"rsmoke" "cgpa" "csmoke" ...}
+"rsmoke" "cgpa" "csmoke" ...
+}
 \usage{
 data(YX_ord)
 }

@@ -22,7 +22,7 @@ various data types.}
 
 \item{Xcol}{an n x pc matrix of nodal column covariates}
 
-\item{family}{character: one of "nrm","bin","ord","cbin","frn","rrl" - see
+\item{family}{character: one of "nrm","tob","bin","ord","cbin","frn","rrl" - see
 the details below}
 
 \item{R}{integer: dimension of the multiplicative effects (can be zero)}
@@ -82,6 +82,8 @@ This command provides posterior inference for parameters in AME models of
 relational data, assuming one of six possible data types/models:
 
 "nrm": A normal AME model.
+
+"tob": A tobit AME model. 
 
 "bin": A binary probit AME model.
 

@@ -4,7 +4,9 @@
 \name{addhealthc9}
 \alias{addhealthc9}
 \title{AddHealth community 9 data}
-\format{list}
+\format{
+list
+}
 \usage{
 data(addhealthc9)
 }

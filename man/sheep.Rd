@@ -3,12 +3,14 @@
 \name{sheep}
 \alias{sheep}
 \title{Sheep dominance data}
-\format{A list consisting of the following:
+\format{
+A list consisting of the following:
 \itemize{
 \item \code{dom}: a directed socioarray recording the number of 
 dominance encounters. 
 \item \code{age}: the age of each sheep in years. 
-}}
+}
+}
 \source{
 Linton Freeman
 }

@@ -8,6 +8,8 @@
 #' 
 #' "nrm": A normal AME model.
 #' 
+#' "tob": A tobit AME model. 
+#' 
 #' "bin": A binary probit AME model.
 #' 
 #' "ord": An ordinal probit AME model. An intercept is not identifiable in this
@@ -42,7 +44,7 @@
 #' @param dcor logical: fit a dyadic correlation (asymmetric case)?
 #' @param nvar logical: fit nodal random effects (symmetric case)?
 #' @param R integer: dimension of the multiplicative effects (can be zero)
-#' @param family character: one of "nrm","bin","ord","cbin","frn","rrl" - see
+#' @param family character: one of "nrm","tob","bin","ord","cbin","frn","rrl" - see
 #' the details below
 #' @param intercept logical: fit model with an intercept? 
 #' @param symmetric logical: Is the sociomatrix symmetric by design?
@@ -116,8 +118,14 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     prior$g<-sum(!is.na(Y))*var(c(Y),na.rm=TRUE)
   }
 
-  # set informative priors if family isnt normal 
-  if(family!="nrm")
+  # g-prior setting for normal data 
+  if(family=="tob" & is.null(prior$g))
+  {
+    prior$g<-sum(!is.na(Y))*var(c(Y),na.rm=TRUE)*4 
+  }
+
+  # set informative priors if family isnt normal or tobit
+  if(family!="nrm" & family!="tob")
   {  
     ydist<-table(Y)
     ymode<-as.numeric(names(ydist)[ ydist==max(ydist) ])[1] 
@@ -177,6 +185,11 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
 
   # starting Z values
   if(family=="nrm") { Z<-Y }
+  if(family=="tob") { 
+    Z<-Y 
+    trunc<- !is.na(Z) && Z<0  
+    Z[trunc]<-qnorm(runif(sum(trunc),0,.5))*2*sd(Z[!trunc],na.rm=TRUE) 
+  } 
   if(family=="ord") { Z<-matrix(zscores(Y),nrow(Y),ncol(Y)) } 
   if(family=="rrl") { Z<-matrix(t(apply(Y,1,zscores)),nrow(Y),ncol(Y)) }  
   if(family=="bin")
@@ -238,6 +251,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
   E<-E-outer(a,b,"+")  
   s2<-1
   if(family=="nrm"){s2<-mean(E^2)}
+  if(family=="tob"){s2<-mean(E^2)} 
   rho<-cor( c(E[upper.tri(E)]), c(t(E)[upper.tri(E)]) )*dcor  
 
   # U,V 
@@ -290,6 +304,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
     # update Z 
     EZ<-Xbeta(X, beta) + outer(a, b, "+") + U %*% t(V)
     if(family=="nrm"){ Z<-rZ_nrm_fc(Z,EZ,rho,s2,Y) } 
+    if(family=="tob"){ Z<-rZ_tob_fc(Z,EZ,rho,s2,Y) }  
     if(family=="bin"){ Z<-rZ_bin_fc(Z,EZ,rho,Y) }
     if(family=="ord"){ Z<-rZ_ord_fc(Z,EZ,rho,Y) }
     if(family=="cbin"){Z<-rZ_cbin_fc(Z,EZ,rho,Y,odmax,odobs)}
@@ -298,6 +313,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
 
     # update s2
     if(family=="nrm"){ s2<-rs2_fc(Z-EZ,rho,nu0=prior$nu0,s20=prior$s20)  } 
+    if(family=="tob"){ s2<-rs2_fc(Z-EZ,rho,nu0=prior$nu0,s20=prior$s20)  } 
 
     # update rho
     if(dcor){ rho <- rrho_mh(Z-EZ,rho,s2,asp = prior$asp)} 
@@ -410,6 +426,7 @@ ame<-function (Y,Xdyad=NULL, Xrow=NULL, Xcol=NULL,
       if(family=="frn") { Ys<-simY_frn(EZ,rho,odmax,YO=Y) }
       if(family=="rrl") { Ys<-simY_rrl(EZ,rho,odobs,YO=Y ) }
       if(family=="nrm") { Ys<-simY_nrm(EZ,rho,s2) }
+      if(family=="tob") { Ys<-simY_tob(EZ,rho,s2) } 
       if(family=="ord") { Ys<-simY_ord(EZ,rho,Y) } 
 
       if(symmetric){ Ys[lower.tri(Ys)]<-0 ; Ys<-Ys+t(Ys)  }

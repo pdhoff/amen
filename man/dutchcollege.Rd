@@ -3,7 +3,8 @@
 \name{dutchcollege}
 \alias{dutchcollege}
 \title{Dutch college data}
-\format{A list consisting of a socioarray \code{Y} and a matrix 
+\format{
+A list consisting of a socioarray \code{Y} and a matrix 
 \code{X}  of static nodal attributes. The relational 
 measurements range from -1 to 4, indicating the following:
 \itemize{
@@ -13,7 +14,8 @@ measurements range from -1 to 4, indicating the following:
 \item  2 friendly
 \item  3 friendship
 \item  4 best friends
-}}
+}
+}
 \source{
 Linton Freeman
 }
