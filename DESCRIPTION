@@ -24,10 +24,10 @@ Maintainer: Peter Hoff <peter.hoff@duke.edu>
 URL: http://github.com/pdhoff/amen
 BugReports: https://github.com/pdhoff/amen/issues
 License: GPL-3
-Date: 2020-11-30
+Date: 2020-12-01
 LazyData: true
 Depends:
-    R (>= 2.10)
+    R (>= 3.5.0)
 Suggests:
     coda,network,knitr
 VignetteBuilder: knitr
