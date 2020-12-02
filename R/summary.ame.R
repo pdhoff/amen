@@ -7,7 +7,7 @@
 #' @return a summary of parameter estimates and confidence intervals for an AME
 #' fit
 #' @author Peter Hoff
-#' @S3method summary ame
+#' @S3method summary ame 
 summary.ame <-
 function(object, ...)
 { 
@@ -25,6 +25,9 @@ function(object, ...)
   colnames(tmp)<-c("pmean","psd") 
   cat("\nVariance parameters:\n")
   print(round(tmp,3))
+} 
+
+ 
+ 
 
 
-}
