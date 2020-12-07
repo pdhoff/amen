@@ -47,7 +47,7 @@ install.packages("amen")
 #### Documentation and citation
 
 A tutorial article and many data analysis examples are available via the
-[vignette](https://github.com/pdhoff/amen/blob/master/inst/doc/amen.pdf).
+[tutorial](https://github.com/pdhoff/amen/blob/master/inst/tutorial/amen.pdf).
 Please cite this as
 
 Hoff, P.D. (2015) “Dyadic data analysis with *amen*”. arXiv:1506.08237.

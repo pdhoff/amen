@@ -2,6 +2,11 @@
 title: "DIY modeling of a binary network outcome"
 author: "Peter Hoff"
 date: "`r substring(Sys.time(),1,10)`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DIY modeling of a binary network outcome}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 The `amen` package provides wrapper functions `ame` and `ame_rep`

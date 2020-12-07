@@ -2,6 +2,11 @@
 title: "DIY overdispersed Poisson network model"
 author: "Peter Hoff"
 date: "`r substring(Sys.time(),1,10)`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{DIY overdispersed Poisson network model}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
 ---
 
 Many network outcomes are counts, such as the number of emails 
