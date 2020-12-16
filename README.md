@@ -75,8 +75,8 @@ Hoff, P.D., Fosdick, B.K., Volfovsky, A. and Stovel, K. (2013)
 
 #### Some examples
 
--   [Modeling a binary outcome](articles/binary_demo.html)
+-   [Modeling a binary outcome](https://pdhoff.github.io/amen/articles/binary_demo.html)
 
--   [DIY Modeling of a binary outcome](articles/diy_binary_demo.html)
+-   [DIY Modeling of a binary outcome](https://pdhoff.github.io/amen/articles/diy_binary_demo.html)
 
--   [DIY Poisson regression](articles/diy_Poisson_demo.html)
+-   [DIY Poisson regression](https://pdhoff.github.io/amen/articles/diy_Poisson_demo.html)

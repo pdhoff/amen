@@ -13,15 +13,15 @@ Description: Analysis of dyadic network and relational data using additive and
     (Warner, Kenny and Stoto (1979) <DOI:10.1037/0022-3514.37.10.1742>, 
     Wong (1982) <DOI:10.2307/2287296>), and multiplicative factor
     models (Hoff(2009) <DOI:10.1007/s10588-008-9040-4>). 
-    Four different link functions accommodate different
-    relational data structures, including binary/network data (bin), normal
-    relational data (nrm), zero-inflated positive outcomes using a tobit model (tob), ordinal relational data (ord) and data from
-    fixed-rank nomination schemes (frn).  Several of these link functions are
+    Several different link functions accommodate different
+    relational data structures, including binary/network data, normal
+    relational data, zero-inflated positive outcomes using a tobit model, ordinal relational data and data from
+    fixed-rank nomination schemes. Several of these link functions are
     discussed in Hoff, Fosdick, Volfovsky and Stovel (2013) 
     <DOI:10.1017/nws.2013.17>. Development of this
     software was supported in part by NIH grant R01HD067509.
 Maintainer: Peter Hoff <peter.hoff@duke.edu>
-URL: http://github.com/pdhoff/amen
+URL: https://github.com/pdhoff/amen
 BugReports: https://github.com/pdhoff/amen/issues
 License: GPL-3
 Date: 2020-12-01
@@ -29,6 +29,6 @@ LazyData: true
 Depends:
     R (>= 3.5.0)
 Suggests:
-    coda,network,knitr
+    coda,network,knitr,rmarkdown
 VignetteBuilder: knitr
 RoxygenNote: 7.1.1

@@ -14,7 +14,7 @@ cooperation (positive) and conflict (negative), every 5 years;
 }
 }
 \source{
-Xun Cao : \url{http://polisci.la.psu.edu/people/xuc11}
+Xun Cao : \url{https://polisci.la.psu.edu/people/xuc11}
 }
 \description{
 Positive and negative relations between countries during the cold war

@@ -15,7 +15,7 @@ array. The first index is the reporting country, so
 \code{Trade[j,i,t,k,2]}, what \code{j} reports as importing from \code{i}.
 }
 \source{
-\url{http://comtrade.un.org/}, \url{http://www.measuringworth.com/}
+\url{https://comtrade.un.org/}, \url{https://www.measuringworth.com/}
 }
 \description{
 Eleven years of import and export data between 229 countries. 

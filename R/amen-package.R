@@ -240,7 +240,7 @@ NULL
 #' \item \code{polity}: country polity every 5 years.  
 #' }
 #' @source 
-#' Xun Cao : \url{http://polisci.la.psu.edu/people/xuc11}
+#' Xun Cao : \url{https://polisci.la.psu.edu/people/xuc11}
 #' 
 #' @name coldwar
 NULL
@@ -263,7 +263,7 @@ NULL
 #' \code{j}, but in general this is not the same as 
 #' \code{Trade[j,i,t,k,2]}, what \code{j} reports as importing from \code{i}. 
 #' 
-#' @source \url{http://comtrade.un.org/}, \url{http://www.measuringworth.com/}
+#' @source \url{https://comtrade.un.org/}, \url{https://www.measuringworth.com/}
 #' 
 #' @name comtrade
 NULL
